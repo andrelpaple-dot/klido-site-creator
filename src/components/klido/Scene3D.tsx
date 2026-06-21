@@ -15,7 +15,7 @@ function Blob() {
     <Float speed={1.2} rotationIntensity={0.4} floatIntensity={0.8}>
       <mesh ref={ref} scale={2.6}>
         <icosahedronGeometry args={[1, 64]} />
-        {/* @ts-expect-error drei material props */}
+        
         <MeshDistortMaterial
           color="#c9a36a"
           roughness={0.15}
