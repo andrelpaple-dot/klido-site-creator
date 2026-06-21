@@ -30,43 +30,42 @@
   --color-ring: var(--ring);
   --color-ring-offset-background: var(--background);
 
-  --color-ivory: var(--ivory);
   --color-ink: var(--ink);
+  --color-paper: var(--paper);
   --color-muted-ink: var(--muted-ink);
   --color-bronze: var(--bronze);
   --color-hairline: var(--hairline);
 
-  --font-display: "Playfair Display", Georgia, serif;
+  --font-display: "Unbounded", "Inter", system-ui, sans-serif;
   --font-sans: "Inter", system-ui, sans-serif;
 }
 
 :root {
   --radius: 0.5rem;
 
-  /* Klido palette */
-  --ivory: #fafaf8;
-  --ink: #0d0d0d;
-  --muted-ink: #6b6b6b;
-  --bronze: #b5935a;
-  --hairline: #e8e8e4;
+  /* Klido — dark editorial palette */
+  --ink: #000000;
+  --paper: #f5f5f3;
+  --muted-ink: #8a8a8a;
+  --bronze: #c9a36a;
+  --hairline: rgba(255, 255, 255, 0.08);
 
-  /* shadcn aliases (light only) */
-  --background: var(--ivory);
-  --foreground: var(--ink);
-  --card: #ffffff;
-  --card-foreground: var(--ink);
-  --popover: #ffffff;
-  --popover-foreground: var(--ink);
-  --primary: var(--ink);
-  --primary-foreground: var(--ivory);
-  --secondary: #f3f3ef;
-  --secondary-foreground: var(--ink);
-  --muted: #f3f3ef;
+  --background: var(--ink);
+  --foreground: var(--paper);
+  --card: #0a0a0a;
+  --card-foreground: var(--paper);
+  --popover: #0a0a0a;
+  --popover-foreground: var(--paper);
+  --primary: var(--paper);
+  --primary-foreground: var(--ink);
+  --secondary: #111111;
+  --secondary-foreground: var(--paper);
+  --muted: #111111;
   --muted-foreground: var(--muted-ink);
   --accent: var(--bronze);
-  --accent-foreground: var(--ivory);
+  --accent-foreground: var(--ink);
   --destructive: oklch(0.577 0.245 27.325);
-  --destructive-foreground: var(--ivory);
+  --destructive-foreground: var(--paper);
   --border: var(--hairline);
   --input: var(--hairline);
   --ring: var(--bronze);
@@ -82,29 +81,41 @@
   }
 
   body {
-    background-color: var(--color-background);
-    color: var(--color-foreground);
+    background-color: var(--ink);
+    color: var(--paper);
     font-family: var(--font-sans);
-    font-feature-settings: "ss01", "cv11";
     -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
   }
 
   ::selection {
     background-color: var(--bronze);
-    color: var(--ivory);
+    color: var(--ink);
   }
 
   .font-display {
     font-family: var(--font-display);
+    letter-spacing: -0.02em;
   }
 
-  /* Custom cursor: hide system cursor on devices that support hover (desktop) */
+  .display-xl {
+    font-family: var(--font-display);
+    font-weight: 800;
+    text-transform: uppercase;
+    line-height: 0.92;
+    letter-spacing: -0.035em;
+  }
+
+  .eyebrow {
+    font-family: var(--font-sans);
+    font-size: 11px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--muted-ink);
+  }
+
   @media (hover: hover) and (pointer: fine) {
-    html,
-    body,
-    a,
-    button,
-    [role="button"] {
+    html, body, a, button, [role="button"] {
       cursor: none !important;
     }
   }
