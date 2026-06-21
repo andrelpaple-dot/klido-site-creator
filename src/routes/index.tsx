@@ -1,29 +1,31 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { KlidoLanding } from "@/components/klido/KlidoLanding";
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "сайт klido" },
-      { name: "description", content: "сайт klido" },
-      { property: "og:title", content: "сайт klido" },
-      { property: "og:description", content: "сайт klido" },
+      { title: "Klido — интернет-магазины для брендов на Wildberries и Ozon" },
+      {
+        name: "description",
+        content:
+          "Klido — агентство интернет-магазинов для брендов, продающих на Wildberries и Ozon. Запускаем внешний канал продаж с измеримой конверсией.",
+      },
+      {
+        property: "og:title",
+        content: "Klido — интернет-магазины для брендов на WB и Ozon",
+      },
+      {
+        property: "og:description",
+        content:
+          "Запускаем внешний канал продаж, куда вы льёте свой трафик — и удерживаете маржу, которую забирают маркетплейсы.",
+      },
+      { property: "og:url", content: "/" },
     ],
+    links: [{ rel: "canonical", href: "/" }],
   }),
   component: Index,
 });
 
-// IMPORTANT: Replace this placeholder. See ./README.md for routing conventions.
 function Index() {
-  return (
-    <div
-      className="flex min-h-screen items-center justify-center"
-      style={{ backgroundColor: "#fcfbf8" }}
-    >
-      <img
-        data-lovable-blank-page-placeholder="REMOVE_THIS"
-        src="https://cdn.gpteng.co/blank-app-v1.svg"
-        alt="Your app will live here!"
-      />
-    </div>
-  );
+  return <KlidoLanding />;
 }
