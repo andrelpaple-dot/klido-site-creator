@@ -46,7 +46,9 @@ function Ring() {
 }
 
 export function Scene3D() {
-  return (
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
+  if (!mounted) return null;
     <div className="pointer-events-none fixed inset-0 -z-0 opacity-90">
       <Canvas
         dpr={[1, 1.5]}
