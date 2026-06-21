@@ -1,0 +1,6 @@
+# Запрещаем исполнение любых скриптов в /uploads
+<FilesMatch "\.(php|phtml|phar|pl|py|cgi|sh)$">
+  Require all denied
+</FilesMatch>
+php_flag engine off
+Options -ExecCGI
