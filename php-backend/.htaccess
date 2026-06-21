@@ -1,0 +1,27 @@
+# SPA-роутинг для Klido на reg.ru (Apache)
+Options -MultiViews
+RewriteEngine On
+
+# Не трогать реальные файлы и каталоги
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+
+# Не редиректить /api/ и /uploads/
+RewriteRule ^api/        - [L]
+RewriteRule ^uploads/    - [L]
+
+# Все остальные маршруты → index.html
+RewriteRule ^ index.html [L]
+
+# Безопасность / кеш
+<IfModule mod_headers.c>
+  Header set X-Content-Type-Options "nosniff"
+  Header set Referrer-Policy "strict-origin-when-cross-origin"
+</IfModule>
+
+<FilesMatch "\.(js|css|woff2?|svg|jpg|jpeg|png|webp|ico)$">
+  <IfModule mod_headers.c>
+    Header set Cache-Control "public, max-age=31536000, immutable"
+  </IfModule>
+</FilesMatch>
