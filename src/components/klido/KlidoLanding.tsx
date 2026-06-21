@@ -173,7 +173,7 @@ function WhatWeDo() {
   return (
     <Section label="(02) Что делаем" className="border-t border-white/5">
       <FadeUp>
-        <h2 className="display-xl text-[40px] text-[var(--paper)] md:text-[6vw]">
+        <h2 className="display-xl text-[34px] text-[var(--paper)] md:text-[6vw]">
           Продуктовый<br />
           <span style={{ color: "var(--bronze)" }}>подход.</span>
         </h2>
@@ -244,7 +244,7 @@ function Cases() {
   return (
     <Section id="cases" label="(03) Кейсы" className="border-t border-white/5">
       <FadeUp>
-        <h2 className="display-xl mb-16 text-[40px] text-[var(--paper)] md:text-[6vw]">
+        <h2 className="display-xl mb-16 text-[34px] text-[var(--paper)] md:text-[6vw]">
           Избранные<br /><span style={{ color: "var(--bronze)" }}>работы.</span>
         </h2>
       </FadeUp>
@@ -268,7 +268,7 @@ function FitFor() {
   return (
     <Section label="(04) Кому" className="border-t border-white/5">
       <FadeUp>
-        <h2 className="display-xl mb-16 text-[40px] text-[var(--paper)] md:text-[6vw]">
+        <h2 className="display-xl mb-16 text-[34px] text-[var(--paper)] md:text-[6vw]">
           Кому<br /><span style={{ color: "var(--bronze)" }}>подойдёт.</span>
         </h2>
       </FadeUp>
@@ -297,7 +297,7 @@ function Principles() {
   return (
     <Section label="(05) Как" className="border-t border-white/5">
       <FadeUp>
-        <h2 className="display-xl mb-16 text-[40px] text-[var(--paper)] md:text-[6vw]">
+        <h2 className="display-xl mb-16 text-[34px] text-[var(--paper)] md:text-[6vw]">
           Как мы<br /><span style={{ color: "var(--bronze)" }}>работаем.</span>
         </h2>
       </FadeUp>
