@@ -77,20 +77,32 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "сайт klido" },
-      { name: "description", content: "сайт klido" },
-      { name: "author", content: "klido" },
-      { property: "og:title", content: "сайт klido" },
-      { property: "og:description", content: "сайт klido" },
+      { title: "Klido — интернет-магазины для брендов на Wildberries и Ozon" },
+      {
+        name: "description",
+        content:
+          "Klido — агентство интернет-магазинов для брендов, продающих на Wildberries и Ozon. Запускаем внешний канал продаж с измеримой конверсией.",
+      },
+      { name: "author", content: "Klido" },
+      { property: "og:site_name", content: "Klido" },
+      { property: "og:title", content: "Klido — интернет-магазины для брендов на WB и Ozon" },
+      {
+        property: "og:description",
+        content:
+          "Запускаем внешний канал продаж, куда вы льёте свой трафик — и удерживаете маржу, которую забирают маркетплейсы.",
+      },
       { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary" },
-      { name: "twitter:title", content: "сайт klido" },
-      { name: "twitter:description", content: "сайт klido" },
+      { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "Klido — интернет-магазины для брендов на WB и Ozon" },
+      { name: "twitter:description", content: "Внешний канал продаж с измеримой конверсией." },
     ],
     links: [
+      { rel: "stylesheet", href: appCss },
+      { rel: "preconnect", href: "https://fonts.googleapis.com" },
+      { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       {
         rel: "stylesheet",
-        href: appCss,
+        href: "https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@400;500&display=swap",
       },
     ],
   }),
