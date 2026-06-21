@@ -98,7 +98,7 @@ function Hero() {
         </motion.div>
 
         <motion.h1
-          className="display-xl text-[14vw] text-[var(--paper)] md:text-[11vw] lg:text-[10vw]"
+          className="display-xl text-[44px] text-[var(--paper)] md:text-[11vw] lg:text-[10vw]"
           initial={{ opacity: 0, y: 60 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1.1, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
@@ -158,7 +158,7 @@ function Manifesto() {
             viewport={{ once: true, amount: 0.4 }}
             transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1], delay: i * 0.1 }}
           >
-            <p className="display-xl text-[8vw] text-[var(--paper)] md:text-[5.5vw]">
+            <p className="display-xl text-[32px] text-[var(--paper)] md:text-[5.5vw]">
               {l.t}{" "}
               <span style={{ color: "var(--bronze)" }}>{l.a}</span>
             </p>
@@ -173,7 +173,7 @@ function WhatWeDo() {
   return (
     <Section label="(02) Что делаем" className="border-t border-white/5">
       <FadeUp>
-        <h2 className="display-xl text-[10vw] text-[var(--paper)] md:text-[6vw]">
+        <h2 className="display-xl text-[40px] text-[var(--paper)] md:text-[6vw]">
           Продуктовый<br />
           <span style={{ color: "var(--bronze)" }}>подход.</span>
         </h2>
@@ -193,7 +193,7 @@ function WhatWeDo() {
         ].map((m, i) => (
           <FadeUp key={i} delay={i * 0.08}>
             <div className="border-t border-white/10 pt-6">
-              <div className="display-xl text-[14vw] leading-none text-[var(--paper)] md:text-[5vw]">
+              <div className="display-xl text-[56px] leading-none text-[var(--paper)] md:text-[5vw]">
                 <Counter to={m.num} suffix={m.suffix} prefix={m.prefix} />
               </div>
               <div className="mt-6 max-w-[220px] text-sm text-[var(--muted-ink)]">{m.l}</div>
@@ -244,7 +244,7 @@ function Cases() {
   return (
     <Section id="cases" label="(03) Кейсы" className="border-t border-white/5">
       <FadeUp>
-        <h2 className="display-xl mb-16 text-[10vw] text-[var(--paper)] md:text-[6vw]">
+        <h2 className="display-xl mb-16 text-[40px] text-[var(--paper)] md:text-[6vw]">
           Избранные<br /><span style={{ color: "var(--bronze)" }}>работы.</span>
         </h2>
       </FadeUp>
@@ -268,7 +268,7 @@ function FitFor() {
   return (
     <Section label="(04) Кому" className="border-t border-white/5">
       <FadeUp>
-        <h2 className="display-xl mb-16 text-[10vw] text-[var(--paper)] md:text-[6vw]">
+        <h2 className="display-xl mb-16 text-[40px] text-[var(--paper)] md:text-[6vw]">
           Кому<br /><span style={{ color: "var(--bronze)" }}>подойдёт.</span>
         </h2>
       </FadeUp>
@@ -297,7 +297,7 @@ function Principles() {
   return (
     <Section label="(05) Как" className="border-t border-white/5">
       <FadeUp>
-        <h2 className="display-xl mb-16 text-[10vw] text-[var(--paper)] md:text-[6vw]">
+        <h2 className="display-xl mb-16 text-[40px] text-[var(--paper)] md:text-[6vw]">
           Как мы<br /><span style={{ color: "var(--bronze)" }}>работаем.</span>
         </h2>
       </FadeUp>
@@ -325,7 +325,7 @@ function FinalCTA() {
     <Section className="border-t border-white/5">
       <div className="text-center">
         <FadeUp>
-          <h2 className="display-xl text-[12vw] text-[var(--paper)] md:text-[8vw]">
+          <h2 className="display-xl text-[52px] text-[var(--paper)] md:text-[8vw]">
             Готовы<br />
             <span style={{ color: "var(--bronze)" }}>запустить?</span>
           </h2>
