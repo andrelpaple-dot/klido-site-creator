@@ -1,5 +1,5 @@
 import { motion, useInView, useMotionValue, useTransform, animate, useScroll } from "framer-motion";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { CustomCursor } from "@/components/klido/CustomCursor";
 import { ScrollProgress } from "@/components/klido/ScrollProgress";
 import { SiteHeader } from "@/components/klido/SiteHeader";
