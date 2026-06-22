@@ -1,5 +1,5 @@
 import { motion, useInView, useMotionValue, useTransform, animate, useScroll } from "framer-motion";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { CustomCursor } from "@/components/klido/CustomCursor";
 import { ScrollProgress } from "@/components/klido/ScrollProgress";
 import { SiteHeader } from "@/components/klido/SiteHeader";
@@ -218,7 +218,7 @@ function CaseCard({ c, index }: { c: (typeof cases)[number]; index: number }) {
     >
       {/* Image */}
       <div className={`col-span-12 md:col-span-7 ${reverse ? "md:order-2" : ""}`}>
-        <div className="relative overflow-hidden bg-white/[0.03]">
+        <div className="relative overflow-hidden border border-white/5 bg-white/[0.02]">
           <div className="aspect-[4/3] w-full md:aspect-[16/10]">
             <img
               src={c.image}
@@ -226,12 +226,24 @@ function CaseCard({ c, index }: { c: (typeof cases)[number]; index: number }) {
               loading="lazy"
               width={1024}
               height={1024}
-              className="h-full w-full object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-[1.04]"
+              className="h-full w-full object-cover transition-all duration-[1400ms] ease-out [filter:grayscale(0.85)_contrast(1.05)_brightness(0.78)_sepia(0.25)] group-hover:[filter:grayscale(0)_contrast(1)_brightness(1)_sepia(0)] group-hover:scale-[1.04]"
             />
           </div>
-          <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
-          <div className="absolute left-5 top-5 text-xs uppercase tracking-[0.2em] text-[var(--paper)]/80">
+          {/* bronze tint overlay (fades on hover) */}
+          <div
+            className="pointer-events-none absolute inset-0 mix-blend-multiply opacity-90 transition-opacity duration-[1400ms] ease-out group-hover:opacity-0"
+            style={{
+              background:
+                "linear-gradient(135deg, rgba(201,163,106,0.55) 0%, rgba(20,16,10,0.85) 100%)",
+            }}
+          />
+          {/* readability gradient */}
+          <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
+          <div className="absolute left-5 top-5 text-xs uppercase tracking-[0.2em] text-[var(--paper)]/85">
             0{index + 1} / {String(cases.length).padStart(2, "0")}
+          </div>
+          <div className="absolute bottom-5 right-5 text-[10px] uppercase tracking-[0.2em] text-[var(--paper)]/60 opacity-0 transition-opacity duration-500 group-hover:opacity-100">
+            наведите · показать оригинал
           </div>
         </div>
       </div>
@@ -402,16 +414,76 @@ function FinalCTA() {
   );
 }
 
+function CityClock({ city, tz }: { city: string; tz: string }) {
+  const [time, setTime] = useState("--:--:--");
+  useEffect(() => {
+    const fmt = new Intl.DateTimeFormat("ru-RU", {
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+      hour12: false,
+      timeZone: tz,
+    });
+    const tick = () => setTime(fmt.format(new Date()));
+    tick();
+    const id = setInterval(tick, 1000);
+    return () => clearInterval(id);
+  }, [tz]);
+  return (
+    <span className="inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.18em] text-[var(--muted-ink)]">
+      <span className="h-1.5 w-1.5 rounded-full" style={{ background: "var(--bronze)" }} />
+      <span className="font-medium text-[var(--paper)]">{city}</span>
+      <span className="tabular-nums">{time}</span>
+    </span>
+  );
+}
+
 function Footer() {
   return (
-    <footer className="relative z-10 border-t border-white/5 bg-[var(--ink)] px-6 py-10 md:px-16">
-      <div className="mx-auto flex max-w-[1400px] flex-col items-start justify-between gap-3 text-xs uppercase tracking-[0.15em] text-[var(--muted-ink)] md:flex-row md:items-center">
-        <div>© 2026 Klido</div>
-        <div className="flex flex-wrap gap-x-8 gap-y-2">
-          <a href={MAIL} className="hover:text-[var(--paper)]">hello@klido.ru</a>
-          <a href={TG} target="_blank" rel="noreferrer" className="hover:text-[var(--paper)]">
-            @AndrewGeiger
-          </a>
+    <footer className="relative z-10 border-t border-white/10 bg-[var(--ink)]">
+      {/* Top contact band — Aura-style */}
+      <div className="px-6 py-10 md:px-16 md:py-12">
+        <div className="mx-auto grid max-w-[1400px] grid-cols-12 items-center gap-y-8">
+          <div className="col-span-12 md:col-span-3">
+            <div className="eyebrow">New business inquiries</div>
+          </div>
+          <div className="col-span-12 md:col-span-6">
+            <div className="eyebrow mb-2">Telegram</div>
+            <a
+              href={TG}
+              target="_blank"
+              rel="noreferrer"
+              className="font-display text-2xl text-[var(--paper)] transition-colors hover:text-[var(--bronze)] md:text-3xl"
+            >
+              @AndrewGeiger
+            </a>
+          </div>
+          <div className="col-span-12 flex md:col-span-3 md:justify-end">
+            <a
+              href={TG}
+              target="_blank"
+              rel="noreferrer"
+              className="group inline-flex items-center gap-3 rounded-full border border-[var(--paper)]/40 px-7 py-3 text-xs uppercase tracking-[0.22em] text-[var(--paper)] transition-all duration-300 hover:border-[var(--bronze)] hover:bg-[var(--bronze)] hover:text-[var(--ink)]"
+            >
+              Связаться
+              <span aria-hidden className="transition-transform group-hover:translate-x-1">→</span>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      {/* Bottom band — clocks + copyright */}
+      <div className="border-t border-white/10 px-6 py-5 md:px-16">
+        <div className="mx-auto flex max-w-[1400px] flex-col items-start justify-between gap-4 md:flex-row md:items-center">
+          <div className="flex flex-wrap gap-x-6 gap-y-3">
+            <CityClock city="Москва" tz="Europe/Moscow" />
+            <CityClock city="Дубай" tz="Asia/Dubai" />
+            <CityClock city="Нью-Йорк" tz="America/New_York" />
+            <CityClock city="Токио" tz="Asia/Tokyo" />
+          </div>
+          <div className="text-[11px] uppercase tracking-[0.18em] text-[var(--muted-ink)]">
+            © 2026 Klido · hello@klido.ru
+          </div>
         </div>
       </div>
     </footer>
