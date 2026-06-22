@@ -205,36 +205,72 @@ function WhatWeDo() {
   );
 }
 
-function CaseRow({ c, index }: { c: (typeof cases)[number]; index: number }) {
+function CaseCard({ c, index }: { c: (typeof cases)[number]; index: number }) {
+  const reverse = index % 2 === 1;
   return (
     <motion.article
-      data-cursor="link"
-      className="group relative grid grid-cols-12 gap-x-8 border-t border-white/10 py-10 transition-colors hover:bg-white/[0.02] md:py-14"
-      initial={{ opacity: 0, y: 30 }}
+      data-cursor="image"
+      className="group relative grid grid-cols-12 gap-y-8 border-t border-white/10 py-16 md:gap-x-12 md:py-24"
+      initial={{ opacity: 0, y: 40 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.2 }}
-      transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+      transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
     >
-      <div className="col-span-2 md:col-span-1">
-        <span className="eyebrow">0{index + 1}</span>
-      </div>
-      <div className="col-span-10 md:col-span-5">
-        <h3 className="display-xl text-3xl text-[var(--paper)] transition-colors group-hover:text-[var(--bronze)] md:text-5xl">
-          {c.title}
-        </h3>
-        <div className="mt-3 text-xs uppercase tracking-[0.15em] text-[var(--muted-ink)]">
-          {c.category}
+      {/* Image */}
+      <div className={`col-span-12 md:col-span-7 ${reverse ? "md:order-2" : ""}`}>
+        <div className="relative overflow-hidden bg-white/[0.03]">
+          <div className="aspect-[4/3] w-full md:aspect-[16/10]">
+            <img
+              src={c.image}
+              alt={c.title}
+              loading="lazy"
+              width={1024}
+              height={1024}
+              className="h-full w-full object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-[1.04]"
+            />
+          </div>
+          <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
+          <div className="absolute left-5 top-5 text-xs uppercase tracking-[0.2em] text-[var(--paper)]/80">
+            0{index + 1} / {String(cases.length).padStart(2, "0")}
+          </div>
         </div>
       </div>
-      <div className="col-span-12 mt-6 grid grid-cols-2 gap-x-6 gap-y-5 md:col-span-6 md:mt-0 md:grid-cols-4">
-        {c.metrics.map((m, i) => (
-          <div key={i}>
-            <div className="font-display text-lg font-semibold text-[var(--paper)] md:text-xl">
-              {m.value}
-            </div>
-            <div className="mt-1 text-xs text-[var(--muted-ink)]">{m.label}</div>
+
+      {/* Content */}
+      <div className={`col-span-12 flex flex-col justify-between md:col-span-5 ${reverse ? "md:order-1" : ""}`}>
+        <div>
+          <div className="eyebrow mb-5">{c.category}</div>
+          <h3 className="display-xl text-3xl text-[var(--paper)] transition-colors group-hover:text-[var(--bronze)] md:text-[44px] lg:text-5xl">
+            {c.title}
+          </h3>
+          <p className="mt-5 max-w-md text-[15px] leading-relaxed text-[var(--muted-ink)] md:text-base">
+            {c.description}
+          </p>
+        </div>
+
+        {/* Hero animated number */}
+        <div className="mt-10 border-t border-white/10 pt-6">
+          <div
+            className="display-xl text-[64px] leading-none md:text-[88px] lg:text-[104px]"
+            style={{ color: "var(--bronze)" }}
+          >
+            <Counter to={c.heroValue} prefix={c.heroPrefix ?? ""} suffix={c.heroSuffix ?? ""} />
           </div>
-        ))}
+          <div className="mt-3 text-sm text-[var(--muted-ink)]">{c.heroLabel}</div>
+
+          <div className="mt-6 grid grid-cols-3 gap-x-4">
+            {c.metrics.map((m, i) => (
+              <div key={i}>
+                <div className="font-display text-base font-semibold text-[var(--paper)] md:text-lg">
+                  {m.value}
+                </div>
+                <div className="mt-1 text-[11px] uppercase tracking-[0.12em] text-[var(--muted-ink)]">
+                  {m.label}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
     </motion.article>
   );
@@ -250,7 +286,7 @@ function Cases() {
       </FadeUp>
       <div>
         {cases.map((c, i) => (
-          <CaseRow key={c.slug} c={c} index={i} />
+          <CaseCard key={c.slug} c={c} index={i} />
         ))}
         <div className="h-px w-full bg-white/10" />
       </div>
@@ -266,24 +302,29 @@ function FitFor() {
     { t: "Новый бренд после ребрендинга", d: "Сменили позиционирование. Нужен сайт за 2 недели, а не 2 месяца." },
   ];
   return (
-    <Section label="(04) Кому" className="border-t border-white/5">
-      <FadeUp>
-        <h2 className="display-xl mb-16 text-[34px] text-[var(--paper)] md:text-[6vw]">
-          Кому<br /><span style={{ color: "var(--bronze)" }}>подойдёт.</span>
-        </h2>
-      </FadeUp>
-      <div className="grid grid-cols-1 gap-px bg-white/10 md:grid-cols-2">
-        {items.map((it, i) => (
-          <FadeUp key={i} delay={(i % 2) * 0.1}>
-            <div className="h-full bg-[var(--ink)] p-8 transition-colors hover:bg-white/[0.03] md:p-10">
-              <div className="eyebrow mb-4">0{i + 1}</div>
-              <h3 className="display-xl text-2xl text-[var(--paper)] md:text-3xl">{it.t}</h3>
-              <p className="mt-5 text-[15px] leading-relaxed text-[var(--muted-ink)]">{it.d}</p>
-            </div>
+    <section id="fitfor" className="relative border-t border-white/5 px-6 py-28 md:px-16 md:py-40 lg:py-48">
+      <div className="mx-auto max-w-[1200px]">
+        <div className="mb-12 flex flex-col items-center text-center">
+          <span className="eyebrow mb-6">(04) Кому</span>
+          <FadeUp>
+            <h2 className="display-xl text-[34px] text-[var(--paper)] md:text-[6vw]">
+              Кому<br /><span style={{ color: "var(--bronze)" }}>подойдёт.</span>
+            </h2>
           </FadeUp>
-        ))}
+        </div>
+        <div className="mx-auto grid grid-cols-1 gap-px bg-white/10 md:grid-cols-2">
+          {items.map((it, i) => (
+            <FadeUp key={i} delay={(i % 2) * 0.1}>
+              <div className="h-full bg-[var(--ink)] p-8 transition-colors hover:bg-white/[0.03] md:p-10">
+                <div className="eyebrow mb-4">0{i + 1}</div>
+                <h3 className="display-xl text-2xl text-[var(--paper)] md:text-3xl">{it.t}</h3>
+                <p className="mt-5 text-[15px] leading-relaxed text-[var(--muted-ink)]">{it.d}</p>
+              </div>
+            </FadeUp>
+          ))}
+        </div>
       </div>
-    </Section>
+    </section>
   );
 }
 
