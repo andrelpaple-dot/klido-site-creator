@@ -415,7 +415,7 @@ function FinalCTA() {
 }
 
 function CityClock({ city, tz }: { city: string; tz: string }) {
-  const [time, setTime] = (require("react") as typeof import("react")).useState("--:--:--");
+  const [time, setTime] = useState("--:--:--");
   useEffect(() => {
     const fmt = new Intl.DateTimeFormat("ru-RU", {
       hour: "2-digit",
