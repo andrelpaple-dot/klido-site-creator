@@ -1,14 +1,3 @@
-import visionAsset from "@/assets/cases/vision.jpg.asset.json";
-import furnitureAsset from "@/assets/cases/furniture.jpg.asset.json";
-import vitaAsset from "@/assets/cases/vita.jpg.asset.json";
-import tsargradAsset from "@/assets/cases/tsargrad.jpg.asset.json";
-import crunchAsset from "@/assets/cases/crunch.jpg.asset.json";
-import groomingAsset from "@/assets/cases/grooming.jpg.asset.json";
-import noirAsset from "@/assets/cases/noir.jpg.asset.json";
-import spaceAsset from "@/assets/cases/space.jpg.asset.json";
-import motorsAsset from "@/assets/cases/motors.jpg.asset.json";
-import septikAsset from "@/assets/cases/septik.jpg.asset.json";
-
 export type CaseMetric = { value: string; label: string };
 
 export type CaseItem = {
@@ -24,6 +13,21 @@ export type CaseItem = {
   metrics: CaseMetric[];
 };
 
+function casePreview(title: string, mark: string, accent = "#c9a36a") {
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 820">
+    <rect width="1200" height="820" fill="#050505"/>
+    <path d="M0 620C210 500 340 720 560 570S880 250 1200 360v460H0Z" fill="${accent}" opacity=".18"/>
+    <circle cx="920" cy="180" r="180" fill="none" stroke="${accent}" stroke-width="3" opacity=".55"/>
+    <circle cx="920" cy="180" r="92" fill="none" stroke="#f5f5f3" stroke-width="2" opacity=".22"/>
+    <path d="M120 130h460v300H120zM160 190h260M160 250h340M160 310h210" fill="none" stroke="#f5f5f3" stroke-width="8" stroke-linecap="round" opacity=".55"/>
+    <path d="M720 520 930 398l210 122v172L930 812 720 692Z" fill="none" stroke="${accent}" stroke-width="8" opacity=".72"/>
+    <path d="M720 520 930 642l210-122M930 642v170" fill="none" stroke="#f5f5f3" stroke-width="5" opacity=".32"/>
+    <text x="116" y="675" fill="#f5f5f3" font-family="Arial, sans-serif" font-size="82" font-weight="800" letter-spacing="2">${title}</text>
+    <text x="120" y="735" fill="${accent}" font-family="Arial, sans-serif" font-size="28" font-weight="700" letter-spacing="8">${mark}</text>
+  </svg>`;
+  return `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}`;
+}
+
 export const cases: CaseItem[] = [
   {
     slug: "vision-minimal",
@@ -31,7 +35,7 @@ export const cases: CaseItem[] = [
     category: "e-commerce · премиальная оптика",
     description:
       "Редизайн интернет-магазина оптики премиум-сегмента. Новый UX, быстрая карточка, интеграция CRM.",
-    image: visionAsset.url,
+    image: casePreview("LUMIÈRE", "OPTICS / D2C"),
     heroValue: 290,
     heroPrefix: "+",
     heroSuffix: "%",
@@ -48,7 +52,7 @@ export const cases: CaseItem[] = [
     category: "маркетплейс · дизайнерская мебель",
     description:
       "Собственный маркетплейс мебели. SEO-структура, фильтры, личный кабинет дизайнера.",
-    image: furnitureAsset.url,
+    image: casePreview("FORMA", "FURNITURE / SEO", "#d7b47c"),
     heroValue: 60,
     heroSuffix: "+",
     heroLabel: "позиций в ТОП-10 Яндекса",
@@ -64,7 +68,7 @@ export const cases: CaseItem[] = [
     category: "e-commerce · витамины и БАДы",
     description:
       "Лендинг + интернет-магазин для бренда добавок. Перепаковка офферов под Яндекс.Директ.",
-    image: vitaAsset.url,
+    image: casePreview("VITALEAF", "WELLNESS / DIRECT", "#b9c96a"),
     heroValue: 97,
     heroPrefix: "",
     heroSuffix: "%",
@@ -81,7 +85,7 @@ export const cases: CaseItem[] = [
     category: "e-commerce · прокат тренажёров",
     description:
       "Магазин и сервис проката силовых тренажёров. Калькулятор подбора, оплата в рассрочку.",
-    image: tsargradAsset.url,
+    image: casePreview("ЦАРЬГРАД", "FITNESS / RENT", "#c9a36a"),
     heroValue: 5,
     heroSuffix: ".9%",
     heroLabel: "конверсия (было 1.5%)",
@@ -97,7 +101,7 @@ export const cases: CaseItem[] = [
     category: "e-commerce · импортные снеки",
     description:
       "Запуск D2C для импортёра редких чипсов. Подписочная модель, доставка по РФ, чек выше WB.",
-    image: crunchAsset.url,
+    image: casePreview("KRUNCH", "SNACKS / D2C", "#d58a5f"),
     heroValue: 12,
     heroSuffix: ".3%",
     heroLabel: "конверсия с первого касания",
@@ -113,7 +117,7 @@ export const cases: CaseItem[] = [
     category: "e-commerce · одежда для грумеров",
     description:
       "Магазин профессиональной одежды и инструмента для грумеров. Каталог, B2B-кабинет.",
-    image: groomingAsset.url,
+    image: casePreview("ГРУМИНГ", "PRO WEAR / B2B", "#c9a36a"),
     heroValue: 9,
     heroSuffix: "%",
     heroLabel: "конверсия в заказ (было 2%)",
@@ -129,7 +133,7 @@ export const cases: CaseItem[] = [
     category: "HoReCa · авторский бар",
     description:
       "Сайт-визитка бара с системой бронирования столов и афишей событий.",
-    image: noirAsset.url,
+    image: casePreview("NOIR & OR", "HORECA / BOOKING", "#d0a96a"),
     heroValue: 11,
     heroSuffix: "%",
     heroLabel: "конверсия в бронь",
@@ -145,7 +149,7 @@ export const cases: CaseItem[] = [
     category: "услуги · коворкинг",
     description:
       "Сайт коворкинга с онлайн-выбором рабочего места, оплатой и личным кабинетом резидента.",
-    image: spaceAsset.url,
+    image: casePreview("КОНТУР", "COWORKING / SAAS", "#8fb9c9"),
     heroValue: 80,
     heroSuffix: "%",
     heroLabel: "заполняемость (было 40%)",
@@ -161,7 +165,7 @@ export const cases: CaseItem[] = [
     category: "услуги · ремонт двигателей",
     description:
       "Лендинг для СТО капитального ремонта двигателей. Калькулятор стоимости и квиз-заявка.",
-    image: motorsAsset.url,
+    image: casePreview("MOTORS", "SERVICE / LEADS", "#c9a36a"),
     heroValue: 7,
     heroSuffix: ".2%",
     heroLabel: "конверсия в заявку",
@@ -177,7 +181,7 @@ export const cases: CaseItem[] = [
     category: "e-commerce · автономная канализация",
     description:
       "Каталог септиков под ключ с расчётом, замером и установкой. Региональное SEO + Директ.",
-    image: septikAsset.url,
+    image: casePreview("СЕПТИК", "REGIONAL / SEO", "#9fc98f"),
     heroValue: 4,
     heroSuffix: "×",
     heroLabel: "рост заявок за 3 месяца",
