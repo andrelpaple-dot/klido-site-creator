@@ -4,6 +4,7 @@ import { CustomCursor } from "@/components/klido/CustomCursor";
 import { ScrollProgress } from "@/components/klido/ScrollProgress";
 import { SiteHeader } from "@/components/klido/SiteHeader";
 import { Scene3D } from "@/components/klido/Scene3D";
+import { ManifestoShapes } from "@/components/klido/ManifestoShapes";
 import { cases } from "@/components/klido/cases-data";
 
 const TG = "https://t.me/AndrewGeiger";
@@ -141,30 +142,56 @@ function Hero() {
   );
 }
 
+function ManifestoLine({
+  progress,
+  range,
+  children,
+}: {
+  progress: ReturnType<typeof useScroll>["scrollYProgress"];
+  range: [number, number];
+  children: React.ReactNode;
+}) {
+  const y = useTransform(progress, range, ["100%", "0%"]);
+  const opacity = useTransform(progress, range, [0, 1]);
+  return (
+    <div className="overflow-hidden">
+      <motion.div style={{ y, opacity }}>{children}</motion.div>
+    </div>
+  );
+}
+
 function Manifesto() {
-  // Slash = line break, * marks bronze accent words
   const phrase =
     "Берём задачу,/думаем как/*продакт*/и строим/как *инженер*./Запускаем/за *недели,*/не за *месяцы.*";
   const lines = phrase.split("/");
-  const wrapRef = useRef<HTMLDivElement>(null);
-  const inView = useInView(wrapRef, { once: true, amount: 0.15 });
+  const ref = useRef<HTMLElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start 0.85", "end 0.4"],
+  });
 
   return (
-    <Section label="(01) Манифест" className="border-t border-white/5">
-      <div
-        ref={wrapRef}
-        className="font-display uppercase leading-[0.92] tracking-[-0.035em] text-[var(--paper)]"
-        style={{ fontSize: "clamp(44px, 9vw, 168px)", fontWeight: 800 }}
-      >
-        {lines.map((line, li) => {
-          const words = line.split(" ");
-          return (
-            <div key={li} className="overflow-hidden">
-              <motion.div
-                initial={{ y: "100%" }}
-                animate={inView ? { y: 0 } : { y: "100%" }}
-                transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1], delay: li * 0.08 }}
-              >
+    <section
+      ref={ref}
+      id="manifesto"
+      className="relative border-t border-white/5 px-6 py-28 md:px-16 md:py-40 lg:py-48"
+    >
+      <ManifestoShapes />
+      <div className="relative mx-auto grid max-w-[1400px] grid-cols-12 gap-x-8">
+        <div className="col-span-12 mb-8 md:col-span-2 md:mb-0">
+          <span className="eyebrow">(01) Манифест</span>
+        </div>
+        <div
+          className="col-span-12 font-display uppercase leading-[0.92] tracking-[-0.035em] text-[var(--paper)] md:col-span-10"
+          style={{ fontSize: "clamp(44px, 9vw, 168px)", fontWeight: 800 }}
+        >
+          {lines.map((line, li) => {
+            const words = line.split(" ");
+            const step = 1 / lines.length;
+            const start = li * step;
+            const end = Math.min(1, start + step * 1.6);
+            return (
+              <ManifestoLine key={li} progress={scrollYProgress} range={[start, end]}>
                 {words.map((w, wi) => {
                   const accent = w.startsWith("*") && w.endsWith("*");
                   const clean = accent ? w.slice(1, -1) : w;
@@ -175,12 +202,12 @@ function Manifesto() {
                     </span>
                   );
                 })}
-              </motion.div>
-            </div>
-          );
-        })}
+              </ManifestoLine>
+            );
+          })}
+        </div>
       </div>
-    </Section>
+    </section>
   );
 }
 
