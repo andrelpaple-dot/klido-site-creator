@@ -113,7 +113,7 @@ export const cases: CaseItem[] = [
     heroLabel: "конверсия с первого касания",
     metrics: [
       { value: "12.3%", label: "конверсия" },
-      { value: "38%", label: "повторных" },
+      { value: "−41%", label: "CPO" },
       { value: "38%", label: "повторных" },
     ],
   },
