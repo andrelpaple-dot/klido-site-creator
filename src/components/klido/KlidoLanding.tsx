@@ -218,7 +218,7 @@ function CaseCard({ c, index }: { c: (typeof cases)[number]; index: number }) {
     >
       {/* Image */}
       <div className={`col-span-12 md:col-span-7 ${reverse ? "md:order-2" : ""}`}>
-        <div className="relative overflow-hidden bg-white/[0.03]">
+        <div className="relative overflow-hidden border border-white/5 bg-white/[0.02]">
           <div className="aspect-[4/3] w-full md:aspect-[16/10]">
             <img
               src={c.image}
@@ -226,12 +226,24 @@ function CaseCard({ c, index }: { c: (typeof cases)[number]; index: number }) {
               loading="lazy"
               width={1024}
               height={1024}
-              className="h-full w-full object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-[1.04]"
+              className="h-full w-full object-cover transition-all duration-[1400ms] ease-out [filter:grayscale(0.85)_contrast(1.05)_brightness(0.78)_sepia(0.25)] group-hover:[filter:grayscale(0)_contrast(1)_brightness(1)_sepia(0)] group-hover:scale-[1.04]"
             />
           </div>
-          <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
-          <div className="absolute left-5 top-5 text-xs uppercase tracking-[0.2em] text-[var(--paper)]/80">
+          {/* bronze tint overlay (fades on hover) */}
+          <div
+            className="pointer-events-none absolute inset-0 mix-blend-multiply opacity-90 transition-opacity duration-[1400ms] ease-out group-hover:opacity-0"
+            style={{
+              background:
+                "linear-gradient(135deg, rgba(201,163,106,0.55) 0%, rgba(20,16,10,0.85) 100%)",
+            }}
+          />
+          {/* readability gradient */}
+          <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
+          <div className="absolute left-5 top-5 text-xs uppercase tracking-[0.2em] text-[var(--paper)]/85">
             0{index + 1} / {String(cases.length).padStart(2, "0")}
+          </div>
+          <div className="absolute bottom-5 right-5 text-[10px] uppercase tracking-[0.2em] text-[var(--paper)]/60 opacity-0 transition-opacity duration-500 group-hover:opacity-100">
+            наведите · показать оригинал
           </div>
         </div>
       </div>
