@@ -430,10 +430,10 @@ function CityClock({ city, tz }: { city: string; tz: string }) {
     return () => clearInterval(id);
   }, [tz]);
   return (
-    <span className="inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.18em] text-[var(--muted-ink)]">
-      <span className="h-1.5 w-1.5 rounded-full" style={{ background: "var(--bronze)" }} />
-      <span className="font-medium text-[var(--paper)]">{city}</span>
-      <span className="tabular-nums">{time}</span>
+    <span className="inline-flex items-center gap-2 text-[12px] font-semibold uppercase tracking-[0.2em] text-[var(--ink)]/70">
+      <span className="h-1.5 w-1.5 rounded-full bg-[var(--ink)]" />
+      <span className="text-[var(--ink)]">{city}</span>
+      <span className="tabular-nums text-[var(--ink)]/70">{time}</span>
     </span>
   );
 }
