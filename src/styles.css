@@ -115,6 +115,77 @@
     color: var(--muted-ink);
   }
 
+  .manifesto-copy {
+    font-size: clamp(52px, 9.2vw, 176px);
+    font-weight: 900;
+    line-height: 0.84;
+    letter-spacing: 0;
+    color: var(--paper);
+    text-shadow: 0 10px 44px rgba(0, 0, 0, 0.55);
+  }
+
+  .manifesto-line {
+    width: fit-content;
+    max-width: 100%;
+    transform-origin: left center;
+    white-space: nowrap;
+    will-change: transform, opacity, clip-path;
+  }
+
+  .manifesto-line span {
+    color: var(--bronze);
+    text-shadow: 0 0 28px rgba(201, 163, 106, 0.32), 0 10px 44px rgba(0, 0, 0, 0.55);
+  }
+
+  .manifesto-halo {
+    background:
+      radial-gradient(circle at 48% 42%, rgba(201, 163, 106, 0.28) 0 2px, transparent 3px),
+      repeating-radial-gradient(circle at 50% 50%, rgba(201, 163, 106, 0.16) 0 1px, transparent 2px 42px);
+    opacity: 0.72;
+    mask-image: radial-gradient(circle, black 0 52%, transparent 76%);
+  }
+
+  .kinetic-bg-model {
+    position: absolute;
+    width: clamp(240px, 24vw, 430px);
+    height: clamp(240px, 24vw, 430px);
+    transform: translate3d(0, 0, 0);
+    will-change: transform;
+  }
+
+  .kinetic-bg-model-a {
+    left: 58%;
+    top: 13%;
+    animation: kinetic-drift-a 18s ease-in-out infinite alternate;
+  }
+
+  .kinetic-bg-model-b {
+    left: 9%;
+    bottom: 8%;
+    animation: kinetic-drift-b 22s ease-in-out infinite alternate;
+  }
+
+  @keyframes kinetic-drift-a {
+    from { transform: translate3d(-6%, -4%, 0) rotate(-12deg) scale(0.95); }
+    to { transform: translate3d(8%, 5%, 0) rotate(18deg) scale(1.08); }
+  }
+
+  @keyframes kinetic-drift-b {
+    from { transform: translate3d(5%, 7%, 0) rotate(24deg) scale(1.06); }
+    to { transform: translate3d(-8%, -5%, 0) rotate(-16deg) scale(0.92); }
+  }
+
+  @media (max-width: 767px) {
+    .manifesto-copy {
+      font-size: clamp(40px, 15vw, 74px);
+      line-height: 0.9;
+    }
+
+    .manifesto-line {
+      white-space: normal;
+    }
+  }
+
   @media (hover: hover) and (pointer: fine) {
     html, body, a, button, [role="button"] {
       cursor: none !important;
