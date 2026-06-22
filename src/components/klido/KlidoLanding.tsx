@@ -414,16 +414,76 @@ function FinalCTA() {
   );
 }
 
+function CityClock({ city, tz }: { city: string; tz: string }) {
+  const [time, setTime] = (require("react") as typeof import("react")).useState("--:--:--");
+  useEffect(() => {
+    const fmt = new Intl.DateTimeFormat("ru-RU", {
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+      hour12: false,
+      timeZone: tz,
+    });
+    const tick = () => setTime(fmt.format(new Date()));
+    tick();
+    const id = setInterval(tick, 1000);
+    return () => clearInterval(id);
+  }, [tz]);
+  return (
+    <span className="inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.18em] text-[var(--muted-ink)]">
+      <span className="h-1.5 w-1.5 rounded-full" style={{ background: "var(--bronze)" }} />
+      <span className="font-medium text-[var(--paper)]">{city}</span>
+      <span className="tabular-nums">{time}</span>
+    </span>
+  );
+}
+
 function Footer() {
   return (
-    <footer className="relative z-10 border-t border-white/5 bg-[var(--ink)] px-6 py-10 md:px-16">
-      <div className="mx-auto flex max-w-[1400px] flex-col items-start justify-between gap-3 text-xs uppercase tracking-[0.15em] text-[var(--muted-ink)] md:flex-row md:items-center">
-        <div>© 2026 Klido</div>
-        <div className="flex flex-wrap gap-x-8 gap-y-2">
-          <a href={MAIL} className="hover:text-[var(--paper)]">hello@klido.ru</a>
-          <a href={TG} target="_blank" rel="noreferrer" className="hover:text-[var(--paper)]">
-            @AndrewGeiger
-          </a>
+    <footer className="relative z-10 border-t border-white/10 bg-[var(--ink)]">
+      {/* Top contact band — Aura-style */}
+      <div className="px-6 py-10 md:px-16 md:py-12">
+        <div className="mx-auto grid max-w-[1400px] grid-cols-12 items-center gap-y-8">
+          <div className="col-span-12 md:col-span-3">
+            <div className="eyebrow">New business inquiries</div>
+          </div>
+          <div className="col-span-12 md:col-span-6">
+            <div className="eyebrow mb-2">Telegram</div>
+            <a
+              href={TG}
+              target="_blank"
+              rel="noreferrer"
+              className="font-display text-2xl text-[var(--paper)] transition-colors hover:text-[var(--bronze)] md:text-3xl"
+            >
+              @AndrewGeiger
+            </a>
+          </div>
+          <div className="col-span-12 flex md:col-span-3 md:justify-end">
+            <a
+              href={TG}
+              target="_blank"
+              rel="noreferrer"
+              className="group inline-flex items-center gap-3 rounded-full border border-[var(--paper)]/40 px-7 py-3 text-xs uppercase tracking-[0.22em] text-[var(--paper)] transition-all duration-300 hover:border-[var(--bronze)] hover:bg-[var(--bronze)] hover:text-[var(--ink)]"
+            >
+              Связаться
+              <span aria-hidden className="transition-transform group-hover:translate-x-1">→</span>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      {/* Bottom band — clocks + copyright */}
+      <div className="border-t border-white/10 px-6 py-5 md:px-16">
+        <div className="mx-auto flex max-w-[1400px] flex-col items-start justify-between gap-4 md:flex-row md:items-center">
+          <div className="flex flex-wrap gap-x-6 gap-y-3">
+            <CityClock city="Москва" tz="Europe/Moscow" />
+            <CityClock city="Дубай" tz="Asia/Dubai" />
+            <CityClock city="Нью-Йорк" tz="America/New_York" />
+            <CityClock city="Токио" tz="Asia/Tokyo" />
+          </div>
+          <div className="text-[11px] uppercase tracking-[0.18em] text-[var(--muted-ink)]">
+            © 2026 Klido · hello@klido.ru
+          </div>
         </div>
       </div>
     </footer>
