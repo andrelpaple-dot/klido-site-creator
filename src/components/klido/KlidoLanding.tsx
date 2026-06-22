@@ -363,7 +363,7 @@ function Principles() {
 
 function FinalCTA() {
   return (
-    <Section className="border-t border-white/5">
+    <Section id="contact" className="border-t border-white/5">
       <div className="text-center">
         <FadeUp>
           <h2 className="display-xl text-[52px] text-[var(--paper)] md:text-[8vw]">
@@ -373,8 +373,8 @@ function FinalCTA() {
         </FadeUp>
         <FadeUp delay={0.1}>
           <p className="mx-auto mt-10 max-w-xl text-base text-[var(--muted-ink)] md:text-lg">
-            30 минут на разговор. Покажем 2–3 похожих кейса под вашу нишу.
-            Если поймём, что не подходим — скажем прямо.
+            30 минут на разговор. Покажем 2–3 похожих кейса под вашу нишу
+            и расскажем, как выстроим внешний канал именно для вашего бренда.
           </p>
         </FadeUp>
         <FadeUp delay={0.2}>
