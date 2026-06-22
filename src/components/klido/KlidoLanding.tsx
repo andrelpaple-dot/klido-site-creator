@@ -430,30 +430,37 @@ function CityClock({ city, tz }: { city: string; tz: string }) {
     return () => clearInterval(id);
   }, [tz]);
   return (
-    <span className="inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.18em] text-[var(--muted-ink)]">
-      <span className="h-1.5 w-1.5 rounded-full" style={{ background: "var(--bronze)" }} />
-      <span className="font-medium text-[var(--paper)]">{city}</span>
-      <span className="tabular-nums">{time}</span>
+    <span className="inline-flex items-center gap-2 text-[12px] font-semibold uppercase tracking-[0.2em] text-[var(--ink)]/70">
+      <span className="h-1.5 w-1.5 rounded-full bg-[var(--ink)]" />
+      <span className="text-[var(--ink)]">{city}</span>
+      <span className="tabular-nums text-[var(--ink)]/70">{time}</span>
     </span>
   );
 }
 
 function Footer() {
   return (
-    <footer className="relative z-10 border-t border-white/10 bg-[var(--ink)]">
-      {/* Top contact band — Aura-style */}
-      <div className="px-6 py-10 md:px-16 md:py-12">
-        <div className="mx-auto grid max-w-[1400px] grid-cols-12 items-center gap-y-8">
+    <footer
+      className="relative z-10 border-t border-white/10"
+      style={{ background: "var(--bronze)", color: "var(--ink)" }}
+    >
+      {/* Top contact band */}
+      <div className="px-6 pt-12 pb-10 md:px-16 md:pt-16 md:pb-14">
+        <div className="mx-auto grid max-w-[1400px] grid-cols-12 items-start gap-y-10">
           <div className="col-span-12 md:col-span-3">
-            <div className="eyebrow">New business inquiries</div>
+            <div className="text-[11px] font-semibold uppercase tracking-[0.22em] text-[var(--ink)]/70">
+              New business inquiries
+            </div>
           </div>
           <div className="col-span-12 md:col-span-6">
-            <div className="eyebrow mb-2">Telegram</div>
+            <div className="mb-3 text-[11px] font-semibold uppercase tracking-[0.22em] text-[var(--ink)]/70">
+              Telegram
+            </div>
             <a
               href={TG}
               target="_blank"
               rel="noreferrer"
-              className="font-display text-2xl text-[var(--paper)] transition-colors hover:text-[var(--bronze)] md:text-3xl"
+              className="font-display text-3xl font-semibold text-[var(--ink)] underline-offset-8 transition-all hover:underline md:text-5xl"
             >
               @AndrewGeiger
             </a>
@@ -463,7 +470,7 @@ function Footer() {
               href={TG}
               target="_blank"
               rel="noreferrer"
-              className="group inline-flex items-center gap-3 rounded-full border border-[var(--paper)]/40 px-7 py-3 text-xs uppercase tracking-[0.22em] text-[var(--paper)] transition-all duration-300 hover:border-[var(--bronze)] hover:bg-[var(--bronze)] hover:text-[var(--ink)]"
+              className="group inline-flex items-center gap-3 rounded-full border-2 border-[var(--ink)] px-8 py-4 text-xs font-semibold uppercase tracking-[0.22em] text-[var(--ink)] transition-all duration-300 hover:bg-[var(--ink)] hover:text-[var(--bronze)]"
             >
               Связаться
               <span aria-hidden className="transition-transform group-hover:translate-x-1">→</span>
@@ -472,16 +479,51 @@ function Footer() {
         </div>
       </div>
 
+      <div className="mx-6 border-t border-[var(--ink)]/25 md:mx-16" />
+
+      {/* About + giant wordmark */}
+      <div className="px-6 pt-12 md:px-16 md:pt-16">
+        <div className="mx-auto grid max-w-[1400px] grid-cols-12 gap-y-8">
+          <div className="col-span-12 md:col-span-3">
+            <div className="text-[13px] font-semibold uppercase tracking-[0.22em] text-[var(--ink)]/70">
+              About
+            </div>
+          </div>
+          <div className="col-span-12 md:col-span-7">
+            <p className="max-w-[520px] text-lg leading-relaxed text-[var(--ink)] md:text-xl">
+              Klido — продакшн-студия внешних каналов роста. Мыслим как маркетологи,
+              строим как инженеры. Запускаем performance-системы за 2–4 недели —
+              от бизнес-задачи до работающего канала с метриками.
+            </p>
+          </div>
+        </div>
+
+        <div className="mx-auto mt-10 max-w-[1400px] md:mt-14">
+          <h2
+            aria-hidden
+            className="font-display select-none text-[var(--ink)]"
+            style={{
+              fontSize: "clamp(96px, 26vw, 440px)",
+              fontWeight: 900,
+              lineHeight: 0.82,
+              letterSpacing: "-0.06em",
+            }}
+          >
+            KLIDO
+          </h2>
+        </div>
+      </div>
+
       {/* Bottom band — clocks + copyright */}
-      <div className="border-t border-white/10 px-6 py-5 md:px-16">
+      <div className="mt-2 border-t border-[var(--ink)]/25 px-6 py-6 md:px-16">
         <div className="mx-auto flex max-w-[1400px] flex-col items-start justify-between gap-4 md:flex-row md:items-center">
-          <div className="flex flex-wrap gap-x-6 gap-y-3">
+          <div className="flex flex-wrap gap-x-7 gap-y-3">
             <CityClock city="Москва" tz="Europe/Moscow" />
             <CityClock city="Дубай" tz="Asia/Dubai" />
             <CityClock city="Нью-Йорк" tz="America/New_York" />
             <CityClock city="Токио" tz="Asia/Tokyo" />
           </div>
-          <div className="text-[11px] uppercase tracking-[0.18em] text-[var(--muted-ink)]">
+          <div className="text-[11px] font-semibold uppercase tracking-[0.22em] text-[var(--ink)]/70">
             © 2026 Klido · hello@klido.ru
           </div>
         </div>
