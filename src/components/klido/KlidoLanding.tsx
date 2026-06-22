@@ -142,69 +142,104 @@ function Hero() {
   );
 }
 
-function ManifestoLine({
+function ManifestoWord({
   progress,
   range,
+  accent,
   children,
 }: {
   progress: ReturnType<typeof useScroll>["scrollYProgress"];
   range: [number, number];
+  accent: boolean;
   children: React.ReactNode;
 }) {
-  const y = useTransform(progress, range, ["100%", "0%"]);
-  const opacity = useTransform(progress, range, [0, 1]);
+  const opacity = useTransform(progress, range, [0.08, 1]);
+  const y = useTransform(progress, range, [40, 0]);
+  const filter = useTransform(progress, range, ["blur(8px)", "blur(0px)"]);
   return (
-    <div className="overflow-hidden">
-      <motion.div style={{ y, opacity }}>{children}</motion.div>
-    </div>
+    <motion.span
+      style={{
+        opacity,
+        y,
+        filter,
+        display: "inline-block",
+        color: accent ? "var(--bronze)" : undefined,
+        marginRight: "0.22em",
+      }}
+    >
+      {children}
+    </motion.span>
   );
 }
 
 function Manifesto() {
   const phrase =
     "Берём задачу,/думаем как/*продакт*/и строим/как *инженер*./Запускаем/за *недели,*/не за *месяцы.*";
-  const lines = phrase.split("/");
+  const lines = phrase.split("/").map((line) =>
+    line.split(" ").map((w) => {
+      const accent = w.startsWith("*") && w.endsWith("*");
+      return { word: accent ? w.slice(1, -1) : w, accent };
+    }),
+  );
+  const totalWords = lines.reduce((a, l) => a + l.length, 0);
+
   const ref = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({
     target: ref,
-    offset: ["start 0.85", "end 0.4"],
+    offset: ["start start", "end end"],
   });
+
+  // Scroll-driven scene parameters
+  const sceneRot = useTransform(scrollYProgress, [0, 1], [0, Math.PI * 1.4]);
+  const sceneScale = useTransform(scrollYProgress, [0, 0.5, 1], [0.7, 1.05, 0.85]);
+
+  // Reveal window: 5%..85% of scroll
+  const revealStart = 0.05;
+  const revealEnd = 0.85;
+  const span = revealEnd - revealStart;
+
+  let wordIdx = 0;
 
   return (
     <section
       ref={ref}
       id="manifesto"
-      className="relative border-t border-white/5 px-6 py-28 md:px-16 md:py-40 lg:py-48"
+      className="relative border-t border-white/5"
+      style={{ height: "260vh" }}
     >
-      <ManifestoShapes />
-      <div className="relative mx-auto grid max-w-[1400px] grid-cols-12 gap-x-8">
-        <div className="col-span-12 mb-8 md:col-span-2 md:mb-0">
-          <span className="eyebrow">(01) Манифест</span>
-        </div>
-        <div
-          className="col-span-12 font-display uppercase leading-[0.92] tracking-[-0.035em] text-[var(--paper)] md:col-span-10"
-          style={{ fontSize: "clamp(44px, 9vw, 168px)", fontWeight: 800 }}
-        >
-          {lines.map((line, li) => {
-            const words = line.split(" ");
-            const step = 1 / lines.length;
-            const start = li * step;
-            const end = Math.min(1, start + step * 1.6);
-            return (
-              <ManifestoLine key={li} progress={scrollYProgress} range={[start, end]}>
+      <div className="sticky top-0 flex h-screen items-center overflow-hidden">
+        <ManifestoShapes progress={scrollYProgress} rotation={sceneRot} scale={sceneScale} />
+        <div className="relative mx-auto grid w-full max-w-[1400px] grid-cols-12 gap-x-8 px-6 md:px-16">
+          <div className="col-span-12 mb-6 md:col-span-2 md:mb-0">
+            <span className="eyebrow">(01) Манифест</span>
+          </div>
+          <div
+            className="col-span-12 font-display uppercase leading-[0.95] tracking-[-0.035em] text-[var(--paper)] md:col-span-10"
+            style={{ fontSize: "clamp(36px, 7.5vw, 140px)", fontWeight: 800 }}
+          >
+            {lines.map((words, li) => (
+              <div key={li} className="overflow-visible">
                 {words.map((w, wi) => {
-                  const accent = w.startsWith("*") && w.endsWith("*");
-                  const clean = accent ? w.slice(1, -1) : w;
+                  const i = wordIdx++;
+                  const start = revealStart + (i / totalWords) * span;
+                  const end = Math.min(
+                    revealEnd,
+                    start + (1.8 / totalWords) * span,
+                  );
                   return (
-                    <span key={wi} style={accent ? { color: "var(--bronze)" } : undefined}>
-                      {clean}
-                      {wi < words.length - 1 ? " " : ""}
-                    </span>
+                    <ManifestoWord
+                      key={wi}
+                      progress={scrollYProgress}
+                      range={[start, end]}
+                      accent={w.accent}
+                    >
+                      {w.word}
+                    </ManifestoWord>
                   );
                 })}
-              </ManifestoLine>
-            );
-          })}
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </section>
