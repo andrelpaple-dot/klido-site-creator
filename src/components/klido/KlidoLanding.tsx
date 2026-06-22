@@ -153,18 +153,18 @@ function ManifestoWord({
   accent: boolean;
   children: React.ReactNode;
 }) {
-  const opacity = useTransform(progress, range, [0.08, 1]);
-  const y = useTransform(progress, range, [40, 0]);
-  const filter = useTransform(progress, range, ["blur(8px)", "blur(0px)"]);
+  const opacity = useTransform(progress, range, [0.15, 1]);
+  const y = useTransform(progress, range, ["0.4em", "0em"]);
   return (
     <motion.span
       style={{
         opacity,
         y,
-        filter,
         display: "inline-block",
-        color: accent ? "var(--bronze)" : undefined,
+        color: accent ? "var(--bronze)" : "var(--paper)",
         marginRight: "0.22em",
+        willChange: "transform, opacity",
+        textShadow: accent ? "0 0 40px rgba(201,163,106,0.35)" : undefined,
       }}
     >
       {children}
@@ -189,13 +189,12 @@ function Manifesto() {
     offset: ["start start", "end end"],
   });
 
-  // Scroll-driven scene parameters
-  const sceneRot = useTransform(scrollYProgress, [0, 1], [0, Math.PI * 1.4]);
-  const sceneScale = useTransform(scrollYProgress, [0, 0.5, 1], [0.7, 1.05, 0.85]);
+  const orbY = useTransform(scrollYProgress, [0, 1], ["-10%", "20%"]);
+  const orbScale = useTransform(scrollYProgress, [0, 0.5, 1], [0.8, 1.2, 1]);
+  const barWidth = useTransform(scrollYProgress, [0.05, 0.85], ["0%", "100%"]);
 
-  // Reveal window: 5%..85% of scroll
-  const revealStart = 0.05;
-  const revealEnd = 0.85;
+  const revealStart = 0.02;
+  const revealEnd = 0.8;
   const span = revealEnd - revealStart;
 
   let wordIdx = 0;
@@ -205,26 +204,47 @@ function Manifesto() {
       ref={ref}
       id="manifesto"
       className="relative border-t border-white/5"
-      style={{ height: "260vh" }}
+      style={{ height: "300vh" }}
     >
       <div className="sticky top-0 flex h-screen items-center overflow-hidden">
-        <ManifestoShapes rotation={sceneRot} scale={sceneScale} />
+        <motion.div
+          aria-hidden
+          style={{ y: orbY, scale: orbScale }}
+          className="pointer-events-none absolute left-1/2 top-1/2 h-[80vh] w-[80vh] -translate-x-1/2 -translate-y-1/2 rounded-full"
+        >
+          <div
+            className="h-full w-full rounded-full opacity-40"
+            style={{
+              background:
+                "radial-gradient(circle at 50% 50%, rgba(201,163,106,0.55) 0%, rgba(201,163,106,0.15) 35%, transparent 70%)",
+              filter: "blur(40px)",
+            }}
+          />
+        </motion.div>
+
+        <div className="absolute left-0 right-0 top-0 h-[2px] bg-white/5">
+          <motion.div
+            style={{ width: barWidth }}
+            className="h-full bg-[var(--bronze)]"
+          />
+        </div>
+
         <div className="relative mx-auto grid w-full max-w-[1400px] grid-cols-12 gap-x-8 px-6 md:px-16">
           <div className="col-span-12 mb-6 md:col-span-2 md:mb-0">
             <span className="eyebrow">(01) Манифест</span>
           </div>
           <div
-            className="col-span-12 font-display uppercase leading-[0.95] tracking-[-0.035em] text-[var(--paper)] md:col-span-10"
-            style={{ fontSize: "clamp(36px, 7.5vw, 140px)", fontWeight: 800 }}
+            className="col-span-12 font-display uppercase leading-[0.95] tracking-[-0.035em] md:col-span-10"
+            style={{ fontSize: "clamp(40px, 8vw, 150px)", fontWeight: 800 }}
           >
             {lines.map((words, li) => (
-              <div key={li} className="overflow-visible">
+              <div key={li}>
                 {words.map((w, wi) => {
                   const i = wordIdx++;
                   const start = revealStart + (i / totalWords) * span;
                   const end = Math.min(
                     revealEnd,
-                    start + (1.8 / totalWords) * span,
+                    start + (2.2 / totalWords) * span,
                   );
                   return (
                     <ManifestoWord
