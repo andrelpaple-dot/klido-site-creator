@@ -13,7 +13,13 @@ export type CaseItem = {
   metrics: CaseMetric[];
 };
 
+function escapeSvgText(value: string) {
+  return value.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+}
+
 function casePreview(title: string, mark: string, accent = "#c9a36a") {
+  const safeTitle = escapeSvgText(title);
+  const safeMark = escapeSvgText(mark);
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 820">
     <rect width="1200" height="820" fill="#050505"/>
     <path d="M0 620C210 500 340 720 560 570S880 250 1200 360v460H0Z" fill="${accent}" opacity=".18"/>
@@ -22,8 +28,8 @@ function casePreview(title: string, mark: string, accent = "#c9a36a") {
     <path d="M120 130h460v300H120zM160 190h260M160 250h340M160 310h210" fill="none" stroke="#f5f5f3" stroke-width="8" stroke-linecap="round" opacity=".55"/>
     <path d="M720 520 930 398l210 122v172L930 812 720 692Z" fill="none" stroke="${accent}" stroke-width="8" opacity=".72"/>
     <path d="M720 520 930 642l210-122M930 642v170" fill="none" stroke="#f5f5f3" stroke-width="5" opacity=".32"/>
-    <text x="116" y="675" fill="#f5f5f3" font-family="Arial, sans-serif" font-size="82" font-weight="800" letter-spacing="2">${title}</text>
-    <text x="120" y="735" fill="${accent}" font-family="Arial, sans-serif" font-size="28" font-weight="700" letter-spacing="8">${mark}</text>
+    <text x="116" y="675" fill="#f5f5f3" font-family="Arial, sans-serif" font-size="82" font-weight="800" letter-spacing="2">${safeTitle}</text>
+    <text x="120" y="735" fill="${accent}" font-family="Arial, sans-serif" font-size="28" font-weight="700" letter-spacing="8">${safeMark}</text>
   </svg>`;
   return `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}`;
 }
@@ -43,7 +49,7 @@ export const cases: CaseItem[] = [
     metrics: [
       { value: "6.8 → 11.67%", label: "конверсия" },
       { value: "−34%", label: "отказы" },
-      { value: "12 400 ₽", label: "средний чек" },
+      { value: "+64%", label: "глубина каталога" },
     ],
   },
   {
@@ -107,7 +113,7 @@ export const cases: CaseItem[] = [
     heroLabel: "конверсия с первого касания",
     metrics: [
       { value: "12.3%", label: "конверсия" },
-      { value: "1 600 ₽", label: "средний чек" },
+      { value: "38%", label: "повторных" },
       { value: "38%", label: "повторных" },
     ],
   },
