@@ -12,6 +12,12 @@ export function SiteHeader() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  const nav = [
+    { href: "#cases", label: "Кейсы" },
+    { href: "#approach", label: "Подход" },
+    { href: "#contact", label: "Контакт" },
+  ];
+
   return (
     <header
       className="fixed inset-x-0 top-0 z-50 transition-all duration-500"
@@ -29,9 +35,11 @@ export function SiteHeader() {
           Klido<span style={{ color: "var(--bronze)" }}>.</span>
         </a>
         <nav className="hidden items-center gap-10 text-xs uppercase tracking-[0.18em] text-[var(--muted-ink)] md:flex">
-          <a href="#cases" className="transition-colors hover:text-[var(--paper)]">Кейсы</a>
-          <a href="#" className="transition-colors hover:text-[var(--paper)]">Подход</a>
-          <a href="#" className="transition-colors hover:text-[var(--paper)]">Контакт</a>
+          {nav.map((n) => (
+            <a key={n.href} href={n.href} className="transition-colors hover:text-[var(--paper)]">
+              {n.label}
+            </a>
+          ))}
         </nav>
         <a
           href={TG}
