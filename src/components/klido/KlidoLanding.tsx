@@ -142,46 +142,114 @@ function Hero() {
   );
 }
 
-function ManifestoWord({
+function ManifestoLine({
   progress,
-  range,
-  accent,
+  index,
   children,
 }: {
   progress: ReturnType<typeof useScroll>["scrollYProgress"];
-  range: [number, number];
-  accent: boolean;
+  index: number;
   children: React.ReactNode;
 }) {
-  const opacity = useTransform(progress, range, [0.15, 1]);
-  const y = useTransform(progress, range, ["0.4em", "0em"]);
+  const start = index * 0.095;
+  const opacity = useTransform(progress, [start, start + 0.12, 0.86], [0.28, 1, 1]);
+  const x = useTransform(progress, [start, start + 0.16], [index % 2 ? 86 : -86, 0]);
+  const y = useTransform(progress, [start, start + 0.16], [44, 0]);
+  const scale = useTransform(progress, [start, start + 0.16, 0.9], [0.92, 1, 1.015]);
+  const clipPath = useTransform(
+    progress,
+    [start, start + 0.16],
+    ["inset(0 100% 0 0)", "inset(0 0% 0 0)"],
+  );
+
   return (
-    <motion.span
-      style={{
-        opacity,
-        y,
-        display: "inline-block",
-        color: accent ? "var(--bronze)" : "var(--paper)",
-        marginRight: "0.22em",
-        willChange: "transform, opacity",
-        textShadow: accent ? "0 0 40px rgba(201,163,106,0.35)" : undefined,
-      }}
+    <motion.div
+      className="manifesto-line"
+      style={{ opacity, x, y, scale, clipPath }}
     >
       {children}
-    </motion.span>
+    </motion.div>
+  );
+}
+
+function ManifestoModel({
+  progress,
+  kind,
+  className,
+  range,
+  drift,
+}: {
+  progress: ReturnType<typeof useScroll>["scrollYProgress"];
+  kind: "cube" | "cone" | "ring" | "spark" | "panel";
+  className: string;
+  range: [number, number, number];
+  drift: [number, number, number];
+}) {
+  const opacity = useTransform(progress, [range[0], range[1], range[2]], [0, 1, 0.45]);
+  const y = useTransform(progress, [range[0], range[2]], [drift[0], drift[1]]);
+  const rotate = useTransform(progress, [range[0], range[2]], [drift[2], drift[2] + 130]);
+  const scale = useTransform(progress, [range[0], range[1], range[2]], [0.82, 1.08, 0.96]);
+
+  const stroke = "var(--bronze)";
+  const muted = "rgba(245,245,243,0.58)";
+
+  return (
+    <motion.div
+      aria-hidden
+      className={`pointer-events-none absolute ${className}`}
+      style={{ opacity, y, rotate, scale }}
+    >
+      <svg viewBox="0 0 140 140" className="h-full w-full overflow-visible">
+        {kind === "cube" && (
+          <g fill="none" strokeLinecap="round" strokeLinejoin="round" strokeWidth="5">
+            <path d="M70 10 121 39v60L70 130 19 99V39Z" stroke={stroke} />
+            <path d="M19 39 70 69l51-30M70 69v61" stroke={muted} />
+            <path d="M43 25 95 55" stroke={stroke} opacity="0.45" />
+          </g>
+        )}
+        {kind === "cone" && (
+          <g fill="none" strokeLinecap="round" strokeLinejoin="round" strokeWidth="5">
+            <path d="M70 14 116 106c-18 24-74 24-92 0Z" stroke={stroke} />
+            <ellipse cx="70" cy="106" rx="46" ry="19" stroke={muted} />
+            <path d="M70 14v111" stroke={stroke} opacity="0.5" />
+          </g>
+        )}
+        {kind === "ring" && (
+          <g fill="none" strokeWidth="5">
+            <ellipse cx="70" cy="70" rx="56" ry="31" stroke={stroke} />
+            <ellipse cx="70" cy="70" rx="31" ry="56" stroke={muted} />
+            <circle cx="70" cy="70" r="15" stroke={stroke} opacity="0.55" />
+          </g>
+        )}
+        {kind === "spark" && (
+          <g fill="none" strokeLinecap="round" strokeLinejoin="round" strokeWidth="5">
+            <path d="M70 8v124M8 70h124M25 25l90 90M115 25l-90 90" stroke={stroke} />
+            <circle cx="70" cy="70" r="24" stroke={muted} />
+          </g>
+        )}
+        {kind === "panel" && (
+          <g fill="none" strokeLinecap="round" strokeLinejoin="round" strokeWidth="5">
+            <path d="M25 31h90v78H25z" stroke={stroke} />
+            <path d="M25 52h90M45 73h50M45 91h31" stroke={muted} />
+            <path d="M40 31v-13h60v13" stroke={stroke} opacity="0.5" />
+          </g>
+        )}
+      </svg>
+    </motion.div>
   );
 }
 
 function Manifesto() {
-  const phrase =
-    "Берём задачу,/думаем как/*продакт*/и строим/как *инженер*./Запускаем/за *недели,*/не за *месяцы.*";
-  const lines = phrase.split("/").map((line) =>
-    line.split(" ").map((w) => {
-      const accent = w.startsWith("*") && w.endsWith("*");
-      return { word: accent ? w.slice(1, -1) : w, accent };
-    }),
-  );
-  const totalWords = lines.reduce((a, l) => a + l.length, 0);
+  const lines = [
+    <>Берём</>,
+    <>задачу,</>,
+    <>думаем <span>как</span></>,
+    <><span>продакт</span> и строим</>,
+    <>как <span>инженер.</span></>,
+    <>запускаем</>,
+    <>за <span>недели,</span></>,
+    <>не за <span>месяцы.</span></>,
+  ];
 
   const ref = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({
@@ -189,76 +257,60 @@ function Manifesto() {
     offset: ["start start", "end end"],
   });
 
-  const orbY = useTransform(scrollYProgress, [0, 1], ["-10%", "20%"]);
-  const orbScale = useTransform(scrollYProgress, [0, 0.5, 1], [0.8, 1.2, 1]);
-  const barWidth = useTransform(scrollYProgress, [0.05, 0.85], ["0%", "100%"]);
-
-  const revealStart = 0.02;
-  const revealEnd = 0.8;
-  const span = revealEnd - revealStart;
-
-  let wordIdx = 0;
+  const progressWidth = useTransform(scrollYProgress, [0.02, 0.86], ["0%", "100%"]);
+  const railY = useTransform(scrollYProgress, [0, 1], ["0%", "-18%"]);
+  const haloScale = useTransform(scrollYProgress, [0, 0.45, 1], [0.9, 1.16, 1]);
+  const haloRotate = useTransform(scrollYProgress, [0, 1], [-8, 18]);
 
   return (
     <section
       ref={ref}
       id="manifesto"
       className="relative border-t border-white/5"
-      style={{ height: "300vh" }}
+      style={{ height: "430vh" }}
     >
-      <div className="sticky top-0 flex h-screen items-center overflow-hidden">
+      <div className="sticky top-0 flex h-screen items-center overflow-hidden bg-[var(--ink)]">
         <motion.div
           aria-hidden
-          style={{ y: orbY, scale: orbScale }}
-          className="pointer-events-none absolute left-1/2 top-1/2 h-[80vh] w-[80vh] -translate-x-1/2 -translate-y-1/2 rounded-full"
+          className="manifesto-halo pointer-events-none absolute left-[8%] top-[12%] h-[76vh] w-[76vh]"
+          style={{ scale: haloScale, rotate: haloRotate }}
+        />
+        <motion.div
+          aria-hidden
+          className="pointer-events-none absolute inset-x-0 top-0 h-full opacity-50"
+          style={{ y: railY }}
         >
-          <div
-            className="h-full w-full rounded-full opacity-40"
-            style={{
-              background:
-                "radial-gradient(circle at 50% 50%, rgba(201,163,106,0.55) 0%, rgba(201,163,106,0.15) 35%, transparent 70%)",
-              filter: "blur(40px)",
-            }}
-          />
+          {Array.from({ length: 9 }).map((_, i) => (
+            <div
+              key={i}
+              className="absolute left-0 h-px w-full bg-[var(--paper)]/10"
+              style={{ top: `${i * 14}%` }}
+            />
+          ))}
         </motion.div>
 
-        <div className="absolute left-0 right-0 top-0 h-[2px] bg-white/5">
-          <motion.div
-            style={{ width: barWidth }}
-            className="h-full bg-[var(--bronze)]"
-          />
+        <ManifestoModel progress={scrollYProgress} kind="cube" className="left-[6%] top-[16%] h-24 w-24 md:h-36 md:w-36" range={[0.04, 0.16, 0.52]} drift={[50, -120, -18]} />
+        <ManifestoModel progress={scrollYProgress} kind="ring" className="right-[7%] top-[18%] h-28 w-28 md:h-44 md:w-44" range={[0.12, 0.28, 0.68]} drift={[80, -150, 24]} />
+        <ManifestoModel progress={scrollYProgress} kind="panel" className="left-[12%] bottom-[17%] h-24 w-24 md:h-40 md:w-40" range={[0.26, 0.42, 0.78]} drift={[90, -90, 10]} />
+        <ManifestoModel progress={scrollYProgress} kind="cone" className="right-[16%] bottom-[14%] h-24 w-24 md:h-36 md:w-36" range={[0.38, 0.56, 0.9]} drift={[70, -120, -28]} />
+        <ManifestoModel progress={scrollYProgress} kind="spark" className="left-[49%] top-[9%] h-16 w-16 md:h-24 md:w-24" range={[0.52, 0.68, 0.98]} drift={[45, -100, 35]} />
+
+        <div className="absolute left-0 right-0 top-0 h-[3px] bg-[var(--paper)]/10">
+          <motion.div style={{ width: progressWidth }} className="h-full bg-[var(--bronze)]" />
         </div>
 
-        <div className="relative mx-auto grid w-full max-w-[1400px] grid-cols-12 gap-x-8 px-6 md:px-16">
-          <div className="col-span-12 mb-6 md:col-span-2 md:mb-0">
+        <div className="relative z-10 mx-auto grid w-full max-w-[1500px] grid-cols-12 gap-x-8 px-6 md:px-16">
+          <div className="col-span-12 mb-7 md:col-span-2 md:mb-0">
             <span className="eyebrow">(01) Манифест</span>
           </div>
-          <div
-            className="col-span-12 font-display uppercase leading-[0.95] tracking-[-0.035em] md:col-span-10"
-            style={{ fontSize: "clamp(40px, 8vw, 150px)", fontWeight: 800 }}
-          >
-            {lines.map((words, li) => (
-              <div key={li}>
-                {words.map((w, wi) => {
-                  const i = wordIdx++;
-                  const start = revealStart + (i / totalWords) * span;
-                  const end = Math.min(
-                    revealEnd,
-                    start + (2.2 / totalWords) * span,
-                  );
-                  return (
-                    <ManifestoWord
-                      key={wi}
-                      progress={scrollYProgress}
-                      range={[start, end]}
-                      accent={w.accent}
-                    >
-                      {w.word}
-                    </ManifestoWord>
-                  );
-                })}
-              </div>
-            ))}
+          <div className="col-span-12 md:col-span-10">
+            <div className="manifesto-copy font-display uppercase">
+              {lines.map((line, index) => (
+                <ManifestoLine key={index} progress={scrollYProgress} index={index}>
+                  {line}
+                </ManifestoLine>
+              ))}
+            </div>
           </div>
         </div>
       </div>
