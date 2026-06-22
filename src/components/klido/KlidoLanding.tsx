@@ -4,7 +4,7 @@ import { CustomCursor } from "@/components/klido/CustomCursor";
 import { ScrollProgress } from "@/components/klido/ScrollProgress";
 import { SiteHeader } from "@/components/klido/SiteHeader";
 import { Scene3D } from "@/components/klido/Scene3D";
-import { ManifestoShapes } from "@/components/klido/ManifestoShapes";
+
 import { cases } from "@/components/klido/cases-data";
 
 const TG = "https://t.me/AndrewGeiger";
