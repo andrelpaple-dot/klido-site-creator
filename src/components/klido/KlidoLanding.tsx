@@ -199,9 +199,8 @@ function WhatWeDo() {
         </p>
       </FadeUp>
 
-      <div className="mt-20 grid grid-cols-1 gap-x-8 gap-y-12 md:grid-cols-3">
+      <div className="mt-20 grid grid-cols-1 gap-x-8 gap-y-12 md:grid-cols-2">
         {[
-          { num: 12, suffix: "%", prefix: "до ", l: "средняя конверсия наших работ" },
           { num: 290, suffix: "%", prefix: "+", l: "рост онлайн-заказов после редизайна" },
           { num: 30, suffix: "+", prefix: "", l: "запущенных проектов для e-commerce" },
         ].map((m, i) => (
