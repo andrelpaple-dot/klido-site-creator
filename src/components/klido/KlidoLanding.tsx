@@ -208,7 +208,7 @@ function Manifesto() {
       style={{ height: "260vh" }}
     >
       <div className="sticky top-0 flex h-screen items-center overflow-hidden">
-        <ManifestoShapes progress={scrollYProgress} rotation={sceneRot} scale={sceneScale} />
+        <ManifestoShapes rotation={sceneRot} scale={sceneScale} />
         <div className="relative mx-auto grid w-full max-w-[1400px] grid-cols-12 gap-x-8 px-6 md:px-16">
           <div className="col-span-12 mb-6 md:col-span-2 md:mb-0">
             <span className="eyebrow">(01) Манифест</span>
