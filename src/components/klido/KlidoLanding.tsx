@@ -142,28 +142,42 @@ function Hero() {
 }
 
 function Manifesto() {
-  const lines = [
-    { t: "Маркетплейсы забирают", a: "до 60% выручки." },
-    { t: "Свой канал возвращает", a: "контроль и клиента." },
-    { t: "Мы делаем этот канал —", a: "с измеримой конверсией." },
-  ];
+  // Slash = line break, * marks bronze accent words
+  const phrase =
+    "Берём задачу,/думаем как/*продакт*/и строим/как *инженер*./Запускаем/за *недели,*/не за *месяцы.*";
+  const lines = phrase.split("/");
+
   return (
     <Section label="(01) Манифест" className="border-t border-white/5">
-      <div className="space-y-12 md:space-y-20">
-        {lines.map((l, i) => (
-          <motion.div
-            key={i}
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.4 }}
-            transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1], delay: i * 0.1 }}
-          >
-            <p className="display-xl text-[32px] text-[var(--paper)] md:text-[5.5vw]">
-              {l.t}{" "}
-              <span style={{ color: "var(--bronze)" }}>{l.a}</span>
-            </p>
-          </motion.div>
-        ))}
+      <div className="font-display uppercase leading-[0.92] tracking-[-0.035em] text-[var(--paper)]"
+           style={{ fontSize: "clamp(44px, 9vw, 168px)", fontWeight: 800 }}>
+        {lines.map((line, li) => {
+          const words = line.split(" ");
+          return (
+            <div key={li} className="overflow-hidden">
+              <motion.div
+                initial={{ y: "100%" }}
+                whileInView={{ y: 0 }}
+                viewport={{ once: true, amount: 0.3 }}
+                transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1], delay: li * 0.08 }}
+              >
+                {words.map((w, wi) => {
+                  const accent = w.startsWith("*") && w.endsWith("*");
+                  const clean = accent ? w.slice(1, -1) : w;
+                  return (
+                    <span
+                      key={wi}
+                      style={accent ? { color: "var(--bronze)" } : undefined}
+                    >
+                      {clean}
+                      {wi < words.length - 1 ? " " : ""}
+                    </span>
+                  );
+                })}
+              </motion.div>
+            </div>
+          );
+        })}
       </div>
     </Section>
   );
