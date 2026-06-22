@@ -1,11 +1,13 @@
-import visionImg from "@/assets/cases/vision.jpg";
-import furnitureImg from "@/assets/cases/furniture.jpg";
-import vitaImg from "@/assets/cases/vita.jpg";
-import tsargradImg from "@/assets/cases/tsargrad.jpg";
-import crunchImg from "@/assets/cases/crunch.jpg";
-import groomingImg from "@/assets/cases/grooming.jpg";
-import noirImg from "@/assets/cases/noir.jpg";
-import spaceImg from "@/assets/cases/space.jpg";
+import visionAsset from "@/assets/cases/vision.jpg.asset.json";
+import furnitureAsset from "@/assets/cases/furniture.jpg.asset.json";
+import vitaAsset from "@/assets/cases/vita.jpg.asset.json";
+import tsargradAsset from "@/assets/cases/tsargrad.jpg.asset.json";
+import crunchAsset from "@/assets/cases/crunch.jpg.asset.json";
+import groomingAsset from "@/assets/cases/grooming.jpg.asset.json";
+import noirAsset from "@/assets/cases/noir.jpg.asset.json";
+import spaceAsset from "@/assets/cases/space.jpg.asset.json";
+import motorsAsset from "@/assets/cases/motors.jpg.asset.json";
+import septikAsset from "@/assets/cases/septik.jpg.asset.json";
 
 export type CaseMetric = { value: string; label: string };
 
@@ -15,7 +17,6 @@ export type CaseItem = {
   category: string;
   description: string;
   image: string;
-  /** Главное число для крупной анимации (например 290) */
   heroValue: number;
   heroPrefix?: string;
   heroSuffix?: string;
@@ -26,11 +27,11 @@ export type CaseItem = {
 export const cases: CaseItem[] = [
   {
     slug: "vision-minimal",
-    title: "VISION MINIMAL",
+    title: "LUMIÈRE",
     category: "e-commerce · премиальная оптика",
     description:
       "Редизайн интернет-магазина оптики премиум-сегмента. Новый UX, быстрая карточка, интеграция CRM.",
-    image: visionImg,
+    image: visionAsset.url,
     heroValue: 290,
     heroPrefix: "+",
     heroSuffix: "%",
@@ -43,13 +44,12 @@ export const cases: CaseItem[] = [
   },
   {
     slug: "furniture-mood",
-    title: "FURNITURE MOOD",
+    title: "FORMA",
     category: "маркетплейс · дизайнерская мебель",
     description:
       "Собственный маркетплейс мебели. SEO-структура, фильтры, личный кабинет дизайнера.",
-    image: furnitureImg,
+    image: furnitureAsset.url,
     heroValue: 60,
-    heroPrefix: "",
     heroSuffix: "+",
     heroLabel: "позиций в ТОП-10 Яндекса",
     metrics: [
@@ -60,15 +60,15 @@ export const cases: CaseItem[] = [
   },
   {
     slug: "vita-prime",
-    title: "VITA PRIME",
+    title: "VITALEAF",
     category: "e-commerce · витамины и БАДы",
     description:
       "Лендинг + интернет-магазин для бренда добавок. Перепаковка офферов под Яндекс.Директ.",
-    image: vitaImg,
-    heroValue: 9,
+    image: vitaAsset.url,
+    heroValue: 97,
     heroPrefix: "",
-    heroSuffix: ".7%",
-    heroLabel: "конверсия из Директа",
+    heroSuffix: "%",
+    heroLabel: "рост конверсии из Директа",
     metrics: [
       { value: "2.3 → 9.7%", label: "конверсия" },
       { value: "4 800 → 890 ₽", label: "CPO" },
@@ -78,12 +78,11 @@ export const cases: CaseItem[] = [
   {
     slug: "tsargrad",
     title: "ЦАРЬГРАД",
-    category: "e-commerce · тренажёры",
+    category: "e-commerce · прокат тренажёров",
     description:
-      "Магазин силовых тренажёров. Новая карточка товара, калькулятор подбора, оплата в рассрочку.",
-    image: tsargradImg,
+      "Магазин и сервис проката силовых тренажёров. Калькулятор подбора, оплата в рассрочку.",
+    image: tsargradAsset.url,
     heroValue: 5,
-    heroPrefix: "",
     heroSuffix: ".9%",
     heroLabel: "конверсия (было 1.5%)",
     metrics: [
@@ -94,13 +93,12 @@ export const cases: CaseItem[] = [
   },
   {
     slug: "crunch-world",
-    title: "CRUNCH WORLD",
+    title: "KRUNCH.WORLD",
     category: "e-commerce · импортные снеки",
     description:
-      "Запуск D2C для импортёра чипсов. Подписочная модель, доставка по РФ, чек выше WB.",
-    image: crunchImg,
+      "Запуск D2C для импортёра редких чипсов. Подписочная модель, доставка по РФ, чек выше WB.",
+    image: crunchAsset.url,
     heroValue: 12,
-    heroPrefix: "",
     heroSuffix: ".3%",
     heroLabel: "конверсия с первого касания",
     metrics: [
@@ -111,30 +109,28 @@ export const cases: CaseItem[] = [
   },
   {
     slug: "grooming",
-    title: "GROOMING STUDIO",
-    category: "услуги · премиум-груминг",
+    title: "СТИЛЬ ГРУМЕРА",
+    category: "e-commerce · одежда для грумеров",
     description:
-      "Сайт-портфолио салона с онлайн-записью. Интеграция YClients и WhatsApp-уведомления.",
-    image: groomingImg,
+      "Магазин профессиональной одежды и инструмента для грумеров. Каталог, B2B-кабинет.",
+    image: groomingAsset.url,
     heroValue: 9,
-    heroPrefix: "",
     heroSuffix: "%",
-    heroLabel: "конверсия в запись (было 2%)",
+    heroLabel: "конверсия в заказ (было 2%)",
     metrics: [
       { value: "2 → 9%", label: "конверсия" },
-      { value: "30", label: "заявок / мес." },
-      { value: "×4.5", label: "загрузка" },
+      { value: "+180", label: "заявок / мес." },
+      { value: "×4.5", label: "выручка" },
     ],
   },
   {
     slug: "noir-bar",
-    title: "NOIR BAR",
+    title: "NOIR & OR",
     category: "HoReCa · авторский бар",
     description:
       "Сайт-визитка бара с системой бронирования столов и афишей событий.",
-    image: noirImg,
+    image: noirAsset.url,
     heroValue: 11,
-    heroPrefix: "",
     heroSuffix: "%",
     heroLabel: "конверсия в бронь",
     metrics: [
@@ -145,19 +141,50 @@ export const cases: CaseItem[] = [
   },
   {
     slug: "space-hub",
-    title: "SPACE HUB",
+    title: "КОНТУР",
     category: "услуги · коворкинг",
     description:
       "Сайт коворкинга с онлайн-выбором рабочего места, оплатой и личным кабинетом резидента.",
-    image: spaceImg,
+    image: spaceAsset.url,
     heroValue: 80,
-    heroPrefix: "",
     heroSuffix: "%",
     heroLabel: "заполняемость (было 40%)",
     metrics: [
       { value: "40 → 80%+", label: "заполняемость" },
       { value: "70+", label: "заявок" },
       { value: "12", label: "корп. клиентов" },
+    ],
+  },
+  {
+    slug: "motors",
+    title: "MOTORS.PRO",
+    category: "услуги · ремонт двигателей",
+    description:
+      "Лендинг для СТО капитального ремонта двигателей. Калькулятор стоимости и квиз-заявка.",
+    image: motorsAsset.url,
+    heroValue: 7,
+    heroSuffix: ".2%",
+    heroLabel: "конверсия в заявку",
+    metrics: [
+      { value: "1.4 → 7.2%", label: "конверсия" },
+      { value: "−58%", label: "CPL" },
+      { value: "×3.1", label: "поток заявок" },
+    ],
+  },
+  {
+    slug: "septik",
+    title: "СЕПТИКУРАЛ",
+    category: "e-commerce · автономная канализация",
+    description:
+      "Каталог септиков под ключ с расчётом, замером и установкой. Региональное SEO + Директ.",
+    image: septikAsset.url,
+    heroValue: 4,
+    heroSuffix: "×",
+    heroLabel: "рост заявок за 3 месяца",
+    metrics: [
+      { value: "2.1 → 6.4%", label: "конверсия" },
+      { value: "120+", label: "заявок / мес." },
+      { value: "ТОП-3", label: "по 18 запросам" },
     ],
   },
 ];
