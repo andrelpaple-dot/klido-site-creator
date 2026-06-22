@@ -146,29 +146,30 @@ function Manifesto() {
   const phrase =
     "Берём задачу,/думаем как/*продакт*/и строим/как *инженер*./Запускаем/за *недели,*/не за *месяцы.*";
   const lines = phrase.split("/");
+  const wrapRef = useRef<HTMLDivElement>(null);
+  const inView = useInView(wrapRef, { once: true, amount: 0.15 });
 
   return (
     <Section label="(01) Манифест" className="border-t border-white/5">
-      <div className="font-display uppercase leading-[0.92] tracking-[-0.035em] text-[var(--paper)]"
-           style={{ fontSize: "clamp(44px, 9vw, 168px)", fontWeight: 800 }}>
+      <div
+        ref={wrapRef}
+        className="font-display uppercase leading-[0.92] tracking-[-0.035em] text-[var(--paper)]"
+        style={{ fontSize: "clamp(44px, 9vw, 168px)", fontWeight: 800 }}
+      >
         {lines.map((line, li) => {
           const words = line.split(" ");
           return (
             <div key={li} className="overflow-hidden">
               <motion.div
                 initial={{ y: "100%" }}
-                whileInView={{ y: 0 }}
-                viewport={{ once: true, amount: 0.3 }}
+                animate={inView ? { y: 0 } : { y: "100%" }}
                 transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1], delay: li * 0.08 }}
               >
                 {words.map((w, wi) => {
                   const accent = w.startsWith("*") && w.endsWith("*");
                   const clean = accent ? w.slice(1, -1) : w;
                   return (
-                    <span
-                      key={wi}
-                      style={accent ? { color: "var(--bronze)" } : undefined}
-                    >
+                    <span key={wi} style={accent ? { color: "var(--bronze)" } : undefined}>
                       {clean}
                       {wi < words.length - 1 ? " " : ""}
                     </span>
