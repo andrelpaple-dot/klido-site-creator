@@ -495,7 +495,7 @@ const COMPANY_LOGOS: LogoSpec[] = [
   { name: "Яндекс", src: yandexLogo.url },
   { name: "Avito", src: avitoLogo.url },
   { name: "Сбер", src: sberLogo.url },
-  { name: "Wildberries", src: wbLogo.url },
+  { name: "Рувики", src: wbLogo.url },
   { name: "Магнит", src: magnitLogo.url },
   { name: "Т-Банк", src: tbankLogo.url },
 ];
