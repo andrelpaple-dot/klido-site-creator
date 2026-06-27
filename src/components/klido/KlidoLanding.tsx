@@ -338,9 +338,11 @@ function ManifestoLine({
   const tileEnd = lineStart + (lineEnd - lineStart) * 0.6;
 
   const tileOnLeft = line.tile?.side === "left";
+  const shift = line.tile ? (tileOnLeft ? 1 : -1) : 0;
+  const textX = useTransform(progress, [tileStart, tileEnd], [0, shift * 28]);
 
   const words = (
-    <span>
+    <motion.span style={{ x: textX, display: "inline-block" }}>
       {line.tokens.map((tok, ti) => {
         const i = startSlot + ti;
         const start = revealStart + i * step;
@@ -358,7 +360,7 @@ function ManifestoLine({
           </ManifestoWord>
         );
       })}
-    </span>
+    </motion.span>
   );
 
   return (
