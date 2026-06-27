@@ -1,4 +1,4 @@
-import { motion, useInView, useMotionValue, useTransform, animate, useScroll, AnimatePresence } from "framer-motion";
+import { motion, useInView, useMotionValue, useTransform, animate, useScroll, useSpring, AnimatePresence } from "framer-motion";
 import { Link } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import { CustomCursor } from "@/components/klido/CustomCursor";
@@ -745,8 +745,17 @@ function CaseRow({
 
 function Cases() {
   const [activeSlug, setActiveSlug] = useState<string | null>(null);
-  const [pos, setPos] = useState({ x: 0, y: 0 });
+  const mx = useMotionValue(0);
+  const my = useMotionValue(0);
+  const sx = useSpring(mx, { stiffness: 220, damping: 26, mass: 0.6 });
+  const sy = useSpring(my, { stiffness: 220, damping: 26, mass: 0.6 });
   const active = cases.find((c) => c.slug === activeSlug);
+
+  const onMove = (x: number, y: number) => {
+    const w = typeof window !== "undefined" ? window.innerWidth : 1920;
+    mx.set(Math.min(x + 28, w - 460));
+    my.set(Math.max(20, y - 180));
+  };
 
   return (
     <Section id="cases" label="(03) Кейсы" className="relative border-t border-white/5">
@@ -763,36 +772,36 @@ function Cases() {
             index={i}
             onHover={setActiveSlug}
             onLeave={() => setActiveSlug(null)}
-            onMove={(x, y) => setPos({ x, y })}
+            onMove={onMove}
           />
         ))}
       </div>
 
-      <AnimatePresence>
-        {active && (
-          <motion.div
-            key={active.slug}
-            initial={{ opacity: 0, scale: 0.92, y: 10 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.94 }}
-            transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
-            className="pointer-events-none fixed z-[60] hidden overflow-hidden border border-white/10 shadow-2xl md:block"
-            style={{
-              left: Math.min(pos.x + 24, (typeof window !== "undefined" ? window.innerWidth : 1920) - 460),
-              top: Math.max(20, pos.y - 180),
-              width: 420,
-              height: 280,
-              background: "#0a0a0a",
-            }}
-          >
-            <img src={active.image} alt={active.title} className="h-full w-full object-cover" />
-            <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-            <div className="absolute bottom-3 left-4 text-[11px] uppercase tracking-[0.2em] text-[var(--paper)]">
-              {active.title}
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      <motion.div
+        aria-hidden
+        style={{ left: sx, top: sy, width: 420, height: 280, opacity: active ? 1 : 0, scale: active ? 1 : 0.9 }}
+        transition={{ opacity: { duration: 0.25 }, scale: { duration: 0.35, ease: [0.16, 1, 0.3, 1] } }}
+        className="pointer-events-none fixed z-[60] hidden overflow-hidden rounded-sm border border-white/10 bg-[#0a0a0a] shadow-2xl md:block"
+      >
+        <AnimatePresence mode="wait">
+          {active && (
+            <motion.div
+              key={active.slug}
+              initial={{ opacity: 0, scale: 1.04 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
+              className="h-full w-full"
+            >
+              <img src={active.image} alt={active.title} className="h-full w-full object-cover" />
+              <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+              <div className="absolute bottom-3 left-4 text-[11px] uppercase tracking-[0.2em] text-[var(--paper)]">
+                {active.title}
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </motion.div>
     </Section>
   );
 }

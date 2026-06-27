@@ -110,10 +110,22 @@ function CasePage() {
       <SiteHeader />
 
       <main className="pt-32 md:pt-40">
+        {/* Floating close */}
+        <Link
+          to="/"
+          hash="cases"
+          data-cursor="link"
+          aria-label="Закрыть кейс"
+          className="group fixed right-6 top-24 z-[55] inline-flex items-center gap-3 rounded-full border border-white/15 bg-black/40 px-5 py-3 text-[11px] uppercase tracking-[0.22em] text-[var(--paper)] backdrop-blur-md transition-all hover:border-[var(--bronze)] hover:bg-[var(--bronze)] hover:text-[var(--ink)] md:right-16 md:top-28"
+        >
+          Закрыть
+          <span aria-hidden className="text-base leading-none transition-transform group-hover:rotate-90">×</span>
+        </Link>
+
         {/* Header */}
         <section className="px-6 pb-16 md:px-16">
           <div className="mx-auto max-w-[1400px]">
-            <Link to="/" className="eyebrow inline-flex items-center gap-2 text-[var(--muted-ink)] hover:text-[var(--paper)]">
+            <Link to="/" hash="cases" className="eyebrow inline-flex items-center gap-2 text-[var(--muted-ink)] hover:text-[var(--paper)]">
               ← все кейсы
             </Link>
             <div className="mt-8 grid grid-cols-12 gap-8">
