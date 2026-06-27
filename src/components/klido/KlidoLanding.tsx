@@ -238,39 +238,123 @@ function ManifestoModel({
   );
 }
 
+type TileKind = "orb" | "cube" | "ring" | "spark" | "panel" | "chip";
+
+function ManifestoTile({
+  kind,
+  progress,
+  start,
+  end,
+}: {
+  kind: TileKind;
+  progress: ReturnType<typeof useScroll>["scrollYProgress"];
+  start: number;
+  end: number;
+}) {
+  const opacity = useTransform(progress, [start, end], [0.05, 1]);
+  const scale = useTransform(progress, [start, end], [0.7, 1]);
+  const rotate = useTransform(progress, [start, end], [-22, 0]);
+
+  const gradients: Record<TileKind, string> = {
+    orb: "radial-gradient(circle at 35% 30%, #FFE2B8 0%, #E2864A 38%, #8A2E18 78%, #2B0B05 100%)",
+    cube: "linear-gradient(135deg, #C9A36A 0%, #5B3A1F 60%, #1B0F07 100%)",
+    ring: "radial-gradient(circle at 50% 50%, #1E1E22 0%, #0B0B0E 70%), linear-gradient(135deg, #C9A36A, #4B2D14)",
+    spark: "radial-gradient(circle at 50% 50%, #F7E7C8 0%, #C9A36A 35%, #2B1B0E 100%)",
+    panel: "linear-gradient(160deg, #161618 0%, #2A2A2E 100%)",
+    chip: "linear-gradient(135deg, #2E2E32 0%, #0B0B0E 100%)",
+  };
+
+  return (
+    <motion.span
+      className="manifesto-tile"
+      style={{ opacity, scale, rotate, background: gradients[kind] }}
+      aria-hidden
+    >
+      <svg viewBox="0 0 100 100" preserveAspectRatio="xMidYMid slice">
+        {kind === "orb" && (
+          <>
+            <ellipse cx="38" cy="32" rx="14" ry="8" fill="rgba(255,255,255,0.55)" />
+            <ellipse cx="62" cy="74" rx="22" ry="6" fill="rgba(0,0,0,0.35)" />
+          </>
+        )}
+        {kind === "cube" && (
+          <g fill="none" stroke="rgba(255,235,210,0.9)" strokeWidth="3.5" strokeLinejoin="round">
+            <path d="M50 14 84 32v36L50 86 16 68V32Z" />
+            <path d="M16 32 50 50l34-18M50 50v36" stroke="rgba(255,235,210,0.45)" />
+          </g>
+        )}
+        {kind === "ring" && (
+          <g fill="none" stroke="#C9A36A" strokeWidth="4">
+            <ellipse cx="50" cy="50" rx="36" ry="14" />
+            <ellipse cx="50" cy="50" rx="14" ry="36" stroke="rgba(255,235,210,0.55)" />
+            <circle cx="50" cy="50" r="6" fill="#C9A36A" stroke="none" />
+          </g>
+        )}
+        {kind === "spark" && (
+          <g fill="none" stroke="rgba(255,245,225,0.95)" strokeWidth="4" strokeLinecap="round">
+            <path d="M50 8v84M8 50h84M22 22l56 56M78 22 22 78" />
+          </g>
+        )}
+        {kind === "panel" && (
+          <g fill="none" stroke="rgba(201,163,106,0.95)" strokeWidth="3.5" strokeLinejoin="round">
+            <path d="M18 26h64v52H18z" />
+            <path d="M18 42h64M30 56h40M30 66h22" stroke="rgba(245,245,243,0.5)" />
+          </g>
+        )}
+        {kind === "chip" && (
+          <g fill="none" stroke="rgba(201,163,106,0.9)" strokeWidth="3.5" strokeLinejoin="round">
+            <rect x="24" y="24" width="52" height="52" rx="6" />
+            <path d="M36 36h28v28H36z" stroke="rgba(245,245,243,0.55)" />
+            <path d="M50 12v12M50 76v12M12 50h12M76 50h12" />
+          </g>
+        )}
+      </svg>
+    </motion.span>
+  );
+}
+
+type Token = string | { tile: TileKind };
+
 function Manifesto() {
-  const phrases: { text: string; accents?: string[] }[] = [
+  const lines: { tokens: Token[]; accents?: string[] }[] = [
     {
-      text: "Свой сайт — это прямой контакт с клиентом.",
-      accents: ["сайт", "прямой", "клиентом."],
+      tokens: ["БЕРЁМ", { tile: "orb" }, "ЗАДАЧУ.", "ДУМАЕМ"],
+      accents: ["ДУМАЕМ"],
     },
     {
-      text: "Клиенты и повторные заказы остаются у вас.",
-      accents: ["Клиенты", "остаются"],
+      tokens: ["КАК", { tile: "cube" }, "ПРОДАКТ,", "СТРОИМ"],
+      accents: ["ПРОДАКТ,"],
     },
     {
-      text: "Мы строим систему с конверсией, которую можно проверить.",
-      accents: ["систему", "можно"],
+      tokens: ["КАК", { tile: "ring" }, "ИНЖЕНЕР."],
+      accents: ["ИНЖЕНЕР."],
+    },
+    {
+      tokens: ["ЗАПУСКАЕМ", { tile: "spark" }, "ЗА", "НЕДЕЛИ —"],
+      accents: ["НЕДЕЛИ —"],
+    },
+    {
+      tokens: ["НЕ", { tile: "chip" }, "ЗА", "МЕСЯЦЫ."],
+      accents: ["МЕСЯЦЫ."],
     },
   ];
 
-  const totalWords = phrases.reduce((a, p) => a + p.text.split(/\s+/).length, 0);
+  const totalSlots = lines.reduce((a, l) => a + l.tokens.length, 0);
 
   const ref = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({
     target: ref,
-    offset: ["start 85%", "end 40%"],
+    offset: ["start 85%", "end 30%"],
   });
 
   const REVEAL_START = 0.04;
-  const REVEAL_END = 0.78;
+  const REVEAL_END = 0.82;
   const span = REVEAL_END - REVEAL_START;
-  const step = span / totalWords;
-
+  const step = span / totalSlots;
 
   const progressWidth = useTransform(scrollYProgress, [0.02, 0.95], ["0%", "100%"]);
 
-  let wordIndex = 0;
+  let slotIndex = 0;
 
   return (
     <section
@@ -280,57 +364,62 @@ function Manifesto() {
     >
       <div
         aria-hidden
-        className="pointer-events-none absolute left-1/2 top-1/2 h-[70vh] w-[70vh] -translate-x-1/2 -translate-y-1/2 rounded-full"
+        className="pointer-events-none absolute left-1/2 top-1/2 h-[80vh] w-[80vh] -translate-x-1/2 -translate-y-1/2 rounded-full"
         style={{
           background:
-            "radial-gradient(circle, rgba(201,163,106,0.18) 0%, rgba(201,163,106,0.06) 35%, transparent 70%)",
-          filter: "blur(20px)",
+            "radial-gradient(circle, rgba(201,163,106,0.18) 0%, rgba(201,163,106,0.05) 38%, transparent 72%)",
+          filter: "blur(24px)",
         }}
       />
-
-      <ManifestoModel progress={scrollYProgress} kind="cube" className="left-[4%] top-[8%] h-16 w-16 md:h-24 md:w-24" range={[0.05, 0.25, 0.95]} drift={[40, -60, -12]} />
-      <ManifestoModel progress={scrollYProgress} kind="ring" className="right-[5%] top-[10%] h-20 w-20 md:h-28 md:w-28" range={[0.2, 0.4, 0.95]} drift={[50, -70, 22]} />
-      <ManifestoModel progress={scrollYProgress} kind="cone" className="right-[8%] bottom-[10%] h-16 w-16 md:h-24 md:w-24" range={[0.45, 0.65, 0.98]} drift={[40, -60, -20]} />
-      <ManifestoModel progress={scrollYProgress} kind="panel" className="left-[6%] bottom-[12%] h-16 w-16 md:h-24 md:w-24" range={[0.6, 0.8, 0.98]} drift={[50, -55, 14]} />
 
       <div className="absolute left-0 right-0 top-0 h-[3px] bg-[var(--paper)]/10">
         <motion.div style={{ width: progressWidth }} className="h-full bg-[var(--bronze)]" />
       </div>
 
-      <div className="relative z-10 mx-auto w-full max-w-[1280px] px-6 md:px-16">
-        <div className="mb-8 text-center">
+      <div className="relative z-10 mx-auto w-full max-w-[1600px] px-6 md:px-12">
+        <div className="mb-10 text-center">
           <span className="eyebrow">(01) Манифест</span>
         </div>
-        <div className="manifesto-copy font-display uppercase text-center space-y-6 md:space-y-8">
-          {phrases.map((p, pi) => {
-            const words = p.text.split(/\s+/);
-            return (
-              <div key={pi} className="manifesto-line">
-                {words.map((w, wi) => {
-                  const i = wordIndex++;
-                  const start = REVEAL_START + i * step;
-                  const end = start + step * 3;
-                  const accent = !!p.accents?.includes(w);
+        <div className="manifesto-copy font-display uppercase text-center">
+          {lines.map((line, li) => (
+            <div key={li} className="manifesto-line">
+              {line.tokens.map((tok, ti) => {
+                const i = slotIndex++;
+                const start = REVEAL_START + i * step;
+                const end = start + step * 2.4;
+                if (typeof tok === "object") {
                   return (
-                    <ManifestoWord
-                      key={`${pi}-${wi}`}
+                    <ManifestoTile
+                      key={`${li}-${ti}`}
+                      kind={tok.tile}
                       progress={scrollYProgress}
                       start={start}
                       end={end}
-                      accent={accent}
-                    >
-                      {w}
-                    </ManifestoWord>
+                    />
                   );
-                })}
-              </div>
-            );
-          })}
+                }
+                const accent = !!line.accents?.includes(tok);
+                return (
+                  <ManifestoWord
+                    key={`${li}-${ti}`}
+                    progress={scrollYProgress}
+                    start={start}
+                    end={end}
+                    accent={accent}
+                  >
+                    {tok}
+                  </ManifestoWord>
+                );
+              })}
+            </div>
+          ))}
         </div>
       </div>
     </section>
   );
 }
+
+
 
 
 
