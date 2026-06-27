@@ -160,7 +160,7 @@ function ManifestoWord({
   accent?: boolean;
   children: React.ReactNode;
 }) {
-  const opacity = useTransform(progress, [start, end], [0.06, 1]);
+  const opacity = useTransform(progress, [start, end], [0.22, 1]);
   return (
     <motion.span
       className="manifesto-word"
