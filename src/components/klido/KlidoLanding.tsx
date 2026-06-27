@@ -882,6 +882,8 @@ export function KlidoLanding() {
         <main>
           <Hero />
           <Manifesto />
+          <Team />
+          <TeamExperience />
           <WhatWeDo />
           <HowSystem />
           <Cases />
