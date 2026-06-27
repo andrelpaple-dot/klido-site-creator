@@ -273,9 +273,7 @@ function ManifestoTile({
   return (
     <motion.div
       aria-hidden
-      className={`manifesto-side-tile pointer-events-none absolute top-1/2 -translate-y-1/2 ${
-        side === "left" ? "left-[2%] md:left-[6%]" : "right-[2%] md:right-[6%]"
-      }`}
+      className="manifesto-side-tile pointer-events-none"
       style={{ opacity, scale, rotate, x, background: gradients[kind] }}
     >
       <svg viewBox="0 0 100 100" preserveAspectRatio="xMidYMid slice">
