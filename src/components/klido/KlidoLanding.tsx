@@ -683,125 +683,107 @@ function HowSystem() {
   );
 }
 
-function CaseCard({ c, index }: { c: (typeof cases)[number]; index: number }) {
-  const reverse = index % 2 === 1;
+function CaseRow({
+  c,
+  index,
+  onHover,
+  onLeave,
+  onMove,
+}: {
+  c: (typeof cases)[number];
+  index: number;
+  onHover: (slug: string) => void;
+  onLeave: () => void;
+  onMove: (x: number, y: number) => void;
+}) {
   return (
-    <motion.article
-      data-cursor="image"
-      className="group relative grid grid-cols-12 gap-y-8 border-t border-white/10 py-16 md:gap-x-12 md:py-24"
-      initial={{ opacity: 0, y: 40 }}
+    <motion.div
+      initial={{ opacity: 0, y: 24 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.2 }}
-      transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
+      viewport={{ once: true, amount: 0.3 }}
+      transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1], delay: index * 0.03 }}
+      onMouseEnter={() => onHover(c.slug)}
+      onMouseLeave={onLeave}
+      onMouseMove={(e) => onMove(e.clientX, e.clientY)}
+      className="group border-t border-white/10 last:border-b"
     >
-      {/* Image */}
-      <div className={`col-span-12 md:col-span-7 ${reverse ? "md:order-2" : ""}`}>
-        <div className="relative overflow-hidden border border-white/5 bg-white/[0.02]">
-          <div className="aspect-[4/3] w-full md:aspect-[16/10]">
-            <img
-              src={c.image}
-              alt={c.title}
-              loading="lazy"
-              width={1024}
-              height={1024}
-              className="h-full w-full object-cover transition-all duration-[1400ms] ease-out [filter:grayscale(0.85)_contrast(1.05)_brightness(0.78)_sepia(0.25)] group-hover:[filter:grayscale(0)_contrast(1)_brightness(1)_sepia(0)] group-hover:scale-[1.04]"
-            />
-          </div>
-          {/* bronze tint overlay (fades on hover) */}
-          <div
-            className="pointer-events-none absolute inset-0 mix-blend-multiply opacity-90 transition-opacity duration-[1400ms] ease-out group-hover:opacity-0"
-            style={{
-              background:
-                "linear-gradient(135deg, rgba(201,163,106,0.55) 0%, rgba(20,16,10,0.85) 100%)",
-            }}
-          />
-          {/* readability gradient */}
-          <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
-          <div className="absolute left-5 top-5 text-xs uppercase tracking-[0.2em] text-[var(--paper)]/85">
-            0{index + 1} / {String(cases.length).padStart(2, "0")}
-          </div>
-          <div className="absolute bottom-5 right-5 text-[10px] uppercase tracking-[0.2em] text-[var(--paper)]/60 opacity-0 transition-opacity duration-500 group-hover:opacity-100">
-            наведите · показать оригинал
-          </div>
+      <Link
+        to="/cases/$slug"
+        params={{ slug: c.slug }}
+        data-cursor="link"
+        className="grid grid-cols-12 items-center gap-4 px-2 py-7 transition-colors hover:bg-white/[0.02] md:py-10"
+      >
+        <div className="col-span-1 font-display text-xs text-[var(--muted-ink)] md:text-sm">
+          0{index + 1}
         </div>
-      </div>
-
-      {/* Content */}
-      <div className={`col-span-12 flex flex-col justify-between md:col-span-5 ${reverse ? "md:order-1" : ""}`}>
-        <div>
-          <div className="eyebrow mb-5">{c.category}</div>
-          <h3 className="display-xl text-3xl text-[var(--paper)] transition-colors group-hover:text-[var(--bronze)] md:text-[44px] lg:text-5xl">
+        <div className="col-span-7 md:col-span-6">
+          <h3 className="display-xl text-2xl text-[var(--paper)] transition-colors group-hover:text-[var(--bronze)] md:text-[3.4vw] md:leading-[0.95]">
             {c.title}
           </h3>
-          <p className="mt-5 max-w-md text-[15px] leading-relaxed text-[var(--muted-ink)] md:text-base">
-            {c.description}
-          </p>
         </div>
-
-        {/* Hero animated number */}
-        <div className="mt-10 border-t border-white/10 pt-6">
-          <div
-            className="display-xl text-[64px] leading-none md:text-[88px] lg:text-[104px]"
-            style={{ color: "var(--bronze)" }}
-          >
-            <Counter to={c.heroValue} prefix={c.heroPrefix ?? ""} suffix={c.heroSuffix ?? ""} />
-          </div>
-          <div className="mt-3 text-sm text-[var(--muted-ink)]">{c.heroLabel}</div>
-
-          <div className="mt-6 grid grid-cols-3 gap-x-4">
-            {c.metrics.map((m, i) => (
-              <div key={i}>
-                <div className="font-display text-base font-semibold text-[var(--paper)] md:text-lg">
-                  {m.value}
-                </div>
-                <div className="mt-1 text-[11px] uppercase tracking-[0.12em] text-[var(--muted-ink)]">
-                  {m.label}
-                </div>
-              </div>
-            ))}
-          </div>
-
-          <div className="mt-8 flex flex-wrap items-center gap-3">
-            <Link
-              to="/cases/$slug"
-              params={{ slug: c.slug }}
-              className="group/btn inline-flex items-center gap-3 border border-[var(--paper)]/25 px-5 py-3 text-[11px] uppercase tracking-[0.2em] text-[var(--paper)] transition-all hover:border-[var(--bronze)] hover:bg-[var(--bronze)] hover:text-[var(--ink)]"
-            >
-              Смотреть кейс
-              <span aria-hidden className="transition-transform group-hover/btn:translate-x-1">→</span>
-            </Link>
-            {c.liveUrl && (
-              <a
-                href={c.liveUrl}
-                target="_blank"
-                rel="noreferrer"
-                className="group/btn inline-flex items-center gap-3 bg-[var(--bronze)] px-5 py-3 text-[11px] uppercase tracking-[0.2em] text-[var(--ink)] transition-all hover:bg-[var(--paper)]"
-              >
-                Открыть сайт
-                <span aria-hidden className="transition-transform group-hover/btn:translate-x-1">↗</span>
-              </a>
-            )}
-          </div>
+        <div className="col-span-3 hidden text-xs uppercase tracking-[0.18em] text-[var(--muted-ink)] md:block">
+          {c.category.split("·")[0]?.trim()}
         </div>
-      </div>
-    </motion.article>
+        <div className="col-span-4 text-right md:col-span-2">
+          <span className="font-display text-lg md:text-2xl" style={{ color: "var(--bronze)" }}>
+            {c.heroPrefix ?? ""}{c.heroValue}{c.heroSuffix ?? ""}
+          </span>
+        </div>
+      </Link>
+    </motion.div>
   );
 }
 
 function Cases() {
+  const [activeSlug, setActiveSlug] = useState<string | null>(null);
+  const [pos, setPos] = useState({ x: 0, y: 0 });
+  const active = cases.find((c) => c.slug === activeSlug);
+
   return (
-    <Section id="cases" label="(03) Кейсы" className="border-t border-white/5">
+    <Section id="cases" label="(03) Кейсы" className="relative border-t border-white/5">
       <FadeUp>
         <h2 className="display-xl mb-16 text-[26px] text-[var(--paper)] md:text-[3.6vw]">
           Избранные<br /><span style={{ color: "var(--bronze)" }}>работы.</span>
         </h2>
       </FadeUp>
-      <div>
+      <div className="relative">
         {cases.map((c, i) => (
-          <CaseCard key={c.slug} c={c} index={i} />
+          <CaseRow
+            key={c.slug}
+            c={c}
+            index={i}
+            onHover={setActiveSlug}
+            onLeave={() => setActiveSlug(null)}
+            onMove={(x, y) => setPos({ x, y })}
+          />
         ))}
-        <div className="h-px w-full bg-white/10" />
       </div>
+
+      <AnimatePresence>
+        {active && (
+          <motion.div
+            key={active.slug}
+            initial={{ opacity: 0, scale: 0.92, y: 10 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.94 }}
+            transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
+            className="pointer-events-none fixed z-[60] hidden overflow-hidden border border-white/10 shadow-2xl md:block"
+            style={{
+              left: Math.min(pos.x + 24, (typeof window !== "undefined" ? window.innerWidth : 1920) - 460),
+              top: Math.max(20, pos.y - 180),
+              width: 420,
+              height: 280,
+              background: "#0a0a0a",
+            }}
+          >
+            <img src={active.image} alt={active.title} className="h-full w-full object-cover" />
+            <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+            <div className="absolute bottom-3 left-4 text-[11px] uppercase tracking-[0.2em] text-[var(--paper)]">
+              {active.title}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </Section>
   );
 }
