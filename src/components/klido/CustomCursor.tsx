@@ -1,9 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 
 export function CustomCursor() {
-  const dotRef = useRef<HTMLDivElement>(null);
   const ringRef = useRef<HTMLDivElement>(null);
-  const [variant, setVariant] = useState<"default" | "link" | "image">("default");
+  const [variant, setVariant] = useState<"default" | "link">("default");
   const [enabled, setEnabled] = useState(false);
 
   useEffect(() => {
@@ -19,21 +18,15 @@ export function CustomCursor() {
 
     let mouseX = window.innerWidth / 2;
     let mouseY = window.innerHeight / 2;
-    let ringX = mouseX;
-    let ringY = mouseY;
+    let curX = mouseX;
+    let curY = mouseY;
     let raf = 0;
 
     const onMove = (e: MouseEvent) => {
       mouseX = e.clientX;
       mouseY = e.clientY;
-      if (dotRef.current) {
-        dotRef.current.style.transform = `translate3d(${mouseX - 3}px, ${mouseY - 3}px, 0)`;
-      }
-
       const target = e.target as HTMLElement | null;
-      if (target?.closest("img, [data-cursor='image']")) {
-        setVariant("image");
-      } else if (target?.closest("a, button, [role='button'], [data-cursor='link']")) {
+      if (target?.closest("a, button, [role='button'], img, [data-cursor='link'], [data-cursor='image']")) {
         setVariant("link");
       } else {
         setVariant("default");
@@ -41,10 +34,10 @@ export function CustomCursor() {
     };
 
     const tick = () => {
-      ringX += (mouseX - ringX) * 0.12;
-      ringY += (mouseY - ringY) * 0.12;
+      curX += (mouseX - curX) * 0.18;
+      curY += (mouseY - curY) * 0.18;
       if (ringRef.current) {
-        ringRef.current.style.transform = `translate3d(${ringX}px, ${ringY}px, 0) translate(-50%, -50%)`;
+        ringRef.current.style.transform = `translate3d(${curX}px, ${curY}px, 0) translate(-50%, -50%)`;
       }
       raf = requestAnimationFrame(tick);
     };
@@ -59,60 +52,26 @@ export function CustomCursor() {
 
   if (!enabled) return null;
 
-  const ringSize = variant === "image" ? 72 : variant === "link" ? 56 : 36;
-  const invert = "#ffffff";
-  const ringBg = variant === "link" || variant === "image" ? "rgba(255,255,255,0.85)" : "transparent";
+  const size = variant === "link" ? 56 : 18;
 
   return (
-    <>
-      <div
-        ref={dotRef}
-        aria-hidden
-        style={{
-          position: "fixed",
-          top: 0,
-          left: 0,
-          width: 8,
-          height: 8,
-          borderRadius: "9999px",
-          backgroundColor: invert,
-          mixBlendMode: "difference",
-          pointerEvents: "none",
-          zIndex: 9999,
-          opacity: variant === "default" ? 1 : 0,
-          transition: "opacity 200ms ease",
-          willChange: "transform",
-        }}
-      />
-      <div
-        ref={ringRef}
-        aria-hidden
-        style={{
-          position: "fixed",
-          top: 0,
-          left: 0,
-          width: ringSize,
-          height: ringSize,
-          borderRadius: "9999px",
-          border: `1.5px solid ${invert}`,
-          backgroundColor: ringBg,
-          mixBlendMode: "difference",
-          pointerEvents: "none",
-          zIndex: 9999,
-          transition: "width 200ms ease, height 200ms ease, background-color 200ms ease",
-          willChange: "transform",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          fontSize: 10,
-          color: invert,
-          fontFamily: "Inter, sans-serif",
-          letterSpacing: "0.05em",
-        }}
-      >
-        {variant === "image" ? "смотреть" : ""}
-      </div>
-    </>
+    <div
+      ref={ringRef}
+      aria-hidden
+      style={{
+        position: "fixed",
+        top: 0,
+        left: 0,
+        width: size,
+        height: size,
+        borderRadius: "9999px",
+        backgroundColor: "#C9A36A",
+        mixBlendMode: "difference",
+        pointerEvents: "none",
+        zIndex: 9999,
+        transition: "width 260ms cubic-bezier(0.22,1,0.36,1), height 260ms cubic-bezier(0.22,1,0.36,1)",
+        willChange: "transform",
+      }}
+    />
   );
 }
-
