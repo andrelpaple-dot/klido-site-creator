@@ -324,28 +324,65 @@ function WhatWeDo() {
     <Section label="(02) Что делаем" className="border-t border-white/5">
       <FadeUp>
         <h2 className="display-xl text-[34px] text-[var(--paper)] md:text-[6vw]">
-          Продуктовый<br />
-          <span style={{ color: "var(--bronze)" }}>подход.</span>
+          Каналы<br />
+          <span style={{ color: "var(--bronze)" }}>прямых продаж.</span>
         </h2>
       </FadeUp>
       <FadeUp delay={0.1}>
         <p className="mt-10 max-w-2xl text-lg text-[var(--muted-ink)]">
-          Анализ ниши — дизайн под конверсию — базовое SEO — интеграции с CRM и аналитикой.
-          Запускаем интернет-магазины и лендинги для брендов, торгующих на маркетплейсах.
+          Строим каналы прямых продаж для брендов: интернет-магазины и продающие лендинги.
+          Продуктовый подход — анализ ниши, дизайн под конверсию, базовое SEO,
+          интеграции с CRM и аналитикой. Каждый проект под конкретную бизнес-задачу, а не по шаблону.
         </p>
       </FadeUp>
 
-      <div className="mt-20 grid grid-cols-1 gap-x-8 gap-y-12 md:grid-cols-2">
+      <div className="mt-20 grid grid-cols-1 gap-x-8 gap-y-12 md:grid-cols-3">
         {[
+          { num: 11.67, suffix: "%", prefix: "до ", l: "конверсия на наших проектах", decimals: 2 },
           { num: 290, suffix: "%", prefix: "+", l: "рост онлайн-заказов после редизайна" },
           { num: 30, suffix: "+", prefix: "", l: "запущенных проектов для e-commerce" },
         ].map((m, i) => (
           <FadeUp key={i} delay={i * 0.08}>
             <div className="border-t border-white/10 pt-6">
               <div className="display-xl text-[56px] leading-none text-[var(--paper)] md:text-[5vw]">
-                <Counter to={m.num} suffix={m.suffix} prefix={m.prefix} />
+                <Counter to={m.num} suffix={m.suffix} prefix={m.prefix} decimals={m.decimals} />
               </div>
               <div className="mt-6 max-w-[220px] text-sm text-[var(--muted-ink)]">{m.l}</div>
+            </div>
+          </FadeUp>
+        ))}
+      </div>
+    </Section>
+  );
+}
+
+function HowSystem() {
+  const steps = [
+    { t: "Трафик приходит на сайт", d: "Из рекламы, соцсетей, поиска — отовсюду, куда вы вкладываетесь." },
+    { t: "Сайт превращает в покупателя", d: "Конверсионная структура, быстрая загрузка, удобный заказ." },
+    { t: "База клиентов остаётся у вас", d: "Email, телефон, история заказов — основа для повторных продаж." },
+    { t: "Повторные продажи растят выручку", d: "Свой канал даёт прямой контакт с клиентом и продажи без посредников." },
+  ];
+  return (
+    <Section id="system" label="(03) Система" className="border-t border-white/5">
+      <FadeUp>
+        <h2 className="display-xl text-[34px] text-[var(--paper)] md:text-[6vw]">
+          Как это<br />
+          <span style={{ color: "var(--bronze)" }}>работает.</span>
+        </h2>
+      </FadeUp>
+      <div className="mt-16 grid grid-cols-1 gap-px bg-white/10 md:grid-cols-4">
+        {steps.map((s, i) => (
+          <FadeUp key={i} delay={i * 0.06}>
+            <div className="flex h-full flex-col bg-[var(--ink)] p-8 md:p-10">
+              <div className="font-display text-3xl font-bold md:text-4xl" style={{ color: "var(--bronze)" }}>
+                0{i + 1}
+              </div>
+              <h3 className="display-xl mt-6 text-xl text-[var(--paper)] md:text-2xl">{s.t}</h3>
+              <p className="mt-4 text-[14px] leading-relaxed text-[var(--muted-ink)]">{s.d}</p>
+              {i < steps.length - 1 && (
+                <div className="mt-6 hidden text-2xl text-[var(--bronze)]/60 md:block">→</div>
+              )}
             </div>
           </FadeUp>
         ))}
