@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import faviconAsset from "@/assets/klido-favicon.png.asset.json";
 
 const TG = "https://t.me/AndrewGeiger";
 
@@ -30,8 +31,9 @@ export function SiteHeader() {
       <div className="mx-auto flex max-w-[1400px] items-center justify-between px-6 py-5 md:px-16">
         <a
           href="#top"
-          className="font-display text-xl font-extrabold uppercase tracking-tight text-[var(--paper)]"
+          className="inline-flex items-center gap-2.5 font-display text-xl font-extrabold uppercase tracking-tight text-[var(--paper)]"
         >
+          <img src={faviconAsset.url} alt="" width={28} height={28} className="h-7 w-7 rounded-[6px]" />
           Klido<span style={{ color: "var(--bronze)" }}>.</span>
         </a>
         <nav className="hidden items-center gap-10 text-xs uppercase tracking-[0.18em] text-[var(--muted-ink)] md:flex">
