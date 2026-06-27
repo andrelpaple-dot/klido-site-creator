@@ -238,37 +238,45 @@ function ManifestoModel({
   );
 }
 
-type TileKind = "orb" | "cube" | "ring" | "spark" | "panel" | "chip";
+type TileKind = "orb" | "cube" | "ring" | "spark" | "chip";
 
 function ManifestoTile({
   kind,
   progress,
   start,
   end,
+  side,
 }: {
   kind: TileKind;
   progress: ReturnType<typeof useScroll>["scrollYProgress"];
   start: number;
   end: number;
+  side: "left" | "right";
 }) {
-  const opacity = useTransform(progress, [start, end], [0.05, 1]);
-  const scale = useTransform(progress, [start, end], [0.7, 1]);
-  const rotate = useTransform(progress, [start, end], [-22, 0]);
+  const opacity = useTransform(progress, [start, (start + end) / 2, end], [0, 1, 1]);
+  const scale = useTransform(progress, [start, end], [0.55, 1]);
+  const rotate = useTransform(progress, [start, end], [side === "left" ? -28 : 28, 0]);
+  const x = useTransform(
+    progress,
+    [start, end],
+    [side === "left" ? -80 : 80, 0],
+  );
 
   const gradients: Record<TileKind, string> = {
     orb: "radial-gradient(circle at 35% 30%, #FFE2B8 0%, #E2864A 38%, #8A2E18 78%, #2B0B05 100%)",
     cube: "linear-gradient(135deg, #C9A36A 0%, #5B3A1F 60%, #1B0F07 100%)",
     ring: "radial-gradient(circle at 50% 50%, #1E1E22 0%, #0B0B0E 70%), linear-gradient(135deg, #C9A36A, #4B2D14)",
     spark: "radial-gradient(circle at 50% 50%, #F7E7C8 0%, #C9A36A 35%, #2B1B0E 100%)",
-    panel: "linear-gradient(160deg, #161618 0%, #2A2A2E 100%)",
     chip: "linear-gradient(135deg, #2E2E32 0%, #0B0B0E 100%)",
   };
 
   return (
-    <motion.span
-      className="manifesto-tile"
-      style={{ opacity, scale, rotate, background: gradients[kind] }}
+    <motion.div
       aria-hidden
+      className={`manifesto-side-tile pointer-events-none absolute top-1/2 -translate-y-1/2 ${
+        side === "left" ? "left-[2%] md:left-[6%]" : "right-[2%] md:right-[6%]"
+      }`}
+      style={{ opacity, scale, rotate, x, background: gradients[kind] }}
     >
       <svg viewBox="0 0 100 100" preserveAspectRatio="xMidYMid slice">
         {kind === "orb" && (
@@ -295,12 +303,6 @@ function ManifestoTile({
             <path d="M50 8v84M8 50h84M22 22l56 56M78 22 22 78" />
           </g>
         )}
-        {kind === "panel" && (
-          <g fill="none" stroke="rgba(201,163,106,0.95)" strokeWidth="3.5" strokeLinejoin="round">
-            <path d="M18 26h64v52H18z" />
-            <path d="M18 42h64M30 56h40M30 66h22" stroke="rgba(245,245,243,0.5)" />
-          </g>
-        )}
         {kind === "chip" && (
           <g fill="none" stroke="rgba(201,163,106,0.9)" strokeWidth="3.5" strokeLinejoin="round">
             <rect x="24" y="24" width="52" height="52" rx="6" />
@@ -309,33 +311,97 @@ function ManifestoTile({
           </g>
         )}
       </svg>
-    </motion.span>
+    </motion.div>
   );
 }
 
-type Token = string | { tile: TileKind };
+type LineDef = {
+  tokens: string[];
+  accents?: string[];
+  tile?: { kind: TileKind; side: "left" | "right" };
+};
+
+function ManifestoLine({
+  line,
+  progress,
+  startSlot,
+  step,
+  revealStart,
+}: {
+  line: LineDef;
+  progress: ReturnType<typeof useScroll>["scrollYProgress"];
+  startSlot: number;
+  step: number;
+  revealStart: number;
+}) {
+  const lineStart = revealStart + startSlot * step;
+  const lineEnd = revealStart + (startSlot + line.tokens.length) * step;
+  const tileStart = lineStart;
+  const tileEnd = lineStart + (lineEnd - lineStart) * 0.6;
+
+  const shift = line.tile ? (line.tile.side === "left" ? 1 : -1) : 0;
+  const x = useTransform(progress, [tileStart, tileEnd], [0, shift * 60]);
+
+  return (
+    <div className="manifesto-line relative">
+      {line.tile && (
+        <ManifestoTile
+          kind={line.tile.kind}
+          progress={progress}
+          start={tileStart}
+          end={tileEnd}
+          side={line.tile.side}
+        />
+      )}
+      <motion.span style={{ x, display: "inline-block" }}>
+        {line.tokens.map((tok, ti) => {
+          const i = startSlot + ti;
+          const start = revealStart + i * step;
+          const end = start + step * 2.4;
+          const accent = !!line.accents?.includes(tok);
+          return (
+            <ManifestoWord
+              key={ti}
+              progress={progress}
+              start={start}
+              end={end}
+              accent={accent}
+            >
+              {tok}
+            </ManifestoWord>
+          );
+        })}
+      </motion.span>
+    </div>
+  );
+}
 
 function Manifesto() {
-  const lines: { tokens: Token[]; accents?: string[] }[] = [
+  const lines: LineDef[] = [
     {
-      tokens: ["БЕРЁМ", { tile: "orb" }, "ЗАДАЧУ.", "ДУМАЕМ"],
+      tokens: ["БЕРЁМ", "ЗАДАЧУ.", "ДУМАЕМ"],
       accents: ["ДУМАЕМ"],
+      tile: { kind: "orb", side: "right" },
     },
     {
-      tokens: ["КАК", { tile: "cube" }, "ПРОДАКТ,", "СТРОИМ"],
+      tokens: ["КАК", "ПРОДАКТ,", "СТРОИМ"],
       accents: ["ПРОДАКТ,"],
+      tile: { kind: "cube", side: "left" },
     },
     {
-      tokens: ["КАК", { tile: "ring" }, "ИНЖЕНЕР."],
+      tokens: ["КАК", "ИНЖЕНЕР."],
       accents: ["ИНЖЕНЕР."],
+      tile: { kind: "ring", side: "right" },
     },
     {
-      tokens: ["ЗАПУСКАЕМ", { tile: "spark" }, "ЗА", "НЕДЕЛИ —"],
+      tokens: ["ЗАПУСКАЕМ", "ЗА", "НЕДЕЛИ —"],
       accents: ["НЕДЕЛИ —"],
+      tile: { kind: "spark", side: "left" },
     },
     {
-      tokens: ["НЕ", { tile: "chip" }, "ЗА", "МЕСЯЦЫ."],
+      tokens: ["НЕ", "ЗА", "МЕСЯЦЫ."],
       accents: ["МЕСЯЦЫ."],
+      tile: { kind: "chip", side: "right" },
     },
   ];
 
@@ -354,7 +420,7 @@ function Manifesto() {
 
   const progressWidth = useTransform(scrollYProgress, [0.02, 0.95], ["0%", "100%"]);
 
-  let slotIndex = 0;
+  let slotCursor = 0;
 
   return (
     <section
@@ -381,38 +447,20 @@ function Manifesto() {
           <span className="eyebrow">(01) Манифест</span>
         </div>
         <div className="manifesto-copy font-display uppercase text-center">
-          {lines.map((line, li) => (
-            <div key={li} className="manifesto-line">
-              {line.tokens.map((tok, ti) => {
-                const i = slotIndex++;
-                const start = REVEAL_START + i * step;
-                const end = start + step * 2.4;
-                if (typeof tok === "object") {
-                  return (
-                    <ManifestoTile
-                      key={`${li}-${ti}`}
-                      kind={tok.tile}
-                      progress={scrollYProgress}
-                      start={start}
-                      end={end}
-                    />
-                  );
-                }
-                const accent = !!line.accents?.includes(tok);
-                return (
-                  <ManifestoWord
-                    key={`${li}-${ti}`}
-                    progress={scrollYProgress}
-                    start={start}
-                    end={end}
-                    accent={accent}
-                  >
-                    {tok}
-                  </ManifestoWord>
-                );
-              })}
-            </div>
-          ))}
+          {lines.map((line, li) => {
+            const startSlot = slotCursor;
+            slotCursor += line.tokens.length;
+            return (
+              <ManifestoLine
+                key={li}
+                line={line}
+                progress={scrollYProgress}
+                startSlot={startSlot}
+                step={step}
+                revealStart={REVEAL_START}
+              />
+            );
+          })}
         </div>
       </div>
     </section>
