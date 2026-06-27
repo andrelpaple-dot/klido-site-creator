@@ -336,7 +336,7 @@ function ManifestoLine({
   const lineStart = revealStart + startSlot * step;
   const lineEnd = revealStart + (startSlot + line.tokens.length) * step;
   const tileStart = lineStart;
-  const tileEnd = lineStart + (lineEnd - lineStart) * 0.6;
+  const tileEnd = lineEnd;
 
   const tileOnLeft = line.tile?.side === "left";
   const shift = line.tile ? (tileOnLeft ? 1 : -1) : 0;
