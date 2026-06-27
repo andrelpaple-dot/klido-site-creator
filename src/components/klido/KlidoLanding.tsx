@@ -254,12 +254,12 @@ function ManifestoTile({
   side: "left" | "right";
 }) {
   const opacity = useTransform(progress, [start, (start + end) / 2, end], [0, 1, 1]);
-  const scale = useTransform(progress, [start, end], [0.4, 1]);
+  const scale = useTransform(progress, [start, end], [0.72, 1]);
   const rotate = useTransform(progress, [start, end], [side === "left" ? -28 : 28, 0]);
   const x = useTransform(
     progress,
     [start, end],
-    [side === "left" ? -40 : 40, 0],
+    [side === "left" ? -18 : 18, 0],
   );
 
   const gradients: Record<TileKind, string> = {
@@ -339,7 +339,7 @@ function ManifestoLine({
 
   const tileOnLeft = line.tile?.side === "left";
   const shift = line.tile ? (tileOnLeft ? 1 : -1) : 0;
-  const textX = useTransform(progress, [tileStart, tileEnd], [0, shift * 28]);
+  const textX = useTransform(progress, [tileStart, tileEnd], [0, shift * 14]);
 
   const words = (
     <motion.span style={{ x: textX, display: "inline-block" }}>
