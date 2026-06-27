@@ -1,4 +1,5 @@
 import { motion, useInView, useMotionValue, useTransform, animate, useScroll } from "framer-motion";
+import { Link } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import { CustomCursor } from "@/components/klido/CustomCursor";
 import { ScrollProgress } from "@/components/klido/ScrollProgress";
