@@ -149,7 +149,7 @@ function CasePage() {
         <section className="px-6 md:px-16">
           <div className="mx-auto max-w-[1400px]">
             <div className="relative overflow-hidden border border-white/10 bg-white/[0.02]">
-              <img src={c.image} alt={c.title} className="h-full w-full object-cover" />
+              <img src={c.fullImage ?? c.image} alt={c.title} className="h-full w-full object-cover" />
             </div>
           </div>
         </section>
