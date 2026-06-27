@@ -337,39 +337,51 @@ function ManifestoLine({
   const tileStart = lineStart;
   const tileEnd = lineStart + (lineEnd - lineStart) * 0.6;
 
-  const shift = line.tile ? (line.tile.side === "left" ? 1 : -1) : 0;
-  const x = useTransform(progress, [tileStart, tileEnd], [0, shift * 60]);
+  const tileOnLeft = line.tile?.side === "left";
+
+  const words = (
+    <span>
+      {line.tokens.map((tok, ti) => {
+        const i = startSlot + ti;
+        const start = revealStart + i * step;
+        const end = start + step * 2.4;
+        const accent = !!line.accents?.includes(tok);
+        return (
+          <ManifestoWord
+            key={ti}
+            progress={progress}
+            start={start}
+            end={end}
+            accent={accent}
+          >
+            {tok}
+          </ManifestoWord>
+        );
+      })}
+    </span>
+  );
 
   return (
-    <div className="manifesto-line relative">
-      {line.tile && (
+    <div className="manifesto-line">
+      {line.tile && tileOnLeft && (
         <ManifestoTile
           kind={line.tile.kind}
           progress={progress}
           start={tileStart}
           end={tileEnd}
-          side={line.tile.side}
+          side="left"
         />
       )}
-      <motion.span style={{ x, display: "inline-block" }}>
-        {line.tokens.map((tok, ti) => {
-          const i = startSlot + ti;
-          const start = revealStart + i * step;
-          const end = start + step * 2.4;
-          const accent = !!line.accents?.includes(tok);
-          return (
-            <ManifestoWord
-              key={ti}
-              progress={progress}
-              start={start}
-              end={end}
-              accent={accent}
-            >
-              {tok}
-            </ManifestoWord>
-          );
-        })}
-      </motion.span>
+      {words}
+      {line.tile && !tileOnLeft && (
+        <ManifestoTile
+          kind={line.tile.kind}
+          progress={progress}
+          start={tileStart}
+          end={tileEnd}
+          side="right"
+        />
+      )}
     </div>
   );
 }
