@@ -1,4 +1,5 @@
 import { motion, useInView, useMotionValue, useTransform, animate, useScroll } from "framer-motion";
+import { Link } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import { CustomCursor } from "@/components/klido/CustomCursor";
 import { ScrollProgress } from "@/components/klido/ScrollProgress";
@@ -40,11 +41,14 @@ function Section({
   );
 }
 
-function Counter({ to, suffix = "", prefix = "" }: { to: number; suffix?: string; prefix?: string }) {
+function Counter({ to, suffix = "", prefix = "", decimals = 0 }: { to: number; suffix?: string; prefix?: string; decimals?: number }) {
   const ref = useRef<HTMLSpanElement>(null);
   const inView = useInView(ref, { once: true, amount: 0.5 });
   const mv = useMotionValue(0);
-  const rounded = useTransform(mv, (v) => `${prefix}${Math.round(v).toLocaleString("ru-RU")}${suffix}`);
+  const rounded = useTransform(mv, (v) => {
+    const n = decimals > 0 ? v.toFixed(decimals) : Math.round(v).toLocaleString("ru-RU");
+    return `${prefix}${n}${suffix}`;
+  });
   useEffect(() => {
     if (inView) {
       const ctrl = animate(mv, to, { duration: 1.4, ease: [0.16, 1, 0.3, 1] });
@@ -104,9 +108,9 @@ function Hero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1.1, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
         >
-          интернет<span style={{ color: "var(--bronze)" }}>—</span>магазины<br />
-          для брендов<br />
-          <span style={{ color: "var(--bronze)" }}>на WB и Ozon</span>
+          Klido. Строим<br />
+          каналы<br />
+          <span style={{ color: "var(--bronze)" }}>прямых продаж</span>
         </motion.h1>
 
         <div className="mt-12 grid grid-cols-12 gap-8">
@@ -116,8 +120,8 @@ function Hero() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.6, duration: 0.8 }}
           >
-            Запускаем внешний канал продаж, куда вы льёте свой трафик — и удерживаете маржу,
-            которую забирают маркетплейсы.
+            Интернет-магазины, которые превращают трафик в продажи
+            и возвращают бренду контроль над клиентом.
           </motion.p>
 
           <motion.div
@@ -137,6 +141,7 @@ function Hero() {
             </a>
           </motion.div>
         </div>
+
       </motion.div>
     </section>
   );
@@ -241,14 +246,14 @@ function ManifestoModel({
 
 function Manifesto() {
   const lines = [
-    <>Берём</>,
-    <>задачу,</>,
-    <>думаем <span>как</span></>,
-    <><span>продакт</span> и строим</>,
-    <>как <span>инженер.</span></>,
-    <>запускаем</>,
-    <>за <span>недели,</span></>,
-    <>не за <span>месяцы.</span></>,
+    <>Свой <span>канал</span> продаж —</>,
+    <>это прямой <span>контакт</span></>,
+    <>с клиентом и <span>контроль</span>.</>,
+    <>База клиентов и <span>повторные</span></>,
+    <>продажи <span>остаются</span> у вас.</>,
+    <>Мы строим <span>систему</span></>,
+    <>с конверсией,</>,
+    <>которую <span>можно</span> проверить.</>,
   ];
 
   const ref = useRef<HTMLElement>(null);
@@ -323,28 +328,65 @@ function WhatWeDo() {
     <Section label="(02) Что делаем" className="border-t border-white/5">
       <FadeUp>
         <h2 className="display-xl text-[34px] text-[var(--paper)] md:text-[6vw]">
-          Продуктовый<br />
-          <span style={{ color: "var(--bronze)" }}>подход.</span>
+          Каналы<br />
+          <span style={{ color: "var(--bronze)" }}>прямых продаж.</span>
         </h2>
       </FadeUp>
       <FadeUp delay={0.1}>
         <p className="mt-10 max-w-2xl text-lg text-[var(--muted-ink)]">
-          Анализ ниши — дизайн под конверсию — базовое SEO — интеграции с CRM и аналитикой.
-          Запускаем интернет-магазины и лендинги для брендов, торгующих на маркетплейсах.
+          Строим каналы прямых продаж для брендов: интернет-магазины и продающие лендинги.
+          Продуктовый подход — анализ ниши, дизайн под конверсию, базовое SEO,
+          интеграции с CRM и аналитикой. Каждый проект под конкретную бизнес-задачу, а не по шаблону.
         </p>
       </FadeUp>
 
-      <div className="mt-20 grid grid-cols-1 gap-x-8 gap-y-12 md:grid-cols-2">
+      <div className="mt-20 grid grid-cols-1 gap-x-8 gap-y-12 md:grid-cols-3">
         {[
+          { num: 11.67, suffix: "%", prefix: "до ", l: "конверсия на наших проектах", decimals: 2 },
           { num: 290, suffix: "%", prefix: "+", l: "рост онлайн-заказов после редизайна" },
           { num: 30, suffix: "+", prefix: "", l: "запущенных проектов для e-commerce" },
         ].map((m, i) => (
           <FadeUp key={i} delay={i * 0.08}>
             <div className="border-t border-white/10 pt-6">
               <div className="display-xl text-[56px] leading-none text-[var(--paper)] md:text-[5vw]">
-                <Counter to={m.num} suffix={m.suffix} prefix={m.prefix} />
+                <Counter to={m.num} suffix={m.suffix} prefix={m.prefix} decimals={m.decimals} />
               </div>
               <div className="mt-6 max-w-[220px] text-sm text-[var(--muted-ink)]">{m.l}</div>
+            </div>
+          </FadeUp>
+        ))}
+      </div>
+    </Section>
+  );
+}
+
+function HowSystem() {
+  const steps = [
+    { t: "Трафик приходит на сайт", d: "Из рекламы, соцсетей, поиска — отовсюду, куда вы вкладываетесь." },
+    { t: "Сайт превращает в покупателя", d: "Конверсионная структура, быстрая загрузка, удобный заказ." },
+    { t: "База клиентов остаётся у вас", d: "Email, телефон, история заказов — основа для повторных продаж." },
+    { t: "Повторные продажи растят выручку", d: "Свой канал даёт прямой контакт с клиентом и продажи без посредников." },
+  ];
+  return (
+    <Section id="system" label="(03) Система" className="border-t border-white/5">
+      <FadeUp>
+        <h2 className="display-xl text-[34px] text-[var(--paper)] md:text-[6vw]">
+          Как это<br />
+          <span style={{ color: "var(--bronze)" }}>работает.</span>
+        </h2>
+      </FadeUp>
+      <div className="mt-16 grid grid-cols-1 gap-px bg-white/10 md:grid-cols-4">
+        {steps.map((s, i) => (
+          <FadeUp key={i} delay={i * 0.06}>
+            <div className="flex h-full flex-col bg-[var(--ink)] p-8 md:p-10">
+              <div className="font-display text-3xl font-bold md:text-4xl" style={{ color: "var(--bronze)" }}>
+                0{i + 1}
+              </div>
+              <h3 className="display-xl mt-6 text-xl text-[var(--paper)] md:text-2xl">{s.t}</h3>
+              <p className="mt-4 text-[14px] leading-relaxed text-[var(--muted-ink)]">{s.d}</p>
+              {i < steps.length - 1 && (
+                <div className="mt-6 hidden text-2xl text-[var(--bronze)]/60 md:block">→</div>
+              )}
             </div>
           </FadeUp>
         ))}
@@ -430,6 +472,28 @@ function CaseCard({ c, index }: { c: (typeof cases)[number]; index: number }) {
               </div>
             ))}
           </div>
+
+          <div className="mt-8 flex flex-wrap items-center gap-3">
+            <Link
+              to="/cases/$slug"
+              params={{ slug: c.slug }}
+              className="group/btn inline-flex items-center gap-3 border border-[var(--paper)]/25 px-5 py-3 text-[11px] uppercase tracking-[0.2em] text-[var(--paper)] transition-all hover:border-[var(--bronze)] hover:bg-[var(--bronze)] hover:text-[var(--ink)]"
+            >
+              Смотреть кейс
+              <span aria-hidden className="transition-transform group-hover/btn:translate-x-1">→</span>
+            </Link>
+            {c.liveUrl && (
+              <a
+                href={c.liveUrl}
+                target="_blank"
+                rel="noreferrer"
+                className="group/btn inline-flex items-center gap-3 bg-[var(--bronze)] px-5 py-3 text-[11px] uppercase tracking-[0.2em] text-[var(--ink)] transition-all hover:bg-[var(--paper)]"
+              >
+                Открыть сайт
+                <span aria-hidden className="transition-transform group-hover/btn:translate-x-1">↗</span>
+              </a>
+            )}
+          </div>
         </div>
       </div>
     </motion.article>
@@ -456,10 +520,10 @@ function Cases() {
 
 function FitFor() {
   const items = [
-    { t: "Продаёте на WB или Ozon", d: "Комиссии 50%+ съедают маржу. Нужен внешний канал для своего трафика." },
-    { t: "Бренд из Instagram / Telegram", d: "Аудитория растёт, обработка заказов в DM съедает время. Нужен сайт с CRM." },
-    { t: "Старый интернет-магазин", d: "Сайт с 2018 года, конверсия 1–2%. Готовы к редизайну под современные стандарты." },
-    { t: "Новый бренд после ребрендинга", d: "Сменили позиционирование. Нужен сайт за 2 недели, а не 2 месяца." },
+    { t: "Растущий бренд без своего сайта", d: "Продаёте через соцсети, маркетплейсы или офлайн. Нужен свой канал, чтобы не зависеть от посредников и комиссий." },
+    { t: "Бренд из Instagram / Telegram", d: "Аудитория растёт, ручная обработка заказов в DM съедает время. Нужен сайт с автоматизацией и интеграцией с CRM." },
+    { t: "Старый интернет-магазин", d: "Сайт работает с 2018 года, конверсия 1–2%. Готовы к редизайну под современные стандарты." },
+    { t: "Новый бренд после ребрендинга", d: "Сменили позиционирование или линейку. Нужен новый сайт быстро." },
   ];
   return (
     <section id="fitfor" className="relative border-t border-white/5 px-6 py-28 md:px-16 md:py-40 lg:py-48">
@@ -490,10 +554,10 @@ function FitFor() {
 
 function Principles() {
   const items = [
-    { t: "Скорость без потери качества", d: "AI-инструменты и собственные шаблоны сокращают разработку в 3 раза — без компромиссов по UX." },
-    { t: "Полная прозрачность", d: "Доступ к Figma, репозиторию и аналитике с первого дня. Вы видите процесс, а не «черный ящик»." },
-    { t: "Фокус на бизнес-метрики", d: "Считаем конверсию, выручку и LTV — а не часы и слои в Photoshop." },
-    { t: "Стратегия до дизайна", d: "Сначала разбираем нишу, аудиторию и цифры — потом рисуем. Поэтому решения попадают в цель." },
+    { t: "Скорость без потери качества", d: "AI-инструменты сокращают разработку в 3 раза — без компромиссов по UX." },
+    { t: "Прозрачность", d: "Доступ к Figma, репозиторию и аналитике с первого дня. Вы видите процесс, а не «чёрный ящик»." },
+    { t: "Кейсы, которые можно проверить", d: "Не картинки — живые сайты. Открывайте и смотрите." },
+    { t: "Честно говорим нет", d: "Если идея не сработает — скажем до старта, а не после." },
   ];
   return (
     <Section id="approach" label="(05) Подход" className="border-t border-white/5">
@@ -527,14 +591,14 @@ function FinalCTA() {
       <div className="text-center">
         <FadeUp>
           <h2 className="display-xl text-[52px] text-[var(--paper)] md:text-[8vw]">
-            Готовы<br />
-            <span style={{ color: "var(--bronze)" }}>запустить?</span>
+            Готовы запустить<br />
+            <span style={{ color: "var(--bronze)" }}>свой канал продаж?</span>
           </h2>
         </FadeUp>
         <FadeUp delay={0.1}>
           <p className="mx-auto mt-10 max-w-xl text-base text-[var(--muted-ink)] md:text-lg">
-            30 минут на разговор. Покажем 2–3 похожих кейса под вашу нишу
-            и расскажем, как выстроим внешний канал именно для вашего бренда.
+            30 минут на разговор. Покажем кейсы под вашу нишу — с живыми ссылками.
+            Если поймём, что не подходим — скажем прямо.
           </p>
         </FadeUp>
         <FadeUp delay={0.2}>
@@ -692,7 +756,9 @@ export function KlidoLanding() {
           <Hero />
           <Manifesto />
           <WhatWeDo />
+          <HowSystem />
           <Cases />
+
           <FitFor />
           <Principles />
           <FinalCTA />
