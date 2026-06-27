@@ -241,12 +241,12 @@ function ManifestoModel({
 function Manifesto() {
   const phrases: { text: string; accents?: string[] }[] = [
     {
-      text: "Свой канал продаж — это прямой контакт с клиентом и контроль.",
-      accents: ["канал", "контакт", "контроль."],
+      text: "Свой сайт — это прямой контакт с клиентом.",
+      accents: ["сайт", "прямой", "клиентом."],
     },
     {
-      text: "База клиентов и повторные продажи остаются у вас.",
-      accents: ["повторные", "остаются"],
+      text: "Клиенты и повторные заказы остаются у вас.",
+      accents: ["Клиенты", "остаются"],
     },
     {
       text: "Мы строим систему с конверсией, которую можно проверить.",
@@ -259,13 +259,14 @@ function Manifesto() {
   const ref = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({
     target: ref,
-    offset: ["start 85%", "end 15%"],
+    offset: ["start 85%", "end 40%"],
   });
 
-  const REVEAL_START = 0.05;
-  const REVEAL_END = 0.95;
+  const REVEAL_START = 0.04;
+  const REVEAL_END = 0.78;
   const span = REVEAL_END - REVEAL_START;
   const step = span / totalWords;
+
 
   const progressWidth = useTransform(scrollYProgress, [0.02, 0.95], ["0%", "100%"]);
 
