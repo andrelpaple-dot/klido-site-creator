@@ -257,10 +257,25 @@ function Manifesto() {
   const totalWords = phrases.reduce((a, p) => a + p.text.split(/\s+/).length, 0);
 
   const ref = useRef<HTMLElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["start start", "end end"],
-  });
+  const { scrollY } = useScroll();
+  const [bounds, setBounds] = useState({ start: 0, end: 1 });
+
+  useEffect(() => {
+    const measure = () => {
+      const el = ref.current;
+      if (!el) return;
+      const top = el.getBoundingClientRect().top + window.scrollY;
+      const h = el.offsetHeight;
+      const vh = window.innerHeight;
+      setBounds({ start: top, end: top + h - vh });
+    };
+    measure();
+    window.addEventListener("resize", measure);
+    return () => window.removeEventListener("resize", measure);
+  }, []);
+
+  const scrollYProgress = useTransform(scrollY, [bounds.start, bounds.end], [0, 1], { clamp: true });
+
 
   const REVEAL_START = 0.08;
   const REVEAL_END = 0.92;
