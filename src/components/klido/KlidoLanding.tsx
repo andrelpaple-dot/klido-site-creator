@@ -147,33 +147,27 @@ function Hero() {
   );
 }
 
-function ManifestoLine({
+function ManifestoWord({
   progress,
-  index,
+  start,
+  end,
+  accent,
   children,
 }: {
   progress: ReturnType<typeof useScroll>["scrollYProgress"];
-  index: number;
+  start: number;
+  end: number;
+  accent?: boolean;
   children: React.ReactNode;
 }) {
-  const start = index * 0.095;
-  const opacity = useTransform(progress, [start, start + 0.12, 0.86], [0.28, 1, 1]);
-  const x = useTransform(progress, [start, start + 0.16], [index % 2 ? 86 : -86, 0]);
-  const y = useTransform(progress, [start, start + 0.16], [44, 0]);
-  const scale = useTransform(progress, [start, start + 0.16, 0.9], [0.92, 1, 1.015]);
-  const clipPath = useTransform(
-    progress,
-    [start, start + 0.16],
-    ["inset(0 100% 0 0)", "inset(0 0% 0 0)"],
-  );
-
+  const opacity = useTransform(progress, [start, end], [0.12, 1]);
   return (
-    <motion.div
-      className="manifesto-line"
-      style={{ opacity, x, y, scale, clipPath }}
+    <motion.span
+      className="manifesto-word"
+      style={{ opacity, color: accent ? "var(--bronze)" : "var(--paper)" }}
     >
-      {children}
-    </motion.div>
+      {children}{" "}
+    </motion.span>
   );
 }
 
@@ -245,16 +239,35 @@ function ManifestoModel({
 }
 
 function Manifesto() {
-  const lines = [
-    <>Свой <span>канал</span> продаж —</>,
-    <>это прямой <span>контакт</span></>,
-    <>с клиентом и <span>контроль</span>.</>,
-    <>База клиентов и <span>повторные</span></>,
-    <>продажи <span>остаются</span> у вас.</>,
-    <>Мы строим <span>систему</span></>,
-    <>с конверсией,</>,
-    <>которую <span>можно</span> проверить.</>,
+  // 3 фразы, акценты помечены *слово*
+  const phrases: { text: string; accents?: string[] }[] = [
+    {
+      text: "Свой канал продаж — это прямой контакт с клиентом и контроль.",
+      accents: ["канал", "контакт", "контроль."],
+    },
+    {
+      text: "База клиентов и повторные продажи остаются у вас.",
+      accents: ["повторные", "остаются"],
+    },
+    {
+      text: "Мы строим систему с конверсией, которую можно проверить.",
+      accents: ["систему", "можно"],
+    },
   ];
+
+  // плоский список слов с разделителями фраз
+  type Token = { word: string; accent: boolean; breakAfter: boolean };
+  const tokens: Token[] = [];
+  phrases.forEach((p, pi) => {
+    const words = p.text.split(/\s+/);
+    words.forEach((w, wi) => {
+      tokens.push({
+        word: w,
+        accent: !!p.accents?.includes(w),
+        breakAfter: wi === words.length - 1 && pi < phrases.length - 1,
+      });
+    });
+  });
 
   const ref = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({
@@ -262,60 +275,61 @@ function Manifesto() {
     offset: ["start start", "end end"],
   });
 
-  const progressWidth = useTransform(scrollYProgress, [0.02, 0.86], ["0%", "100%"]);
-  const railY = useTransform(scrollYProgress, [0, 1], ["0%", "-18%"]);
-  const haloScale = useTransform(scrollYProgress, [0, 0.45, 1], [0.9, 1.16, 1]);
-  const haloRotate = useTransform(scrollYProgress, [0, 1], [-8, 18]);
+  // Слова раскрываются в диапазоне 0.05 - 0.85 прокрутки
+  const REVEAL_START = 0.05;
+  const REVEAL_END = 0.85;
+  const span = REVEAL_END - REVEAL_START;
+  const step = span / tokens.length;
+
+  const progressWidth = useTransform(scrollYProgress, [0.02, 0.9], ["0%", "100%"]);
 
   return (
     <section
       ref={ref}
       id="manifesto"
       className="relative border-t border-white/5"
-      style={{ height: "430vh" }}
+      style={{ height: "360vh" }}
     >
       <div className="sticky top-0 flex h-screen items-center overflow-hidden bg-[var(--ink)]">
-        <motion.div
+        {/* мягкое бронзовое свечение */}
+        <div
           aria-hidden
-          className="manifesto-halo pointer-events-none absolute left-[8%] top-[12%] h-[76vh] w-[76vh]"
-          style={{ scale: haloScale, rotate: haloRotate }}
+          className="pointer-events-none absolute left-1/2 top-1/2 h-[80vh] w-[80vh] -translate-x-1/2 -translate-y-1/2 rounded-full"
+          style={{
+            background:
+              "radial-gradient(circle, rgba(201,163,106,0.18) 0%, rgba(201,163,106,0.06) 35%, transparent 70%)",
+            filter: "blur(20px)",
+          }}
         />
-        <motion.div
-          aria-hidden
-          className="pointer-events-none absolute inset-x-0 top-0 h-full opacity-50"
-          style={{ y: railY }}
-        >
-          {Array.from({ length: 9 }).map((_, i) => (
-            <div
-              key={i}
-              className="absolute left-0 h-px w-full bg-[var(--paper)]/10"
-              style={{ top: `${i * 14}%` }}
-            />
-          ))}
-        </motion.div>
 
-        <ManifestoModel progress={scrollYProgress} kind="cube" className="left-[6%] top-[16%] h-24 w-24 md:h-36 md:w-36" range={[0.04, 0.16, 0.52]} drift={[50, -120, -18]} />
-        <ManifestoModel progress={scrollYProgress} kind="ring" className="right-[7%] top-[18%] h-28 w-28 md:h-44 md:w-44" range={[0.12, 0.28, 0.68]} drift={[80, -150, 24]} />
-        <ManifestoModel progress={scrollYProgress} kind="panel" className="left-[12%] bottom-[17%] h-24 w-24 md:h-40 md:w-40" range={[0.26, 0.42, 0.78]} drift={[90, -90, 10]} />
-        <ManifestoModel progress={scrollYProgress} kind="cone" className="right-[16%] bottom-[14%] h-24 w-24 md:h-36 md:w-36" range={[0.38, 0.56, 0.9]} drift={[70, -120, -28]} />
-        <ManifestoModel progress={scrollYProgress} kind="spark" className="left-[49%] top-[9%] h-16 w-16 md:h-24 md:w-24" range={[0.52, 0.68, 0.98]} drift={[45, -100, 35]} />
+        {/* плавающие модели по углам — лёгкая декорация */}
+        <ManifestoModel progress={scrollYProgress} kind="cube" className="left-[5%] top-[14%] h-20 w-20 md:h-32 md:w-32" range={[0.05, 0.2, 0.9]} drift={[40, -80, -12]} />
+        <ManifestoModel progress={scrollYProgress} kind="ring" className="right-[6%] top-[16%] h-24 w-24 md:h-40 md:w-40" range={[0.15, 0.32, 0.9]} drift={[60, -90, 22]} />
+        <ManifestoModel progress={scrollYProgress} kind="cone" className="right-[10%] bottom-[14%] h-20 w-20 md:h-32 md:w-32" range={[0.4, 0.55, 0.95]} drift={[50, -80, -20]} />
+        <ManifestoModel progress={scrollYProgress} kind="panel" className="left-[8%] bottom-[16%] h-20 w-20 md:h-32 md:w-32" range={[0.55, 0.7, 0.98]} drift={[60, -70, 14]} />
 
+        {/* прогресс */}
         <div className="absolute left-0 right-0 top-0 h-[3px] bg-[var(--paper)]/10">
           <motion.div style={{ width: progressWidth }} className="h-full bg-[var(--bronze)]" />
         </div>
 
-        <div className="relative z-10 mx-auto grid w-full max-w-[1500px] grid-cols-12 gap-x-8 px-6 md:px-16">
-          <div className="col-span-12 mb-7 md:col-span-2 md:mb-0">
+        <div className="relative z-10 mx-auto w-full max-w-[1400px] px-6 md:px-16">
+          <div className="mb-8 text-center">
             <span className="eyebrow">(01) Манифест</span>
           </div>
-          <div className="col-span-12 md:col-span-10">
-            <div className="manifesto-copy font-display uppercase">
-              {lines.map((line, index) => (
-                <ManifestoLine key={index} progress={scrollYProgress} index={index}>
-                  {line}
-                </ManifestoLine>
-              ))}
-            </div>
+          <div className="manifesto-copy font-display uppercase text-center">
+            {tokens.map((t, i) => {
+              const start = REVEAL_START + i * step;
+              const end = start + step * 2.4;
+              return (
+                <span key={i}>
+                  <ManifestoWord progress={scrollYProgress} start={start} end={end} accent={t.accent}>
+                    {t.word}
+                  </ManifestoWord>
+                  {t.breakAfter && <span className="manifesto-break" />}
+                </span>
+              );
+            })}
           </div>
         </div>
       </div>
