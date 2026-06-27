@@ -160,7 +160,7 @@ function ManifestoWord({
   accent?: boolean;
   children: React.ReactNode;
 }) {
-  const opacity = useTransform(progress, [start, end], [0.12, 1]);
+  const opacity = useTransform(progress, [start, end], [0.06, 1]);
   return (
     <motion.span
       className="manifesto-word"
@@ -239,7 +239,6 @@ function ManifestoModel({
 }
 
 function Manifesto() {
-  // 3 фразы, акценты помечены *слово*
   const phrases: { text: string; accents?: string[] }[] = [
     {
       text: "Свой канал продаж — это прямой контакт с клиентом и контроль.",
@@ -255,46 +254,49 @@ function Manifesto() {
     },
   ];
 
-  // плоский список слов с разделителями фраз
-  type Token = { word: string; accent: boolean; breakAfter: boolean };
-  const tokens: Token[] = [];
-  phrases.forEach((p, pi) => {
-    const words = p.text.split(/\s+/);
-    words.forEach((w, wi) => {
-      tokens.push({
-        word: w,
-        accent: !!p.accents?.includes(w),
-        breakAfter: wi === words.length - 1 && pi < phrases.length - 1,
-      });
-    });
-  });
+  const totalWords = phrases.reduce((a, p) => a + p.text.split(/\s+/).length, 0);
 
   const ref = useRef<HTMLElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["start start", "end end"],
-  });
+  const { scrollY } = useScroll();
+  const [bounds, setBounds] = useState({ start: 0, end: 1 });
 
-  // Слова раскрываются в диапазоне 0.05 - 0.85 прокрутки
-  const REVEAL_START = 0.05;
-  const REVEAL_END = 0.85;
+  useEffect(() => {
+    const measure = () => {
+      const el = ref.current;
+      if (!el) return;
+      const top = el.getBoundingClientRect().top + window.scrollY;
+      const h = el.offsetHeight;
+      const vh = window.innerHeight;
+      setBounds({ start: top, end: top + h - vh });
+    };
+    measure();
+    window.addEventListener("resize", measure);
+    return () => window.removeEventListener("resize", measure);
+  }, []);
+
+  const scrollYProgress = useTransform(scrollY, [bounds.start, bounds.end], [0, 1], { clamp: true });
+
+
+  const REVEAL_START = 0.08;
+  const REVEAL_END = 0.92;
   const span = REVEAL_END - REVEAL_START;
-  const step = span / tokens.length;
+  const step = span / totalWords;
 
-  const progressWidth = useTransform(scrollYProgress, [0.02, 0.9], ["0%", "100%"]);
+  const progressWidth = useTransform(scrollYProgress, [0.02, 0.95], ["0%", "100%"]);
+
+  let wordIndex = 0;
 
   return (
     <section
       ref={ref}
       id="manifesto"
       className="relative border-t border-white/5"
-      style={{ height: "360vh" }}
+      style={{ height: "240vh" }}
     >
       <div className="sticky top-0 flex h-screen items-center overflow-hidden bg-[var(--ink)]">
-        {/* мягкое бронзовое свечение */}
         <div
           aria-hidden
-          className="pointer-events-none absolute left-1/2 top-1/2 h-[80vh] w-[80vh] -translate-x-1/2 -translate-y-1/2 rounded-full"
+          className="pointer-events-none absolute left-1/2 top-1/2 h-[70vh] w-[70vh] -translate-x-1/2 -translate-y-1/2 rounded-full"
           style={{
             background:
               "radial-gradient(circle, rgba(201,163,106,0.18) 0%, rgba(201,163,106,0.06) 35%, transparent 70%)",
@@ -302,32 +304,42 @@ function Manifesto() {
           }}
         />
 
-        {/* плавающие модели по углам — лёгкая декорация */}
-        <ManifestoModel progress={scrollYProgress} kind="cube" className="left-[5%] top-[14%] h-20 w-20 md:h-32 md:w-32" range={[0.05, 0.2, 0.9]} drift={[40, -80, -12]} />
-        <ManifestoModel progress={scrollYProgress} kind="ring" className="right-[6%] top-[16%] h-24 w-24 md:h-40 md:w-40" range={[0.15, 0.32, 0.9]} drift={[60, -90, 22]} />
-        <ManifestoModel progress={scrollYProgress} kind="cone" className="right-[10%] bottom-[14%] h-20 w-20 md:h-32 md:w-32" range={[0.4, 0.55, 0.95]} drift={[50, -80, -20]} />
-        <ManifestoModel progress={scrollYProgress} kind="panel" className="left-[8%] bottom-[16%] h-20 w-20 md:h-32 md:w-32" range={[0.55, 0.7, 0.98]} drift={[60, -70, 14]} />
+        <ManifestoModel progress={scrollYProgress} kind="cube" className="left-[4%] top-[12%] h-16 w-16 md:h-28 md:w-28" range={[0.05, 0.25, 0.95]} drift={[40, -60, -12]} />
+        <ManifestoModel progress={scrollYProgress} kind="ring" className="right-[5%] top-[14%] h-20 w-20 md:h-32 md:w-32" range={[0.2, 0.4, 0.95]} drift={[50, -70, 22]} />
+        <ManifestoModel progress={scrollYProgress} kind="cone" className="right-[8%] bottom-[12%] h-16 w-16 md:h-28 md:w-28" range={[0.45, 0.65, 0.98]} drift={[40, -60, -20]} />
+        <ManifestoModel progress={scrollYProgress} kind="panel" className="left-[6%] bottom-[14%] h-16 w-16 md:h-28 md:w-28" range={[0.6, 0.8, 0.98]} drift={[50, -55, 14]} />
 
-        {/* прогресс */}
         <div className="absolute left-0 right-0 top-0 h-[3px] bg-[var(--paper)]/10">
           <motion.div style={{ width: progressWidth }} className="h-full bg-[var(--bronze)]" />
         </div>
 
-        <div className="relative z-10 mx-auto w-full max-w-[1400px] px-6 md:px-16">
-          <div className="mb-8 text-center">
+        <div className="relative z-10 mx-auto w-full max-w-[1280px] px-6 md:px-16">
+          <div className="mb-6 text-center">
             <span className="eyebrow">(01) Манифест</span>
           </div>
-          <div className="manifesto-copy font-display uppercase text-center">
-            {tokens.map((t, i) => {
-              const start = REVEAL_START + i * step;
-              const end = start + step * 2.4;
+          <div className="manifesto-copy font-display uppercase text-center space-y-5 md:space-y-7">
+            {phrases.map((p, pi) => {
+              const words = p.text.split(/\s+/);
               return (
-                <span key={i}>
-                  <ManifestoWord progress={scrollYProgress} start={start} end={end} accent={t.accent}>
-                    {t.word}
-                  </ManifestoWord>
-                  {t.breakAfter && <span className="manifesto-break" />}
-                </span>
+                <div key={pi} className="manifesto-line">
+                  {words.map((w, wi) => {
+                    const i = wordIndex++;
+                    const start = REVEAL_START + i * step;
+                    const end = start + step * 3;
+                    const accent = !!p.accents?.includes(w);
+                    return (
+                      <ManifestoWord
+                        key={`${pi}-${wi}`}
+                        progress={scrollYProgress}
+                        start={start}
+                        end={end}
+                        accent={accent}
+                      >
+                        {w}
+                      </ManifestoWord>
+                    );
+                  })}
+                </div>
               );
             })}
           </div>
@@ -336,6 +348,7 @@ function Manifesto() {
     </section>
   );
 }
+
 
 function WhatWeDo() {
   return (
@@ -760,7 +773,7 @@ function Footer() {
 
 export function KlidoLanding() {
   return (
-    <div className="relative min-h-screen overflow-x-hidden bg-[var(--ink)] text-[var(--paper)]">
+    <div className="relative min-h-screen bg-[var(--ink)] text-[var(--paper)]" style={{ overflowX: "clip" }}>
       <Scene3D />
       <ScrollProgress />
       <CustomCursor />
