@@ -147,33 +147,27 @@ function Hero() {
   );
 }
 
-function ManifestoLine({
+function ManifestoWord({
   progress,
-  index,
+  start,
+  end,
+  accent,
   children,
 }: {
   progress: ReturnType<typeof useScroll>["scrollYProgress"];
-  index: number;
+  start: number;
+  end: number;
+  accent?: boolean;
   children: React.ReactNode;
 }) {
-  const start = index * 0.095;
-  const opacity = useTransform(progress, [start, start + 0.12, 0.86], [0.28, 1, 1]);
-  const x = useTransform(progress, [start, start + 0.16], [index % 2 ? 86 : -86, 0]);
-  const y = useTransform(progress, [start, start + 0.16], [44, 0]);
-  const scale = useTransform(progress, [start, start + 0.16, 0.9], [0.92, 1, 1.015]);
-  const clipPath = useTransform(
-    progress,
-    [start, start + 0.16],
-    ["inset(0 100% 0 0)", "inset(0 0% 0 0)"],
-  );
-
+  const opacity = useTransform(progress, [start, end], [0.12, 1]);
   return (
-    <motion.div
-      className="manifesto-line"
-      style={{ opacity, x, y, scale, clipPath }}
+    <motion.span
+      className="manifesto-word"
+      style={{ opacity, color: accent ? "var(--bronze)" : "var(--paper)" }}
     >
-      {children}
-    </motion.div>
+      {children}{" "}
+    </motion.span>
   );
 }
 
