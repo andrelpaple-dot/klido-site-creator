@@ -11,6 +11,8 @@ export type CaseItem = {
   heroSuffix?: string;
   heroLabel: string;
   metrics: CaseMetric[];
+  liveUrl?: string;
+  liveLabel?: string;
 };
 
 function escapeSvgText(value: string) {
