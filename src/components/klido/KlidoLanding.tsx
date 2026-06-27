@@ -478,102 +478,39 @@ function Team() {
   );
 }
 
-type LogoSpec = { name: string; bg: string; render: () => React.ReactNode };
+import ozonLogo from "@/assets/logos/ozon.png.asset.json";
+import vkLogo from "@/assets/logos/vk.png.asset.json";
+import yandexLogo from "@/assets/logos/yandex.png.asset.json";
+import avitoLogo from "@/assets/logos/avito.png.asset.json";
+import sberLogo from "@/assets/logos/sber.png.asset.json";
+import wbLogo from "@/assets/logos/wb.png.asset.json";
+import magnitLogo from "@/assets/logos/magnit.png.asset.json";
+import tbankLogo from "@/assets/logos/tbank.png.asset.json";
+
+type LogoSpec = { name: string; src: string };
 
 const COMPANY_LOGOS: LogoSpec[] = [
-  {
-    name: "Ozon",
-    bg: "#FFFFFF",
-    render: () => (
-      <svg viewBox="0 0 120 40" className="h-7 md:h-8">
-        <text x="0" y="30" fontFamily="Inter, sans-serif" fontWeight="900" fontSize="32" fill="#005BFF" letterSpacing="-1">ozon</text>
-      </svg>
-    ),
-  },
-  {
-    name: "Wildberries",
-    bg: "#481173",
-    render: () => (
-      <svg viewBox="0 0 120 40" className="h-6 md:h-7">
-        <text x="0" y="28" fontFamily="Inter, sans-serif" fontWeight="800" fontSize="22" fill="#fff" letterSpacing="-0.5">WB</text>
-        <text x="34" y="28" fontFamily="Inter, sans-serif" fontWeight="500" fontSize="14" fill="#fff" opacity="0.85">Wildberries</text>
-      </svg>
-    ),
-  },
-  {
-    name: "Яндекс",
-    bg: "#FFCC00",
-    render: () => (
-      <svg viewBox="0 0 120 40" className="h-8 md:h-9">
-        <text x="0" y="32" fontFamily="'YS Text', Inter, sans-serif" fontStyle="italic" fontWeight="900" fontSize="34" fill="#000">Я</text>
-        <text x="28" y="30" fontFamily="Inter, sans-serif" fontWeight="700" fontSize="18" fill="#000">ндекс</text>
-      </svg>
-    ),
-  },
-  {
-    name: "VK",
-    bg: "#0077FF",
-    render: () => (
-      <svg viewBox="0 0 64 40" className="h-7 md:h-8">
-        <text x="0" y="32" fontFamily="Inter, sans-serif" fontWeight="900" fontSize="32" fill="#fff" letterSpacing="-1">VK</text>
-      </svg>
-    ),
-  },
-  {
-    name: "Avito",
-    bg: "#0AF",
-    render: () => (
-      <svg viewBox="0 0 120 40" className="h-7 md:h-8">
-        <circle cx="14" cy="20" r="10" fill="#04E061" />
-        <circle cx="36" cy="14" r="6" fill="#FF4053" />
-        <circle cx="36" cy="28" r="6" fill="#FFB900" />
-        <text x="50" y="28" fontFamily="Inter, sans-serif" fontWeight="800" fontSize="20" fill="#fff" letterSpacing="-0.5">Avito</text>
-      </svg>
-    ),
-  },
-  {
-    name: "Т-Банк",
-    bg: "#FFDD2D",
-    render: () => (
-      <svg viewBox="0 0 120 40" className="h-7 md:h-8">
-        <text x="0" y="30" fontFamily="Inter, sans-serif" fontWeight="900" fontSize="28" fill="#000" letterSpacing="-1">Т-Банк</text>
-      </svg>
-    ),
-  },
-  {
-    name: "Сбер",
-    bg: "#21A038",
-    render: () => (
-      <svg viewBox="0 0 40 40" className="h-8 md:h-9">
-        <path d="M32 8 A 14 14 0 1 0 34 24" stroke="#fff" strokeWidth="4" fill="none" strokeLinecap="round" />
-        <path d="M20 12 L 28 4 L 36 12" stroke="#fff" strokeWidth="4" fill="none" strokeLinecap="round" strokeLinejoin="round" />
-      </svg>
-    ),
-  },
-  {
-    name: "Магнит",
-    bg: "#E1241B",
-    render: () => (
-      <svg viewBox="0 0 120 40" className="h-6 md:h-7">
-        <text x="0" y="28" fontFamily="Inter, sans-serif" fontWeight="900" fontSize="22" fill="#fff" letterSpacing="0.5">МАГНИТ</text>
-      </svg>
-    ),
-  },
+  { name: "Ozon", src: ozonLogo.url },
+  { name: "VK", src: vkLogo.url },
+  { name: "Яндекс", src: yandexLogo.url },
+  { name: "Avito", src: avitoLogo.url },
+  { name: "Сбер", src: sberLogo.url },
+  { name: "Wildberries", src: wbLogo.url },
+  { name: "Магнит", src: magnitLogo.url },
+  { name: "Т-Банк", src: tbankLogo.url },
 ];
 
 function CompanyLogo({ spec }: { spec: LogoSpec }) {
   return (
     <div className="flex flex-col items-center justify-center gap-5 px-4 py-10 md:py-14">
-      <div
-        className="flex h-16 w-16 items-center justify-center rounded-[16px] shadow-[0_10px_30px_rgba(0,0,0,0.4)] ring-1 ring-white/10 md:h-[72px] md:w-[72px]"
-        style={{ background: spec.bg }}
-      >
-        {spec.render()}
+      <div className="flex h-20 w-20 items-center justify-center overflow-hidden rounded-[22px] bg-white shadow-[0_10px_30px_rgba(0,0,0,0.4)] ring-1 ring-white/10 md:h-24 md:w-24">
+        <img src={spec.src} alt={spec.name} className="h-full w-full object-cover" loading="lazy" />
       </div>
       <div className="text-sm font-semibold text-[var(--paper)] md:text-base">{spec.name}</div>
     </div>
   );
 }
+
 
 function TeamExperience() {
   return (
