@@ -472,6 +472,28 @@ function CaseCard({ c, index }: { c: (typeof cases)[number]; index: number }) {
               </div>
             ))}
           </div>
+
+          <div className="mt-8 flex flex-wrap items-center gap-3">
+            <Link
+              to="/cases/$slug"
+              params={{ slug: c.slug }}
+              className="group/btn inline-flex items-center gap-3 border border-[var(--paper)]/25 px-5 py-3 text-[11px] uppercase tracking-[0.2em] text-[var(--paper)] transition-all hover:border-[var(--bronze)] hover:bg-[var(--bronze)] hover:text-[var(--ink)]"
+            >
+              Смотреть кейс
+              <span aria-hidden className="transition-transform group-hover/btn:translate-x-1">→</span>
+            </Link>
+            {c.liveUrl && (
+              <a
+                href={c.liveUrl}
+                target="_blank"
+                rel="noreferrer"
+                className="group/btn inline-flex items-center gap-3 bg-[var(--bronze)] px-5 py-3 text-[11px] uppercase tracking-[0.2em] text-[var(--ink)] transition-all hover:bg-[var(--paper)]"
+              >
+                Открыть сайт
+                <span aria-hidden className="transition-transform group-hover/btn:translate-x-1">↗</span>
+              </a>
+            )}
+          </div>
         </div>
       </div>
     </motion.article>
