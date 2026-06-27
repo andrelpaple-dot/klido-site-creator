@@ -696,6 +696,29 @@ function CaseRow({
   onLeave: () => void;
   onMove: (x: number, y: number) => void;
 }) {
+  const inner = (
+    <>
+      <div className="col-span-1 font-display text-xs text-[var(--muted-ink)] md:text-sm">
+        0{index + 1}
+      </div>
+      <div className="col-span-7 md:col-span-6">
+        <h3 className="display-xl text-2xl text-[var(--paper)] transition-colors group-hover:text-[var(--bronze)] md:text-[3.4vw] md:leading-[0.95]">
+          {c.title}
+        </h3>
+      </div>
+      <div className="col-span-3 hidden text-xs uppercase tracking-[0.18em] text-[var(--muted-ink)] md:block">
+        {c.category.split("·")[0]?.trim()}
+      </div>
+      <div className="col-span-4 text-right md:col-span-2">
+        <span className="font-display text-lg md:text-2xl" style={{ color: "var(--bronze)" }}>
+          {c.heroPrefix ?? ""}{c.heroValue}{c.heroSuffix ?? ""}
+        </span>
+      </div>
+    </>
+  );
+
+  const cls = "grid grid-cols-12 items-center gap-4 px-2 py-7 transition-colors hover:bg-white/[0.02] md:py-10";
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 24 }}
@@ -707,29 +730,15 @@ function CaseRow({
       onMouseMove={(e) => onMove(e.clientX, e.clientY)}
       className="group border-t border-white/10 last:border-b"
     >
-      <Link
-        to="/cases/$slug"
-        params={{ slug: c.slug }}
-        data-cursor="link"
-        className="grid grid-cols-12 items-center gap-4 px-2 py-7 transition-colors hover:bg-white/[0.02] md:py-10"
-      >
-        <div className="col-span-1 font-display text-xs text-[var(--muted-ink)] md:text-sm">
-          0{index + 1}
-        </div>
-        <div className="col-span-7 md:col-span-6">
-          <h3 className="display-xl text-2xl text-[var(--paper)] transition-colors group-hover:text-[var(--bronze)] md:text-[3.4vw] md:leading-[0.95]">
-            {c.title}
-          </h3>
-        </div>
-        <div className="col-span-3 hidden text-xs uppercase tracking-[0.18em] text-[var(--muted-ink)] md:block">
-          {c.category.split("·")[0]?.trim()}
-        </div>
-        <div className="col-span-4 text-right md:col-span-2">
-          <span className="font-display text-lg md:text-2xl" style={{ color: "var(--bronze)" }}>
-            {c.heroPrefix ?? ""}{c.heroValue}{c.heroSuffix ?? ""}
-          </span>
-        </div>
-      </Link>
+      {c.external && c.liveUrl ? (
+        <a href={c.liveUrl} target="_blank" rel="noreferrer" data-cursor="link" className={cls}>
+          {inner}
+        </a>
+      ) : (
+        <Link to="/cases/$slug" params={{ slug: c.slug }} data-cursor="link" className={cls}>
+          {inner}
+        </Link>
+      )}
     </motion.div>
   );
 }
