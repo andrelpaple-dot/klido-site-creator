@@ -257,28 +257,13 @@ function Manifesto() {
   const totalWords = phrases.reduce((a, p) => a + p.text.split(/\s+/).length, 0);
 
   const ref = useRef<HTMLElement>(null);
-  const { scrollY } = useScroll();
-  const [bounds, setBounds] = useState({ start: 0, end: 1 });
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start 85%", "end 15%"],
+  });
 
-  useEffect(() => {
-    const measure = () => {
-      const el = ref.current;
-      if (!el) return;
-      const top = el.getBoundingClientRect().top + window.scrollY;
-      const h = el.offsetHeight;
-      const vh = window.innerHeight;
-      setBounds({ start: top, end: top + h - vh });
-    };
-    measure();
-    window.addEventListener("resize", measure);
-    return () => window.removeEventListener("resize", measure);
-  }, []);
-
-  const scrollYProgress = useTransform(scrollY, [bounds.start, bounds.end], [0, 1], { clamp: true });
-
-
-  const REVEAL_START = 0.08;
-  const REVEAL_END = 0.92;
+  const REVEAL_START = 0.05;
+  const REVEAL_END = 0.95;
   const span = REVEAL_END - REVEAL_START;
   const step = span / totalWords;
 
@@ -290,64 +275,62 @@ function Manifesto() {
     <section
       ref={ref}
       id="manifesto"
-      className="relative border-t border-white/5"
-      style={{ height: "480vh" }}
+      className="relative overflow-hidden border-t border-white/5 bg-[var(--ink)] py-32 md:py-48"
     >
-      <div className="sticky top-0 flex h-screen items-center overflow-hidden bg-[var(--ink)]">
-        <div
-          aria-hidden
-          className="pointer-events-none absolute left-1/2 top-1/2 h-[70vh] w-[70vh] -translate-x-1/2 -translate-y-1/2 rounded-full"
-          style={{
-            background:
-              "radial-gradient(circle, rgba(201,163,106,0.18) 0%, rgba(201,163,106,0.06) 35%, transparent 70%)",
-            filter: "blur(20px)",
-          }}
-        />
+      <div
+        aria-hidden
+        className="pointer-events-none absolute left-1/2 top-1/2 h-[70vh] w-[70vh] -translate-x-1/2 -translate-y-1/2 rounded-full"
+        style={{
+          background:
+            "radial-gradient(circle, rgba(201,163,106,0.18) 0%, rgba(201,163,106,0.06) 35%, transparent 70%)",
+          filter: "blur(20px)",
+        }}
+      />
 
-        <ManifestoModel progress={scrollYProgress} kind="cube" className="left-[4%] top-[12%] h-16 w-16 md:h-28 md:w-28" range={[0.05, 0.25, 0.95]} drift={[40, -60, -12]} />
-        <ManifestoModel progress={scrollYProgress} kind="ring" className="right-[5%] top-[14%] h-20 w-20 md:h-32 md:w-32" range={[0.2, 0.4, 0.95]} drift={[50, -70, 22]} />
-        <ManifestoModel progress={scrollYProgress} kind="cone" className="right-[8%] bottom-[12%] h-16 w-16 md:h-28 md:w-28" range={[0.45, 0.65, 0.98]} drift={[40, -60, -20]} />
-        <ManifestoModel progress={scrollYProgress} kind="panel" className="left-[6%] bottom-[14%] h-16 w-16 md:h-28 md:w-28" range={[0.6, 0.8, 0.98]} drift={[50, -55, 14]} />
+      <ManifestoModel progress={scrollYProgress} kind="cube" className="left-[4%] top-[8%] h-16 w-16 md:h-24 md:w-24" range={[0.05, 0.25, 0.95]} drift={[40, -60, -12]} />
+      <ManifestoModel progress={scrollYProgress} kind="ring" className="right-[5%] top-[10%] h-20 w-20 md:h-28 md:w-28" range={[0.2, 0.4, 0.95]} drift={[50, -70, 22]} />
+      <ManifestoModel progress={scrollYProgress} kind="cone" className="right-[8%] bottom-[10%] h-16 w-16 md:h-24 md:w-24" range={[0.45, 0.65, 0.98]} drift={[40, -60, -20]} />
+      <ManifestoModel progress={scrollYProgress} kind="panel" className="left-[6%] bottom-[12%] h-16 w-16 md:h-24 md:w-24" range={[0.6, 0.8, 0.98]} drift={[50, -55, 14]} />
 
-        <div className="absolute left-0 right-0 top-0 h-[3px] bg-[var(--paper)]/10">
-          <motion.div style={{ width: progressWidth }} className="h-full bg-[var(--bronze)]" />
+      <div className="absolute left-0 right-0 top-0 h-[3px] bg-[var(--paper)]/10">
+        <motion.div style={{ width: progressWidth }} className="h-full bg-[var(--bronze)]" />
+      </div>
+
+      <div className="relative z-10 mx-auto w-full max-w-[1280px] px-6 md:px-16">
+        <div className="mb-8 text-center">
+          <span className="eyebrow">(01) Манифест</span>
         </div>
-
-        <div className="relative z-10 mx-auto w-full max-w-[1280px] px-6 md:px-16">
-          <div className="mb-6 text-center">
-            <span className="eyebrow">(01) Манифест</span>
-          </div>
-          <div className="manifesto-copy font-display uppercase text-center space-y-5 md:space-y-7">
-            {phrases.map((p, pi) => {
-              const words = p.text.split(/\s+/);
-              return (
-                <div key={pi} className="manifesto-line">
-                  {words.map((w, wi) => {
-                    const i = wordIndex++;
-                    const start = REVEAL_START + i * step;
-                    const end = start + step * 3;
-                    const accent = !!p.accents?.includes(w);
-                    return (
-                      <ManifestoWord
-                        key={`${pi}-${wi}`}
-                        progress={scrollYProgress}
-                        start={start}
-                        end={end}
-                        accent={accent}
-                      >
-                        {w}
-                      </ManifestoWord>
-                    );
-                  })}
-                </div>
-              );
-            })}
-          </div>
+        <div className="manifesto-copy font-display uppercase text-center space-y-6 md:space-y-8">
+          {phrases.map((p, pi) => {
+            const words = p.text.split(/\s+/);
+            return (
+              <div key={pi} className="manifesto-line">
+                {words.map((w, wi) => {
+                  const i = wordIndex++;
+                  const start = REVEAL_START + i * step;
+                  const end = start + step * 3;
+                  const accent = !!p.accents?.includes(w);
+                  return (
+                    <ManifestoWord
+                      key={`${pi}-${wi}`}
+                      progress={scrollYProgress}
+                      start={start}
+                      end={end}
+                      accent={accent}
+                    >
+                      {w}
+                    </ManifestoWord>
+                  );
+                })}
+              </div>
+            );
+          })}
         </div>
       </div>
     </section>
   );
 }
+
 
 
 function WhatWeDo() {
