@@ -756,7 +756,9 @@ export function KlidoLanding() {
           <Hero />
           <Manifesto />
           <WhatWeDo />
+          <HowSystem />
           <Cases />
+
           <FitFor />
           <Principles />
           <FinalCTA />
