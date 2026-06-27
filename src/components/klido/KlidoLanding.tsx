@@ -104,9 +104,9 @@ function Hero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1.1, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
         >
-          интернет<span style={{ color: "var(--bronze)" }}>—</span>магазины<br />
-          для брендов<br />
-          <span style={{ color: "var(--bronze)" }}>на WB и Ozon</span>
+          Klido. Строим<br />
+          каналы<br />
+          <span style={{ color: "var(--bronze)" }}>прямых продаж</span>
         </motion.h1>
 
         <div className="mt-12 grid grid-cols-12 gap-8">
@@ -116,8 +116,8 @@ function Hero() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.6, duration: 0.8 }}
           >
-            Запускаем внешний канал продаж, куда вы льёте свой трафик — и удерживаете маржу,
-            которую забирают маркетплейсы.
+            Интернет-магазины, которые превращают трафик в продажи
+            и возвращают бренду контроль над клиентом.
           </motion.p>
 
           <motion.div
@@ -137,6 +137,7 @@ function Hero() {
             </a>
           </motion.div>
         </div>
+
       </motion.div>
     </section>
   );
