@@ -254,12 +254,12 @@ function ManifestoTile({
   side: "left" | "right";
 }) {
   const opacity = useTransform(progress, [start, (start + end) / 2, end], [0, 1, 1]);
-  const scale = useTransform(progress, [start, end], [0.55, 1]);
+  const scale = useTransform(progress, [start, end], [0.4, 1]);
   const rotate = useTransform(progress, [start, end], [side === "left" ? -28 : 28, 0]);
   const x = useTransform(
     progress,
     [start, end],
-    [side === "left" ? -80 : 80, 0],
+    [side === "left" ? -40 : 40, 0],
   );
 
   const gradients: Record<TileKind, string> = {
@@ -273,9 +273,7 @@ function ManifestoTile({
   return (
     <motion.div
       aria-hidden
-      className={`manifesto-side-tile pointer-events-none absolute top-1/2 -translate-y-1/2 ${
-        side === "left" ? "left-[2%] md:left-[6%]" : "right-[2%] md:right-[6%]"
-      }`}
+      className="manifesto-side-tile pointer-events-none"
       style={{ opacity, scale, rotate, x, background: gradients[kind] }}
     >
       <svg viewBox="0 0 100 100" preserveAspectRatio="xMidYMid slice">
@@ -339,39 +337,51 @@ function ManifestoLine({
   const tileStart = lineStart;
   const tileEnd = lineStart + (lineEnd - lineStart) * 0.6;
 
-  const shift = line.tile ? (line.tile.side === "left" ? 1 : -1) : 0;
-  const x = useTransform(progress, [tileStart, tileEnd], [0, shift * 60]);
+  const tileOnLeft = line.tile?.side === "left";
+
+  const words = (
+    <span>
+      {line.tokens.map((tok, ti) => {
+        const i = startSlot + ti;
+        const start = revealStart + i * step;
+        const end = start + step * 2.4;
+        const accent = !!line.accents?.includes(tok);
+        return (
+          <ManifestoWord
+            key={ti}
+            progress={progress}
+            start={start}
+            end={end}
+            accent={accent}
+          >
+            {tok}
+          </ManifestoWord>
+        );
+      })}
+    </span>
+  );
 
   return (
-    <div className="manifesto-line relative">
-      {line.tile && (
+    <div className="manifesto-line">
+      {line.tile && tileOnLeft && (
         <ManifestoTile
           kind={line.tile.kind}
           progress={progress}
           start={tileStart}
           end={tileEnd}
-          side={line.tile.side}
+          side="left"
         />
       )}
-      <motion.span style={{ x, display: "inline-block" }}>
-        {line.tokens.map((tok, ti) => {
-          const i = startSlot + ti;
-          const start = revealStart + i * step;
-          const end = start + step * 2.4;
-          const accent = !!line.accents?.includes(tok);
-          return (
-            <ManifestoWord
-              key={ti}
-              progress={progress}
-              start={start}
-              end={end}
-              accent={accent}
-            >
-              {tok}
-            </ManifestoWord>
-          );
-        })}
-      </motion.span>
+      {words}
+      {line.tile && !tileOnLeft && (
+        <ManifestoTile
+          kind={line.tile.kind}
+          progress={progress}
+          start={tileStart}
+          end={tileEnd}
+          side="right"
+        />
+      )}
     </div>
   );
 }
