@@ -291,7 +291,7 @@ function Manifesto() {
       ref={ref}
       id="manifesto"
       className="relative border-t border-white/5"
-      style={{ height: "240vh" }}
+      style={{ height: "480vh" }}
     >
       <div className="sticky top-0 flex h-screen items-center overflow-hidden bg-[var(--ink)]">
         <div
