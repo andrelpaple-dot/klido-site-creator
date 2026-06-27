@@ -254,12 +254,12 @@ function ManifestoTile({
   side: "left" | "right";
 }) {
   const opacity = useTransform(progress, [start, (start + end) / 2, end], [0, 1, 1]);
-  const scale = useTransform(progress, [start, end], [0.55, 1]);
+  const scale = useTransform(progress, [start, end], [0.4, 1]);
   const rotate = useTransform(progress, [start, end], [side === "left" ? -28 : 28, 0]);
   const x = useTransform(
     progress,
     [start, end],
-    [side === "left" ? -80 : 80, 0],
+    [side === "left" ? -40 : 40, 0],
   );
 
   const gradients: Record<TileKind, string> = {
