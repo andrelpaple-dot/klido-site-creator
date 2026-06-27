@@ -198,7 +198,7 @@ function CasePage() {
               <div className="mt-5 text-base text-[var(--muted-ink)] md:text-lg">{c.heroLabel}</div>
             </div>
             <div className="mt-16 grid grid-cols-1 gap-px bg-white/10 md:grid-cols-3">
-              {c.metrics.map((m, i) => (
+              {c.metrics.map((m: { value: string; label: string }, i: number) => (
                 <div key={i} className="bg-[var(--ink)] p-8 md:p-10">
                   <div className="font-display text-3xl text-[var(--paper)] md:text-4xl">{m.value}</div>
                   <div className="mt-3 text-[12px] uppercase tracking-[0.18em] text-[var(--muted-ink)]">{m.label}</div>
