@@ -116,9 +116,9 @@
   }
 
   .manifesto-copy {
-    font-size: clamp(28px, 4.2vw, 64px);
+    font-size: clamp(36px, 5.6vw, 88px);
     font-weight: 900;
-    line-height: 1.02;
+    line-height: 0.98;
     letter-spacing: -0.025em;
     color: var(--paper);
     text-wrap: balance;

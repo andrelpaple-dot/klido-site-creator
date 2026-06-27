@@ -503,7 +503,7 @@ function Team() {
   return (
     <Section id="team" label="Команда">
       <FadeUp>
-        <h2 className="display-xl text-[34px] uppercase leading-[0.92] text-[var(--paper)] md:text-[6.4vw]">
+        <h2 className="display-xl text-[26px] uppercase leading-[0.92] text-[var(--paper)] md:text-[3.6vw]">
           Команда<br />
           <span className="inline-block h-[0.08em] w-[0.6em] translate-y-[-0.25em] bg-[var(--paper)] align-middle" />{" "}
           <span style={{ color: "var(--bronze)" }}>из Big Tech</span><br />
@@ -612,7 +612,7 @@ function WhatWeDo() {
   return (
     <Section label="(02) Что делаем" className="border-t border-white/5">
       <FadeUp>
-        <h2 className="display-xl text-[34px] text-[var(--paper)] md:text-[6vw]">
+        <h2 className="display-xl text-[26px] text-[var(--paper)] md:text-[3.6vw]">
           Каналы<br />
           <span style={{ color: "var(--bronze)" }}>прямых продаж.</span>
         </h2>
@@ -655,7 +655,7 @@ function HowSystem() {
   return (
     <Section id="system" label="(03) Система" className="border-t border-white/5">
       <FadeUp>
-        <h2 className="display-xl text-[34px] text-[var(--paper)] md:text-[6vw]">
+        <h2 className="display-xl text-[26px] text-[var(--paper)] md:text-[3.6vw]">
           Как это<br />
           <span style={{ color: "var(--bronze)" }}>работает.</span>
         </h2>
@@ -789,7 +789,7 @@ function Cases() {
   return (
     <Section id="cases" label="(03) Кейсы" className="border-t border-white/5">
       <FadeUp>
-        <h2 className="display-xl mb-16 text-[34px] text-[var(--paper)] md:text-[6vw]">
+        <h2 className="display-xl mb-16 text-[26px] text-[var(--paper)] md:text-[3.6vw]">
           Избранные<br /><span style={{ color: "var(--bronze)" }}>работы.</span>
         </h2>
       </FadeUp>
@@ -816,7 +816,7 @@ function FitFor() {
         <div className="mb-12 flex flex-col items-center text-center">
           <span className="eyebrow mb-6">(04) Кому</span>
           <FadeUp>
-            <h2 className="display-xl text-[34px] text-[var(--paper)] md:text-[6vw]">
+            <h2 className="display-xl text-[26px] text-[var(--paper)] md:text-[3.6vw]">
               Кому<br /><span style={{ color: "var(--bronze)" }}>подойдёт.</span>
             </h2>
           </FadeUp>
@@ -847,7 +847,7 @@ function Principles() {
   return (
     <Section id="approach" label="(05) Подход" className="border-t border-white/5">
       <FadeUp>
-        <h2 className="display-xl mb-16 text-[34px] text-[var(--paper)] md:text-[6vw]">
+        <h2 className="display-xl mb-16 text-[26px] text-[var(--paper)] md:text-[3.6vw]">
           Как мы<br /><span style={{ color: "var(--bronze)" }}>работаем.</span>
         </h2>
       </FadeUp>
