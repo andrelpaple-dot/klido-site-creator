@@ -86,7 +86,7 @@
     color: var(--paper);
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
-    overflow-x: hidden;
+    overflow-x: clip;
   }
 
   ::selection {
