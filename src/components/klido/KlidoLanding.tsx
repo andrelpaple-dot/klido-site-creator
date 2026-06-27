@@ -40,11 +40,14 @@ function Section({
   );
 }
 
-function Counter({ to, suffix = "", prefix = "" }: { to: number; suffix?: string; prefix?: string }) {
+function Counter({ to, suffix = "", prefix = "", decimals = 0 }: { to: number; suffix?: string; prefix?: string; decimals?: number }) {
   const ref = useRef<HTMLSpanElement>(null);
   const inView = useInView(ref, { once: true, amount: 0.5 });
   const mv = useMotionValue(0);
-  const rounded = useTransform(mv, (v) => `${prefix}${Math.round(v).toLocaleString("ru-RU")}${suffix}`);
+  const rounded = useTransform(mv, (v) => {
+    const n = decimals > 0 ? v.toFixed(decimals) : Math.round(v).toLocaleString("ru-RU");
+    return `${prefix}${n}${suffix}`;
+  });
   useEffect(() => {
     if (inView) {
       const ctrl = animate(mv, to, { duration: 1.4, ease: [0.16, 1, 0.3, 1] });
