@@ -334,6 +334,122 @@ function Manifesto() {
 
 
 
+function Team() {
+  const roles = [
+    {
+      t: "Senior продакт-менеджер",
+      d: "Изучает рынок и конкурентов, формулирует, что и как делать, собирает скоуп первого релиза и метрики успеха — ведёт проект от первого созвона до запуска.",
+    },
+    {
+      t: "Senior Fullstack-разработчик",
+      d: "Делает на современном стеке: frontend, backend, интеграции, деплой. От архитектуры до релиза за 2–3 недели без потери качества.",
+    },
+    {
+      t: "Senior UX/UI-дизайнер",
+      d: "Проектирует интерфейс с фокусом на конверсию. Прототип, дизайн-система, готовые экраны — продукт, которым приятно пользоваться.",
+    },
+    {
+      t: "Аналитик и SEO-специалист",
+      d: "Настраивает сквозную аналитику, события и базовое SEO, чтобы каждый рубль рекламы был виден и окупался.",
+    },
+  ];
+  return (
+    <Section id="team" label="Команда">
+      <FadeUp>
+        <h2 className="display-xl text-[34px] uppercase leading-[0.92] text-[var(--paper)] md:text-[6.4vw]">
+          Команда<br />
+          <span className="inline-block h-[0.08em] w-[0.6em] translate-y-[-0.25em] bg-[var(--paper)] align-middle" />{" "}
+          <span style={{ color: "var(--bronze)" }}>из Big Tech</span><br />
+          для вашего<br />бизнеса
+        </h2>
+      </FadeUp>
+      <FadeUp delay={0.1}>
+        <p className="mt-10 max-w-2xl text-lg text-[var(--muted-ink)]">
+          Senior продакт-менеджеры, разработчики и дизайнеры с опытом в крупнейших
+          tech-компаниях России. Применяем продуктовые подходы Big Tech к задачам
+          малого и среднего бизнеса.
+        </p>
+      </FadeUp>
+
+      <div className="mt-20 border-t border-white/10">
+        {roles.map((r, i) => (
+          <FadeUp key={i} delay={i * 0.06}>
+            <div className="grid grid-cols-1 gap-6 border-b border-white/10 py-8 md:grid-cols-12 md:gap-8 md:py-10">
+              <div className="md:col-span-5">
+                <div className="text-lg font-semibold text-[var(--paper)] md:text-xl">{r.t}</div>
+              </div>
+              <div className="md:col-span-7">
+                <div className="text-[15px] text-[var(--muted-ink)] md:text-base">{r.d}</div>
+              </div>
+            </div>
+          </FadeUp>
+        ))}
+      </div>
+    </Section>
+  );
+}
+
+function CompanyLogo({ name, letter, bg, fg }: { name: string; letter: string; bg: string; fg: string }) {
+  return (
+    <div className="flex flex-col items-center justify-center gap-4 px-4 py-10 md:py-14">
+      <div
+        className="flex h-14 w-14 items-center justify-center rounded-[14px] text-[22px] font-bold shadow-[0_8px_24px_rgba(0,0,0,0.35)] md:h-16 md:w-16"
+        style={{ background: bg, color: fg }}
+      >
+        {letter}
+      </div>
+      <div className="text-sm font-semibold text-[var(--paper)] md:text-base">{name}</div>
+    </div>
+  );
+}
+
+function TeamExperience() {
+  const companies = [
+    { name: "Ozon", letter: "O", bg: "#005BFF", fg: "#fff" },
+    { name: "Wildberries", letter: "W", bg: "#CB11AB", fg: "#fff" },
+    { name: "Яндекс", letter: "Я", bg: "#FFCC00", fg: "#000" },
+    { name: "VK", letter: "VK", bg: "#0077FF", fg: "#fff" },
+    { name: "Avito", letter: "A", bg: "#04E061", fg: "#000" },
+    { name: "Т-Банк", letter: "Т", bg: "#FFDD2D", fg: "#000" },
+    { name: "Сбер", letter: "С", bg: "#21A038", fg: "#fff" },
+    { name: "Магнит", letter: "М", bg: "#E1241B", fg: "#fff" },
+  ];
+  return (
+    <Section id="experience" label="Опыт нашей команды">
+      <div className="grid grid-cols-2 border-y border-white/10 md:grid-cols-4">
+        {companies.map((c, i) => (
+          <div
+            key={c.name}
+            className={`border-white/10 ${i % 2 !== 0 ? "border-l" : ""} ${i >= 2 ? "border-t" : ""} md:border-l md:border-t-0 ${i % 4 === 0 ? "md:border-l-0" : ""} ${i >= 4 ? "md:border-t" : ""}`}
+          >
+            <CompanyLogo {...c} />
+          </div>
+        ))}
+      </div>
+
+      <div className="mt-24 grid grid-cols-3 gap-6 md:gap-12">
+        {[
+          { n: 30, s: "+", l: "проектов" },
+          { n: 4, s: "+", l: "лет опыта" },
+          { n: 8, s: "", l: "компаний Big Tech" },
+        ].map((m, i) => (
+          <FadeUp key={i} delay={i * 0.08}>
+            <div className="flex flex-col items-center text-center">
+              <div className="display-xl text-[44px] leading-none text-[var(--paper)] md:text-[6vw]">
+                <Counter to={m.n} />
+                <span style={{ color: "var(--bronze)" }}>{m.s}</span>
+              </div>
+              <div className="mt-4 text-[11px] font-semibold uppercase tracking-[0.22em] text-[var(--muted-ink)]">
+                {m.l}
+              </div>
+            </div>
+          </FadeUp>
+        ))}
+      </div>
+    </Section>
+  );
+}
+
 function WhatWeDo() {
   return (
     <Section label="(02) Что делаем" className="border-t border-white/5">
@@ -766,6 +882,8 @@ export function KlidoLanding() {
         <main>
           <Hero />
           <Manifesto />
+          <Team />
+          <TeamExperience />
           <WhatWeDo />
           <HowSystem />
           <Cases />
