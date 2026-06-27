@@ -60,8 +60,8 @@ export function CustomCursor() {
   if (!enabled) return null;
 
   const ringSize = variant === "image" ? 72 : variant === "link" ? 56 : 36;
-  const beige = "#C9A36A";
-  const ringBg = variant === "link" || variant === "image" ? "rgba(201,163,106,0.18)" : "transparent";
+  const invert = "#ffffff";
+  const ringBg = variant === "link" || variant === "image" ? "rgba(255,255,255,0.85)" : "transparent";
 
   return (
     <>
@@ -75,8 +75,8 @@ export function CustomCursor() {
           width: 8,
           height: 8,
           borderRadius: "9999px",
-          backgroundColor: beige,
-          boxShadow: "0 0 12px rgba(201,163,106,0.55)",
+          backgroundColor: invert,
+          mixBlendMode: "difference",
           pointerEvents: "none",
           zIndex: 9999,
           opacity: variant === "default" ? 1 : 0,
@@ -94,8 +94,9 @@ export function CustomCursor() {
           width: ringSize,
           height: ringSize,
           borderRadius: "9999px",
-          border: `1.5px solid ${beige}`,
+          border: `1.5px solid ${invert}`,
           backgroundColor: ringBg,
+          mixBlendMode: "difference",
           pointerEvents: "none",
           zIndex: 9999,
           transition: "width 200ms ease, height 200ms ease, background-color 200ms ease",
@@ -104,7 +105,7 @@ export function CustomCursor() {
           alignItems: "center",
           justifyContent: "center",
           fontSize: 10,
-          color: beige,
+          color: invert,
           fontFamily: "Inter, sans-serif",
           letterSpacing: "0.05em",
         }}
@@ -114,3 +115,4 @@ export function CustomCursor() {
     </>
   );
 }
+
