@@ -773,7 +773,7 @@ function Footer() {
 
 export function KlidoLanding() {
   return (
-    <div className="relative min-h-screen overflow-x-hidden bg-[var(--ink)] text-[var(--paper)]">
+    <div className="relative min-h-screen bg-[var(--ink)] text-[var(--paper)]" style={{ overflowX: "clip" }}>
       <Scene3D />
       <ScrollProgress />
       <CustomCursor />
