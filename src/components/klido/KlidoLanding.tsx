@@ -389,43 +389,117 @@ function Team() {
   );
 }
 
-function CompanyLogo({ name, letter, bg, fg }: { name: string; letter: string; bg: string; fg: string }) {
+type LogoSpec = { name: string; bg: string; render: () => React.ReactNode };
+
+const COMPANY_LOGOS: LogoSpec[] = [
+  {
+    name: "Ozon",
+    bg: "#FFFFFF",
+    render: () => (
+      <svg viewBox="0 0 120 40" className="h-7 md:h-8">
+        <text x="0" y="30" fontFamily="Inter, sans-serif" fontWeight="900" fontSize="32" fill="#005BFF" letterSpacing="-1">ozon</text>
+      </svg>
+    ),
+  },
+  {
+    name: "Wildberries",
+    bg: "#481173",
+    render: () => (
+      <svg viewBox="0 0 120 40" className="h-6 md:h-7">
+        <text x="0" y="28" fontFamily="Inter, sans-serif" fontWeight="800" fontSize="22" fill="#fff" letterSpacing="-0.5">WB</text>
+        <text x="34" y="28" fontFamily="Inter, sans-serif" fontWeight="500" fontSize="14" fill="#fff" opacity="0.85">Wildberries</text>
+      </svg>
+    ),
+  },
+  {
+    name: "Яндекс",
+    bg: "#FFCC00",
+    render: () => (
+      <svg viewBox="0 0 120 40" className="h-8 md:h-9">
+        <text x="0" y="32" fontFamily="'YS Text', Inter, sans-serif" fontStyle="italic" fontWeight="900" fontSize="34" fill="#000">Я</text>
+        <text x="28" y="30" fontFamily="Inter, sans-serif" fontWeight="700" fontSize="18" fill="#000">ндекс</text>
+      </svg>
+    ),
+  },
+  {
+    name: "VK",
+    bg: "#0077FF",
+    render: () => (
+      <svg viewBox="0 0 64 40" className="h-7 md:h-8">
+        <text x="0" y="32" fontFamily="Inter, sans-serif" fontWeight="900" fontSize="32" fill="#fff" letterSpacing="-1">VK</text>
+      </svg>
+    ),
+  },
+  {
+    name: "Avito",
+    bg: "#0AF",
+    render: () => (
+      <svg viewBox="0 0 120 40" className="h-7 md:h-8">
+        <circle cx="14" cy="20" r="10" fill="#04E061" />
+        <circle cx="36" cy="14" r="6" fill="#FF4053" />
+        <circle cx="36" cy="28" r="6" fill="#FFB900" />
+        <text x="50" y="28" fontFamily="Inter, sans-serif" fontWeight="800" fontSize="20" fill="#fff" letterSpacing="-0.5">Avito</text>
+      </svg>
+    ),
+  },
+  {
+    name: "Т-Банк",
+    bg: "#FFDD2D",
+    render: () => (
+      <svg viewBox="0 0 120 40" className="h-7 md:h-8">
+        <text x="0" y="30" fontFamily="Inter, sans-serif" fontWeight="900" fontSize="28" fill="#000" letterSpacing="-1">Т-Банк</text>
+      </svg>
+    ),
+  },
+  {
+    name: "Сбер",
+    bg: "#21A038",
+    render: () => (
+      <svg viewBox="0 0 40 40" className="h-8 md:h-9">
+        <path d="M32 8 A 14 14 0 1 0 34 24" stroke="#fff" strokeWidth="4" fill="none" strokeLinecap="round" />
+        <path d="M20 12 L 28 4 L 36 12" stroke="#fff" strokeWidth="4" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+      </svg>
+    ),
+  },
+  {
+    name: "Магнит",
+    bg: "#E1241B",
+    render: () => (
+      <svg viewBox="0 0 120 40" className="h-6 md:h-7">
+        <text x="0" y="28" fontFamily="Inter, sans-serif" fontWeight="900" fontSize="22" fill="#fff" letterSpacing="0.5">МАГНИТ</text>
+      </svg>
+    ),
+  },
+];
+
+function CompanyLogo({ spec }: { spec: LogoSpec }) {
   return (
-    <div className="flex flex-col items-center justify-center gap-4 px-4 py-10 md:py-14">
+    <div className="flex flex-col items-center justify-center gap-5 px-4 py-10 md:py-14">
       <div
-        className="flex h-14 w-14 items-center justify-center rounded-[14px] text-[22px] font-bold shadow-[0_8px_24px_rgba(0,0,0,0.35)] md:h-16 md:w-16"
-        style={{ background: bg, color: fg }}
+        className="flex h-16 w-16 items-center justify-center rounded-[16px] shadow-[0_10px_30px_rgba(0,0,0,0.4)] ring-1 ring-white/10 md:h-[72px] md:w-[72px]"
+        style={{ background: spec.bg }}
       >
-        {letter}
+        {spec.render()}
       </div>
-      <div className="text-sm font-semibold text-[var(--paper)] md:text-base">{name}</div>
+      <div className="text-sm font-semibold text-[var(--paper)] md:text-base">{spec.name}</div>
     </div>
   );
 }
 
 function TeamExperience() {
-  const companies = [
-    { name: "Ozon", letter: "O", bg: "#005BFF", fg: "#fff" },
-    { name: "Wildberries", letter: "W", bg: "#CB11AB", fg: "#fff" },
-    { name: "Яндекс", letter: "Я", bg: "#FFCC00", fg: "#000" },
-    { name: "VK", letter: "VK", bg: "#0077FF", fg: "#fff" },
-    { name: "Avito", letter: "A", bg: "#04E061", fg: "#000" },
-    { name: "Т-Банк", letter: "Т", bg: "#FFDD2D", fg: "#000" },
-    { name: "Сбер", letter: "С", bg: "#21A038", fg: "#fff" },
-    { name: "Магнит", letter: "М", bg: "#E1241B", fg: "#fff" },
-  ];
   return (
     <Section id="experience" label="Опыт нашей команды">
       <div className="grid grid-cols-2 border-y border-white/10 md:grid-cols-4">
-        {companies.map((c, i) => (
+        {COMPANY_LOGOS.map((c, i) => (
           <div
             key={c.name}
             className={`border-white/10 ${i % 2 !== 0 ? "border-l" : ""} ${i >= 2 ? "border-t" : ""} md:border-l md:border-t-0 ${i % 4 === 0 ? "md:border-l-0" : ""} ${i >= 4 ? "md:border-t" : ""}`}
           >
-            <CompanyLogo {...c} />
+            <CompanyLogo spec={c} />
           </div>
         ))}
       </div>
+
 
       <div className="mt-24 grid grid-cols-3 gap-6 md:gap-12">
         {[
