@@ -116,13 +116,14 @@
   }
 
   .manifesto-copy {
-    font-size: clamp(40px, 6.4vw, 104px);
+    font-size: clamp(36px, 5.6vw, 88px);
     font-weight: 900;
-    line-height: 1.04;
+    line-height: 1.06;
     letter-spacing: -0.015em;
     color: var(--paper);
     text-wrap: balance;
   }
+
 
 
   .manifesto-line {
