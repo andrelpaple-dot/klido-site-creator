@@ -591,14 +591,14 @@ function FinalCTA() {
       <div className="text-center">
         <FadeUp>
           <h2 className="display-xl text-[52px] text-[var(--paper)] md:text-[8vw]">
-            Готовы<br />
-            <span style={{ color: "var(--bronze)" }}>запустить?</span>
+            Готовы запустить<br />
+            <span style={{ color: "var(--bronze)" }}>свой канал продаж?</span>
           </h2>
         </FadeUp>
         <FadeUp delay={0.1}>
           <p className="mx-auto mt-10 max-w-xl text-base text-[var(--muted-ink)] md:text-lg">
-            30 минут на разговор. Покажем 2–3 похожих кейса под вашу нишу
-            и расскажем, как выстроим внешний канал именно для вашего бренда.
+            30 минут на разговор. Покажем кейсы под вашу нишу — с живыми ссылками.
+            Если поймём, что не подходим — скажем прямо.
           </p>
         </FadeUp>
         <FadeUp delay={0.2}>
