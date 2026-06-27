@@ -1,8 +1,8 @@
-import groomingImg from "@/assets/cases/grooming-new.jpg.asset.json";
-import septikImg from "@/assets/cases/septik-new.jpg.asset.json";
-import tsargradImg from "@/assets/cases/tsargrad-new.jpg.asset.json";
-import pamyatnikiImg from "@/assets/cases/pamyatniki.jpg.asset.json";
-import crunchThumb from "@/assets/cases/crunch-thumb.png.asset.json";
+import groomingImg from "@/assets/cases/grooming-v2.jpg.asset.json";
+import septikImg from "@/assets/cases/septik-v2.jpg.asset.json";
+import tsargradImg from "@/assets/cases/tsargrad-v2.jpg.asset.json";
+import pamyatnikiImg from "@/assets/cases/pamyatniki-v2.png.asset.json";
+import crunchThumb from "@/assets/cases/crunch-v2.jpg.asset.json";
 import crunchFull from "@/assets/cases/crunch-full.jpg.asset.json";
 
 export type CaseMetric = { value: string; label: string };
