@@ -253,13 +253,14 @@ function ManifestoTile({
   end: number;
   side: "left" | "right";
 }) {
-  const opacity = useTransform(progress, [start, (start + end) / 2, end], [0, 1, 1]);
-  const scale = useTransform(progress, [start, end], [0.4, 1]);
-  const rotate = useTransform(progress, [start, end], [side === "left" ? -28 : 28, 0]);
+  // Reveal tracks the line's word progress: starts hidden, fully open by end
+  const opacity = useTransform(progress, [start, end], [0, 1]);
+  const scale = useTransform(progress, [start, end], [0.35, 1]);
+  const rotate = useTransform(progress, [start, end], [side === "left" ? -32 : 32, 0]);
   const x = useTransform(
     progress,
     [start, end],
-    [side === "left" ? -40 : 40, 0],
+    [side === "left" ? -60 : 60, 0],
   );
 
   const gradients: Record<TileKind, string> = {
