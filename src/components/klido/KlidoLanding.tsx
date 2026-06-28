@@ -701,9 +701,11 @@ function WhatWeDo() {
               <div className="display-xl text-[56px] leading-none text-[var(--paper)] md:text-[5vw]">
                 <Counter to={m.num} suffix={m.suffix} prefix={m.prefix} decimals={m.decimals} />
               </div>
+              <CounterBar />
               <div className="mt-6 max-w-[220px] text-sm text-[var(--muted-ink)]">{m.l}</div>
             </div>
           </FadeUp>
+
         ))}
       </div>
     </Section>
