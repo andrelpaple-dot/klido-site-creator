@@ -777,6 +777,14 @@ function Cases() {
         ))}
       </div>
 
+      {/* Preload case previews so hover is instant */}
+      <div aria-hidden className="pointer-events-none absolute h-0 w-0 overflow-hidden opacity-0">
+        {cases.map((c) => (
+          <img key={c.slug} src={c.image} alt="" loading="eager" decoding="async" />
+        ))}
+      </div>
+
+
       <motion.div
         aria-hidden
         style={{ left: sx, top: sy, width: 420, height: 280, opacity: active ? 1 : 0, scale: active ? 1 : 0.9 }}
