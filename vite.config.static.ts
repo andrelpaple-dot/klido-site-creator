@@ -30,11 +30,12 @@ function lovableAssetsStaticPlugin(): Plugin {
     enforce: "pre",
     async resolveId(source, importer) {
       if (!source.endsWith(".asset.json")) return null;
-      // Резолвим относительно импортёра, перенаправляем на виртуальный id
-      // (без .json в конце) — иначе встроенный JSON-плагин Vite перехватит load.
-      const base = importer ? path.dirname(importer) : process.cwd();
-      const abs = path.isAbsolute(source) ? source : path.resolve(base, source);
-      return PREFIX + abs;
+      // Используем встроенный резолвер, чтобы корректно разрулить алиасы (@/...)
+      // и относительные пути, а затем оборачиваем в виртуальный id с \0-префиксом,
+      // иначе встроенный JSON-плагин Vite перехватит load и попытается распарсить.
+      const resolved = await this.resolve(source, importer, { skipSelf: true });
+      if (!resolved) return null;
+      return PREFIX + resolved.id;
     },
     async load(id) {
       if (!id.startsWith(PREFIX)) return null;
