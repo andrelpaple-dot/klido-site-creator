@@ -196,6 +196,20 @@
     background: radial-gradient(ellipse at center, transparent 0%, rgba(0, 0, 0, 0.48) 62%, rgba(0, 0, 0, 0.94) 100%);
   }
 
+  .fitfor-title {
+    text-shadow: 0 0 0 rgba(201, 163, 106, 0);
+    transition: text-shadow 500ms cubic-bezier(0.22, 1, 0.36, 1),
+      color 500ms cubic-bezier(0.22, 1, 0.36, 1),
+      transform 500ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .fitfor-title:hover {
+    text-shadow: 0 0 32px rgba(201, 163, 106, 0.85),
+      0 0 80px rgba(201, 163, 106, 0.55),
+      0 0 140px rgba(201, 163, 106, 0.35);
+  }
+    background: radial-gradient(ellipse at center, transparent 0%, rgba(0, 0, 0, 0.48) 62%, rgba(0, 0, 0, 0.94) 100%);
+  }
+
   @keyframes kinetic-drift-a {
     from { transform: translate3d(-6%, -4%, 0) rotate(-12deg) scale(0.95); }
     to { transform: translate3d(8%, 5%, 0) rotate(18deg) scale(1.08); }
