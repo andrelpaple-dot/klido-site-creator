@@ -1,10 +1,13 @@
-import { motion, useInView, useMotionValue, useTransform, animate, useScroll, useSpring, AnimatePresence } from "framer-motion";
+import { motion, useInView, useMotionValue, useTransform, animate, useScroll, useSpring, useVelocity, AnimatePresence } from "framer-motion";
 import { Link } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import { CustomCursor } from "@/components/klido/CustomCursor";
 import { ScrollProgress } from "@/components/klido/ScrollProgress";
 import { SiteHeader } from "@/components/klido/SiteHeader";
 import { Scene3D } from "@/components/klido/Scene3D";
+import { MagneticButton } from "@/components/klido/MagneticButton";
+import { EasterEgg } from "@/components/klido/EasterEgg";
+import { ImageTrail } from "@/components/klido/ImageTrail";
 
 import { cases } from "@/components/klido/cases-data";
 import fitforRobot from "@/assets/fitfor/robot.jpg";
@@ -14,6 +17,7 @@ import fitforSamurai from "@/assets/fitfor/samurai.jpg";
 
 const TG = "https://t.me/AndrewGeiger";
 const MAIL = "mailto:hello@klido.ru";
+
 
 function Section({
   id,
@@ -62,6 +66,25 @@ function Counter({ to, suffix = "", prefix = "", decimals = 0 }: { to: number; s
   return <motion.span ref={ref}>{rounded}</motion.span>;
 }
 
+function CounterBar() {
+  const ref = useRef<HTMLDivElement>(null);
+  const inView = useInView(ref, { once: true, amount: 0.5 });
+  const mv = useMotionValue(0);
+  const width = useTransform(mv, (v) => `${v}%`);
+  useEffect(() => {
+    if (inView) {
+      const ctrl = animate(mv, 100, { duration: 1.4, ease: [0.16, 1, 0.3, 1] });
+      return ctrl.stop;
+    }
+  }, [inView, mv]);
+  return (
+    <div ref={ref} className="mt-5 h-[3px] w-full overflow-hidden bg-white/8">
+      <motion.div style={{ width, background: "var(--bronze)" }} className="h-full" />
+    </div>
+  );
+}
+
+
 function FadeUp({
   delay = 0,
   children,
@@ -84,18 +107,57 @@ function FadeUp({
   );
 }
 
+function SplitWord({ word, delay, accent }: { word: string; delay: number; accent?: boolean }) {
+  const chars = Array.from(word);
+  return (
+    <span className="inline-block whitespace-nowrap" style={{ color: accent ? "var(--bronze)" : undefined }}>
+      {chars.map((ch, i) => (
+        <motion.span
+          key={i}
+          className="inline-block"
+          initial={{ y: "110%", opacity: 0 }}
+          animate={{ y: "0%", opacity: 1 }}
+          transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1], delay: delay + i * 0.025 }}
+        >
+          {ch}
+        </motion.span>
+      ))}
+    </span>
+  );
+}
+
+function SplitLine({ words, baseDelay, accentWords = [] }: { words: string[]; baseDelay: number; accentWords?: string[] }) {
+  let cursor = 0;
+  return (
+    <span className="block overflow-hidden">
+      {words.map((w, wi) => {
+        const d = baseDelay + cursor * 0.02;
+        cursor += w.length + 1;
+        return (
+          <span key={wi}>
+            <SplitWord word={w} delay={d} accent={accentWords.includes(w)} />
+            {wi < words.length - 1 && <span className="inline-block">&nbsp;</span>}
+          </span>
+        );
+      })}
+    </span>
+  );
+}
+
 function Hero() {
   const ref = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
   const y = useTransform(scrollYProgress, [0, 1], [0, 200]);
   const opacity = useTransform(scrollYProgress, [0, 0.6], [1, 0]);
+  const trailImages = cases.slice(0, 5).map((c) => c.image);
 
   return (
     <section
       ref={ref}
       id="top"
-      className="relative flex min-h-[100svh] items-end px-6 pb-20 pt-32 md:px-16 md:pb-28"
+      className="relative flex min-h-[100svh] items-end overflow-hidden px-6 pb-20 pt-32 md:px-16 md:pb-28"
     >
+      <ImageTrail images={trailImages} containerRef={ref as React.RefObject<HTMLElement>} />
       <motion.div style={{ y, opacity }} className="relative z-10 mx-auto w-full max-w-[1400px]">
         <motion.div
           className="eyebrow mb-8"
@@ -106,23 +168,18 @@ function Hero() {
           ⟶ klido · агентство · 2026
         </motion.div>
 
-        <motion.h1
-          className="display-xl text-[44px] text-[var(--paper)] md:text-[11vw] lg:text-[10vw]"
-          initial={{ opacity: 0, y: 60 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1.1, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
-        >
-          Klido. Строим<br />
-          каналы<br />
-          <span style={{ color: "var(--bronze)" }}>прямых продаж</span>
-        </motion.h1>
+        <h1 className="display-xl text-[44px] text-[var(--paper)] md:text-[11vw] lg:text-[10vw]">
+          <SplitLine words={["Klido.", "Строим"]} baseDelay={0.15} />
+          <SplitLine words={["каналы"]} baseDelay={0.35} />
+          <SplitLine words={["прямых", "продаж"]} baseDelay={0.5} accentWords={["прямых", "продаж"]} />
+        </h1>
 
         <div className="mt-12 grid grid-cols-12 gap-8">
           <motion.p
             className="col-span-12 max-w-xl text-base text-[var(--muted-ink)] md:col-span-6 md:text-lg"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.6, duration: 0.8 }}
+            transition={{ delay: 0.9, duration: 0.8 }}
           >
             Интернет-магазины, которые превращают трафик в продажи
             и возвращают бренду контроль над клиентом.
@@ -132,17 +189,17 @@ function Hero() {
             className="col-span-12 flex items-end md:col-span-6 md:justify-end"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.8, duration: 0.8 }}
+            transition={{ delay: 1.1, duration: 0.8 }}
           >
-            <a
+            <MagneticButton
               href={TG}
               target="_blank"
               rel="noreferrer"
-              className="group inline-flex items-center gap-4 border border-[var(--paper)]/30 px-8 py-5 text-sm uppercase tracking-[0.18em] text-[var(--paper)] transition-all duration-300 hover:border-[var(--bronze)] hover:bg-[var(--bronze)] hover:text-[var(--ink)]"
+              className="group border border-[var(--paper)]/30 px-8 py-5 text-sm uppercase tracking-[0.18em] text-[var(--paper)] transition-colors duration-300 hover:border-[var(--bronze)] hover:bg-[var(--bronze)] hover:text-[var(--ink)]"
             >
               Обсудить проект
               <span aria-hidden className="transition-transform group-hover:translate-x-1">→</span>
-            </a>
+            </MagneticButton>
           </motion.div>
         </div>
 
@@ -150,6 +207,7 @@ function Hero() {
     </section>
   );
 }
+
 
 function ManifestoWord({
   progress,
@@ -643,9 +701,11 @@ function WhatWeDo() {
               <div className="display-xl text-[56px] leading-none text-[var(--paper)] md:text-[5vw]">
                 <Counter to={m.num} suffix={m.suffix} prefix={m.prefix} decimals={m.decimals} />
               </div>
+              <CounterBar />
               <div className="mt-6 max-w-[220px] text-sm text-[var(--muted-ink)]">{m.l}</div>
             </div>
           </FadeUp>
+
         ))}
       </div>
     </Section>
@@ -658,34 +718,89 @@ function HowSystem() {
     { t: "Сайт превращает в покупателя", d: "Конверсионная структура, быстрая загрузка, удобный заказ." },
     { t: "База клиентов остаётся у вас", d: "Email, телефон, история заказов — основа для повторных продаж." },
     { t: "Повторные продажи растят выручку", d: "Свой канал даёт прямой контакт с клиентом и продажи без посредников." },
+    { t: "Выручка становится предсказуемой", d: "Стабильный поток заказов, который не зависит от алгоритмов площадок." },
   ];
+  const ref = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end end"] });
+  const x = useTransform(scrollYProgress, [0, 1], ["0%", "-78%"]);
+
   return (
-    <Section id="system" label="(03) Система" className="border-t border-white/5">
-      <FadeUp>
-        <h2 className="display-xl text-[26px] text-[var(--paper)] md:text-[3.6vw]">
-          Как это<br />
-          <span style={{ color: "var(--bronze)" }}>работает.</span>
-        </h2>
-      </FadeUp>
-      <div className="mt-16 grid grid-cols-1 gap-px bg-white/10 md:grid-cols-4">
-        {steps.map((s, i) => (
-          <FadeUp key={i} delay={i * 0.06}>
-            <div className="flex h-full flex-col bg-[var(--ink)] p-8 md:p-10">
-              <div className="font-display text-3xl font-bold md:text-4xl" style={{ color: "var(--bronze)" }}>
-                0{i + 1}
+    <section
+      id="system"
+      className="relative border-t border-white/5"
+    >
+      {/* Mobile: vertical */}
+      <div className="md:hidden">
+        <div className="px-6 py-28">
+          <span className="eyebrow">(03) Система</span>
+          <h2 className="display-xl mt-8 text-[26px] text-[var(--paper)]">
+            Как это<br />
+            <span style={{ color: "var(--bronze)" }}>работает.</span>
+          </h2>
+          <div className="mt-12 grid grid-cols-1 gap-px bg-white/10">
+            {steps.map((s, i) => (
+              <div key={i} className="flex flex-col bg-[var(--ink)] p-8">
+                <div className="font-display text-3xl font-bold" style={{ color: "var(--bronze)" }}>0{i + 1}</div>
+                <h3 className="display-xl mt-6 text-xl text-[var(--paper)]">{s.t}</h3>
+                <p className="mt-4 text-[14px] leading-relaxed text-[var(--muted-ink)]">{s.d}</p>
               </div>
-              <h3 className="display-xl mt-6 text-xl text-[var(--paper)] md:text-2xl">{s.t}</h3>
-              <p className="mt-4 text-[14px] leading-relaxed text-[var(--muted-ink)]">{s.d}</p>
-              {i < steps.length - 1 && (
-                <div className="mt-6 hidden text-2xl text-[var(--bronze)]/60 md:block">→</div>
-              )}
-            </div>
-          </FadeUp>
-        ))}
+            ))}
+          </div>
+        </div>
       </div>
-    </Section>
+
+      {/* Desktop: sticky horizontal scroll */}
+      <div ref={ref} className="relative hidden md:block" style={{ height: `${steps.length * 90}vh` }}>
+        <div className="sticky top-0 flex h-screen flex-col overflow-hidden">
+          <div className="flex items-end justify-between px-16 pt-32">
+            <div>
+              <span className="eyebrow">(03) Система</span>
+              <h2 className="display-xl mt-6 text-[3.6vw] text-[var(--paper)]">
+                Как это <span style={{ color: "var(--bronze)" }}>работает.</span>
+              </h2>
+            </div>
+            <div className="text-[11px] uppercase tracking-[0.22em] text-[var(--muted-ink)]">
+              ← scroll →
+            </div>
+          </div>
+          <div className="relative mt-16 flex-1 overflow-hidden">
+            <motion.div style={{ x }} className="flex h-full gap-8 pl-16 pr-[20vw] will-change-transform">
+              {steps.map((s, i) => (
+                <div
+                  key={i}
+                  className="flex h-full w-[68vw] max-w-[820px] flex-shrink-0 flex-col justify-between border border-white/10 bg-[#080808] p-12"
+                >
+                  <div
+                    className="font-display font-bold leading-none"
+                    style={{ color: "var(--bronze)", fontSize: "clamp(80px, 11vw, 180px)", letterSpacing: "-0.04em" }}
+                  >
+                    0{i + 1}
+                  </div>
+                  <div className="max-w-[520px]">
+                    <h3 className="display-xl text-3xl text-[var(--paper)] md:text-[2.4vw]">{s.t}</h3>
+                    <p className="mt-5 text-[15px] leading-relaxed text-[var(--muted-ink)]">{s.d}</p>
+                  </div>
+                </div>
+              ))}
+            </motion.div>
+          </div>
+          <div className="px-16 pb-10 pt-8">
+            <div className="h-[2px] w-full bg-white/10">
+              <motion.div
+                style={{ scaleX: scrollYProgress, transformOrigin: "0% 50%" }}
+                className="h-full"
+                aria-hidden
+              >
+                <div className="h-full w-full" style={{ background: "var(--bronze)" }} />
+              </motion.div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
   );
 }
+
 
 function CaseRow({
   c,
@@ -839,18 +954,40 @@ function FitForItem({
   // Image is 130% tall — translate it from -15% to +15% as we scroll past.
   const y = useTransform(scrollYProgress, [0, 1], ["-15%", "15%"]);
 
+  // 3D tilt based on mouse position inside the hero
+  const tiltX = useMotionValue(0);
+  const tiltY = useMotionValue(0);
+  const rotX = useSpring(tiltX, { stiffness: 140, damping: 16, mass: 0.4 });
+  const rotY = useSpring(tiltY, { stiffness: 140, damping: 16, mass: 0.4 });
+  const onTilt = (e: React.MouseEvent) => {
+    const el = ref.current;
+    if (!el) return;
+    const r = el.getBoundingClientRect();
+    const px = (e.clientX - r.left) / r.width - 0.5;
+    const py = (e.clientY - r.top) / r.height - 0.5;
+    tiltY.set(px * 8);
+    tiltX.set(-py * 8);
+  };
+  const onTiltLeave = () => {
+    tiltX.set(0);
+    tiltY.set(0);
+  };
+
   return (
     <div>
       {/* Full-width hero with centered title */}
       <div
         ref={ref}
+        onMouseMove={onTilt}
+        onMouseLeave={onTiltLeave}
         className="relative h-[78vh] min-h-[560px] w-full overflow-hidden md:h-screen md:min-h-[760px]"
+        style={{ perspective: 1200 }}
       >
         <motion.img
           src={item.img}
           alt={item.t}
           loading="lazy"
-          style={{ y }}
+          style={{ y, rotateX: rotX, rotateY: rotY, transformStyle: "preserve-3d" }}
           className="absolute left-0 top-0 h-[130%] w-full object-cover"
         />
         <div className="absolute inset-0 bg-black/40" />
@@ -859,7 +996,7 @@ function FitForItem({
         {/* Centered title */}
         <div className="absolute inset-0 flex items-center justify-center px-6">
           <h3
-            className="display-xl text-center text-[var(--paper)]"
+            className="fitfor-title display-xl text-center text-[var(--paper)]"
             style={{
               fontSize: "clamp(32px, 6.6vw, 120px)",
               lineHeight: 1.2,
@@ -874,6 +1011,7 @@ function FitForItem({
             {item.t}
           </h3>
         </div>
+
 
         {/* Bottom-left index */}
         <div className="absolute bottom-6 left-6 md:bottom-10 md:left-12">
@@ -1068,16 +1206,21 @@ function FinalCTA() {
           </p>
         </FadeUp>
         <FadeUp delay={0.2}>
-          <a
-            href={TG}
-            target="_blank"
-            rel="noreferrer"
-            className="group mt-14 inline-flex items-center gap-4 bg-[var(--bronze)] px-10 py-6 text-sm uppercase tracking-[0.2em] text-[var(--ink)] transition-all duration-300 hover:bg-[var(--paper)]"
-          >
-            Написать в Telegram
-            <span aria-hidden className="transition-transform group-hover:translate-x-1">→</span>
-          </a>
+          <div className="mt-14 flex justify-center">
+            <MagneticButton
+              href={TG}
+              target="_blank"
+              rel="noreferrer"
+              radius={100}
+              strength={0.4}
+              className="group bg-[var(--bronze)] px-10 py-6 text-sm uppercase tracking-[0.2em] text-[var(--ink)] transition-colors duration-300 hover:bg-[var(--paper)]"
+            >
+              Написать в Telegram
+              <span aria-hidden className="transition-transform group-hover:translate-x-1">→</span>
+            </MagneticButton>
+          </div>
         </FadeUp>
+
         <FadeUp delay={0.3}>
           <p className="mt-10 text-sm text-[var(--muted-ink)]">
             <a href={TG} target="_blank" rel="noreferrer" className="hover:text-[var(--paper)]">
@@ -1116,7 +1259,33 @@ function CityClock({ city, tz }: { city: string; tz: string }) {
   );
 }
 
+function VelocityWordmark() {
+  const { scrollY } = useScroll();
+  const velocity = useVelocity(scrollY);
+  const smoothV = useSpring(velocity, { stiffness: 80, damping: 22, mass: 0.5 });
+  const skew = useTransform(smoothV, [-2500, 0, 2500], [-12, 0, 12]);
+  const scaleY = useTransform(smoothV, [-2500, 0, 2500], [0.86, 1, 1.14]);
+  return (
+    <motion.h2
+      aria-hidden
+      className="font-display select-none text-[var(--ink)]"
+      style={{
+        fontSize: "clamp(96px, 26vw, 440px)",
+        fontWeight: 900,
+        lineHeight: 0.82,
+        letterSpacing: "-0.06em",
+        skewX: skew,
+        scaleY,
+        transformOrigin: "0% 100%",
+      }}
+    >
+      KLIDO
+    </motion.h2>
+  );
+}
+
 function Footer() {
+
   return (
     <footer
       className="relative z-10 border-t border-white/10"
@@ -1177,19 +1346,9 @@ function Footer() {
         </div>
 
         <div className="mx-auto mt-10 max-w-[1400px] md:mt-14">
-          <h2
-            aria-hidden
-            className="font-display select-none text-[var(--ink)]"
-            style={{
-              fontSize: "clamp(96px, 26vw, 440px)",
-              fontWeight: 900,
-              lineHeight: 0.82,
-              letterSpacing: "-0.06em",
-            }}
-          >
-            KLIDO
-          </h2>
+          <VelocityWordmark />
         </div>
+
       </div>
 
       {/* Bottom band — clocks + copyright */}
@@ -1216,6 +1375,8 @@ export function KlidoLanding() {
       <Scene3D />
       <ScrollProgress />
       <CustomCursor />
+      <EasterEgg />
+
       <div className="relative z-10">
         <SiteHeader />
         <main>
