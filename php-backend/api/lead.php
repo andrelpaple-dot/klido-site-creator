@@ -14,20 +14,30 @@ $source  = trim((string)($in['source']  ?? ''));
 
 if ($contact === '' || mb_strlen($contact) > 255) json_err('contact required');
 if (mb_strlen($name) > 255 || mb_strlen($source) > 255) json_err('too long');
+if (mb_strlen($message) > 4000) json_err('message too long');
 
 try {
     $stmt = db()->prepare(
         "INSERT INTO leads (name, contact, message, source_page) VALUES (?, ?, ?, ?)"
     );
     $stmt->execute([$name, $contact, $message, $source]);
+    $id = (int)db()->lastInsertId();
 
-    // Опционально: уведомление на email
+    // Telegram-уведомление
+    $tgText = "<b>Klido: новая заявка #{$id}</b>\n"
+        . "Имя: " . htmlspecialchars($name ?: '—') . "\n"
+        . "Контакт: " . htmlspecialchars($contact) . "\n"
+        . "Сообщение: " . htmlspecialchars($message ?: '—') . "\n"
+        . "Страница: " . htmlspecialchars($source ?: '—');
+    tg_notify($tgText);
+
+    // Email (опционально)
     @mail(CONTACT_EMAIL, 'Klido: новая заявка',
         "Имя: $name\nКонтакт: $contact\nСообщение: $message\nСтраница: $source",
         "From: Klido <noreply@klido.ru>\r\nContent-Type: text/plain; charset=utf-8"
     );
 
-    json_ok(['id' => (int)db()->lastInsertId()]);
+    json_ok(['id' => $id]);
 } catch (Throwable $e) {
     json_err('db error', 500);
 }
