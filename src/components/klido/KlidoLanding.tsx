@@ -1206,16 +1206,21 @@ function FinalCTA() {
           </p>
         </FadeUp>
         <FadeUp delay={0.2}>
-          <a
-            href={TG}
-            target="_blank"
-            rel="noreferrer"
-            className="group mt-14 inline-flex items-center gap-4 bg-[var(--bronze)] px-10 py-6 text-sm uppercase tracking-[0.2em] text-[var(--ink)] transition-all duration-300 hover:bg-[var(--paper)]"
-          >
-            Написать в Telegram
-            <span aria-hidden className="transition-transform group-hover:translate-x-1">→</span>
-          </a>
+          <div className="mt-14 flex justify-center">
+            <MagneticButton
+              href={TG}
+              target="_blank"
+              rel="noreferrer"
+              radius={100}
+              strength={0.4}
+              className="group bg-[var(--bronze)] px-10 py-6 text-sm uppercase tracking-[0.2em] text-[var(--ink)] transition-colors duration-300 hover:bg-[var(--paper)]"
+            >
+              Написать в Telegram
+              <span aria-hidden className="transition-transform group-hover:translate-x-1">→</span>
+            </MagneticButton>
+          </div>
         </FadeUp>
+
         <FadeUp delay={0.3}>
           <p className="mt-10 text-sm text-[var(--muted-ink)]">
             <a href={TG} target="_blank" rel="noreferrer" className="hover:text-[var(--paper)]">
