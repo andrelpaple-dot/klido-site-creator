@@ -34,7 +34,7 @@ function Section({
       id={id}
       className={`relative px-6 py-28 md:px-16 md:py-40 lg:py-48 ${className}`}
     >
-      <div className="mx-auto grid max-w-[1400px] grid-cols-12 gap-x-8">
+        <div className="mx-auto grid max-w-[1400px] grid-cols-12 gap-x-0 md:gap-x-8">
         {label && (
           <div className="col-span-12 mb-8 md:col-span-2 md:mb-0">
             <span className="eyebrow">{label}</span>
@@ -53,7 +53,7 @@ function Counter({ to, suffix = "", prefix = "", decimals = 0 }: { to: number; s
   const inView = useInView(ref, { once: true, amount: 0.5 });
   const mv = useMotionValue(0);
   const rounded = useTransform(mv, (v) => {
-    const n = decimals > 0 ? v.toFixed(decimals) : Math.round(v).toLocaleString("ru-RU");
+    const n = decimals > 0 ? v.toFixed(decimals).replace(".", ",") : Math.round(v).toLocaleString("ru-RU");
     return `${prefix}${n}${suffix}`;
   });
   useEffect(() => {
@@ -64,25 +64,6 @@ function Counter({ to, suffix = "", prefix = "", decimals = 0 }: { to: number; s
   }, [inView, to, mv]);
   return <motion.span ref={ref}>{rounded}</motion.span>;
 }
-
-function CounterBar() {
-  const ref = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref, { once: true, amount: 0.5 });
-  const mv = useMotionValue(0);
-  const width = useTransform(mv, (v) => `${v}%`);
-  useEffect(() => {
-    if (inView) {
-      const ctrl = animate(mv, 100, { duration: 1.4, ease: [0.16, 1, 0.3, 1] });
-      return ctrl.stop;
-    }
-  }, [inView, mv]);
-  return (
-    <div ref={ref} className="mt-5 h-[3px] w-full overflow-hidden bg-white/8">
-      <motion.div style={{ width, background: "var(--bronze)" }} className="h-full" />
-    </div>
-  );
-}
-
 
 function FadeUp({
   delay = 0,
@@ -641,6 +622,12 @@ function TeamExperience() {
 }
 
 function WhatWeDo() {
+  const metrics = [
+    { num: 11.67, suffix: "%", eyebrow: "до", l: "конверсия на наших проектах", decimals: 2 },
+    { num: 290, suffix: "%", prefix: "+", l: "рост онлайн-заказов после редизайна" },
+    { num: 30, suffix: "+", l: "запущенных проектов для e-commerce" },
+  ];
+
   return (
     <Section label="(02) Что делаем" className="border-t border-white/5">
       <FadeUp>
@@ -657,22 +644,19 @@ function WhatWeDo() {
         </p>
       </FadeUp>
 
-      <div className="mt-20 grid grid-cols-1 gap-x-8 gap-y-12 md:grid-cols-3">
-        {[
-          { num: 11.67, suffix: "%", prefix: "до ", l: "конверсия на наших проектах", decimals: 2 },
-          { num: 290, suffix: "%", prefix: "+", l: "рост онлайн-заказов после редизайна" },
-          { num: 30, suffix: "+", prefix: "", l: "запущенных проектов для e-commerce" },
-        ].map((m, i) => (
+      <div className="mt-16 grid grid-cols-1 gap-0 border-y border-white/10 md:mt-20 md:grid-cols-3">
+        {metrics.map((m, i) => (
           <FadeUp key={i} delay={i * 0.08}>
-            <div className="border-t border-white/10 pt-6">
-              <div className="display-xl text-[56px] leading-none text-[var(--paper)] md:text-[5vw]">
+            <div className={`min-w-0 py-8 md:px-7 md:py-10 ${i > 0 ? "border-t border-white/10 md:border-l md:border-t-0" : ""}`}>
+              <div className="mb-5 h-4 text-[10px] font-semibold uppercase tracking-[0.22em] text-[var(--bronze)] md:text-[11px]">
+                {m.eyebrow ?? ""}
+              </div>
+              <div className="font-display whitespace-nowrap text-[clamp(42px,12vw,64px)] font-black leading-[1.04] tracking-[-0.02em] text-[var(--paper)] tabular-nums md:text-[clamp(48px,4.1vw,64px)]">
                 <Counter to={m.num} suffix={m.suffix} prefix={m.prefix} decimals={m.decimals} />
               </div>
-              
-              <div className="mt-6 max-w-[220px] text-sm text-[var(--muted-ink)]">{m.l}</div>
+              <div className="mt-6 max-w-[260px] text-sm leading-relaxed text-[var(--muted-ink)]">{m.l}</div>
             </div>
           </FadeUp>
-
         ))}
       </div>
     </Section>
