@@ -157,7 +157,6 @@ function Hero() {
       id="top"
       className="relative flex min-h-[100svh] items-end overflow-hidden px-6 pb-20 pt-32 md:px-16 md:pb-28"
     >
-      <ImageTrail images={trailImages} containerRef={ref as React.RefObject<HTMLElement>} />
       <motion.div style={{ y, opacity }} className="relative z-10 mx-auto w-full max-w-[1400px]">
         <motion.div
           className="eyebrow mb-8"
@@ -168,11 +167,16 @@ function Hero() {
           ⟶ klido · агентство · 2026
         </motion.div>
 
-        <h1 className="display-xl text-[44px] text-[var(--paper)] md:text-[11vw] lg:text-[10vw]">
-          <SplitLine words={["Klido.", "Строим"]} baseDelay={0.15} />
-          <SplitLine words={["каналы"]} baseDelay={0.35} />
-          <SplitLine words={["прямых", "продаж"]} baseDelay={0.5} accentWords={["прямых", "продаж"]} />
-        </h1>
+        <motion.h1
+          className="display-xl text-[44px] text-[var(--paper)] md:text-[11vw] lg:text-[10vw]"
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3, duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
+        >
+          Klido. Строим<br />каналы<br />
+          <span className="text-[var(--bronze)]">прямых продаж.</span>
+        </motion.h1>
+
 
         <div className="mt-12 grid grid-cols-12 gap-8">
           <motion.p
