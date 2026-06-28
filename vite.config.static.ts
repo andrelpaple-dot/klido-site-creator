@@ -24,20 +24,27 @@ const ASSET_BASE =
  *   4. Возвращает модуль с default = { url: <bundled URL> }
  */
 function lovableAssetsStaticPlugin(): Plugin {
+  const PREFIX = "\0lovable-asset:";
   return {
     name: "lovable-assets-static",
     enforce: "pre",
+    async resolveId(source, importer) {
+      if (!source.endsWith(".asset.json")) return null;
+      // Резолвим относительно импортёра, перенаправляем на виртуальный id
+      // (без .json в конце) — иначе встроенный JSON-плагин Vite перехватит load.
+      const base = importer ? path.dirname(importer) : process.cwd();
+      const abs = path.isAbsolute(source) ? source : path.resolve(base, source);
+      return PREFIX + abs;
+    },
     async load(id) {
-      const clean = id.split("?")[0];
-      if (!clean.endsWith(".asset.json")) return null;
-
-      const raw = await fs.readFile(clean, "utf8");
+      if (!id.startsWith(PREFIX)) return null;
+      const real = id.slice(PREFIX.length);
+      const raw = await fs.readFile(real, "utf8");
       const data = JSON.parse(raw) as {
         url: string;
         original_filename: string;
         content_type?: string;
       };
-
       const remote = ASSET_BASE.replace(/\/$/, "") + data.url;
       const res = await fetch(remote);
       if (!res.ok) {
@@ -46,13 +53,11 @@ function lovableAssetsStaticPlugin(): Plugin {
         );
       }
       const bytes = Buffer.from(await res.arrayBuffer());
-
       const refId = this.emitFile({
         type: "asset",
         name: data.original_filename,
         source: bytes,
       });
-
       return [
         `const url = import.meta.ROLLUP_FILE_URL_${refId};`,
         `export default {`,
