@@ -196,16 +196,12 @@
     background: radial-gradient(ellipse at center, transparent 0%, rgba(0, 0, 0, 0.48) 62%, rgba(0, 0, 0, 0.94) 100%);
   }
 
-  .fitfor-title {
-    text-shadow: 0 0 0 rgba(201, 163, 106, 0);
-    transition: text-shadow 500ms cubic-bezier(0.22, 1, 0.36, 1),
-      color 500ms cubic-bezier(0.22, 1, 0.36, 1),
-      transform 500ms cubic-bezier(0.22, 1, 0.36, 1);
+  .fitfor-sub {
+    transition: color 380ms ease, text-shadow 380ms ease;
   }
-  .fitfor-title:hover {
-    text-shadow: 0 0 32px rgba(201, 163, 106, 0.85),
-      0 0 80px rgba(201, 163, 106, 0.55),
-      0 0 140px rgba(201, 163, 106, 0.35);
+  .fitfor-sub:hover {
+    color: var(--bronze);
+    text-shadow: 0 0 18px rgba(201, 163, 106, 0.55);
   }
 
   @keyframes kinetic-drift-a {
