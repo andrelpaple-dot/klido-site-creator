@@ -1,4 +1,4 @@
-import { motion, useInView, useMotionValue, useTransform, animate, useScroll, useSpring, useVelocity, AnimatePresence } from "framer-motion";
+import { motion, useInView, useMotionValue, useTransform, animate, useScroll, useSpring, AnimatePresence } from "framer-motion";
 import { Link } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import { CustomCursor } from "@/components/klido/CustomCursor";
@@ -7,7 +7,6 @@ import { SiteHeader } from "@/components/klido/SiteHeader";
 import { Scene3D } from "@/components/klido/Scene3D";
 import { MagneticButton } from "@/components/klido/MagneticButton";
 import { EasterEgg } from "@/components/klido/EasterEgg";
-import { ImageTrail } from "@/components/klido/ImageTrail";
 
 import { cases } from "@/components/klido/cases-data";
 import fitforRobot from "@/assets/fitfor/robot.jpg";
@@ -107,49 +106,12 @@ function FadeUp({
   );
 }
 
-function SplitWord({ word, delay, accent }: { word: string; delay: number; accent?: boolean }) {
-  const chars = Array.from(word);
-  return (
-    <span className="inline-block whitespace-nowrap" style={{ color: accent ? "var(--bronze)" : undefined }}>
-      {chars.map((ch, i) => (
-        <motion.span
-          key={i}
-          className="inline-block"
-          initial={{ y: "110%", opacity: 0 }}
-          animate={{ y: "0%", opacity: 1 }}
-          transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1], delay: delay + i * 0.025 }}
-        >
-          {ch}
-        </motion.span>
-      ))}
-    </span>
-  );
-}
-
-function SplitLine({ words, baseDelay, accentWords = [] }: { words: string[]; baseDelay: number; accentWords?: string[] }) {
-  let cursor = 0;
-  return (
-    <span className="block overflow-hidden">
-      {words.map((w, wi) => {
-        const d = baseDelay + cursor * 0.02;
-        cursor += w.length + 1;
-        return (
-          <span key={wi}>
-            <SplitWord word={w} delay={d} accent={accentWords.includes(w)} />
-            {wi < words.length - 1 && <span className="inline-block">&nbsp;</span>}
-          </span>
-        );
-      })}
-    </span>
-  );
-}
-
 function Hero() {
   const ref = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
   const y = useTransform(scrollYProgress, [0, 1], [0, 200]);
   const opacity = useTransform(scrollYProgress, [0, 0.6], [1, 0]);
-  const trailImages = cases.slice(0, 5).map((c) => c.image);
+
 
   return (
     <section
@@ -157,7 +119,6 @@ function Hero() {
       id="top"
       className="relative flex min-h-[100svh] items-end overflow-hidden px-6 pb-20 pt-32 md:px-16 md:pb-28"
     >
-      <ImageTrail images={trailImages} containerRef={ref as React.RefObject<HTMLElement>} />
       <motion.div style={{ y, opacity }} className="relative z-10 mx-auto w-full max-w-[1400px]">
         <motion.div
           className="eyebrow mb-8"
@@ -168,11 +129,16 @@ function Hero() {
           ⟶ klido · агентство · 2026
         </motion.div>
 
-        <h1 className="display-xl text-[44px] text-[var(--paper)] md:text-[11vw] lg:text-[10vw]">
-          <SplitLine words={["Klido.", "Строим"]} baseDelay={0.15} />
-          <SplitLine words={["каналы"]} baseDelay={0.35} />
-          <SplitLine words={["прямых", "продаж"]} baseDelay={0.5} accentWords={["прямых", "продаж"]} />
-        </h1>
+        <motion.h1
+          className="display-xl text-[44px] text-[var(--paper)] md:text-[11vw] lg:text-[10vw]"
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3, duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
+        >
+          Klido. Строим<br />каналы<br />
+          <span className="text-[var(--bronze)]">прямых продаж.</span>
+        </motion.h1>
+
 
         <div className="mt-12 grid grid-cols-12 gap-8">
           <motion.p
@@ -1259,30 +1225,6 @@ function CityClock({ city, tz }: { city: string; tz: string }) {
   );
 }
 
-function VelocityWordmark() {
-  const { scrollY } = useScroll();
-  const velocity = useVelocity(scrollY);
-  const smoothV = useSpring(velocity, { stiffness: 80, damping: 22, mass: 0.5 });
-  const skew = useTransform(smoothV, [-2500, 0, 2500], [-12, 0, 12]);
-  const scaleY = useTransform(smoothV, [-2500, 0, 2500], [0.86, 1, 1.14]);
-  return (
-    <motion.h2
-      aria-hidden
-      className="font-display select-none text-[var(--ink)]"
-      style={{
-        fontSize: "clamp(96px, 26vw, 440px)",
-        fontWeight: 900,
-        lineHeight: 0.82,
-        letterSpacing: "-0.06em",
-        skewX: skew,
-        scaleY,
-        transformOrigin: "0% 100%",
-      }}
-    >
-      KLIDO
-    </motion.h2>
-  );
-}
 
 function Footer() {
 
@@ -1346,7 +1288,14 @@ function Footer() {
         </div>
 
         <div className="mx-auto mt-10 max-w-[1400px] md:mt-14">
-          <VelocityWordmark />
+          <h2
+            aria-hidden
+            className="font-display select-none text-[var(--ink)]"
+            style={{ fontSize: "clamp(96px, 26vw, 440px)", fontWeight: 900, lineHeight: 0.82, letterSpacing: "-0.06em" }}
+          >
+            KLIDO
+          </h2>
+
         </div>
 
       </div>
