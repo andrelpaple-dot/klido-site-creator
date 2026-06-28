@@ -66,6 +66,25 @@ function Counter({ to, suffix = "", prefix = "", decimals = 0 }: { to: number; s
   return <motion.span ref={ref}>{rounded}</motion.span>;
 }
 
+function CounterBar() {
+  const ref = useRef<HTMLDivElement>(null);
+  const inView = useInView(ref, { once: true, amount: 0.5 });
+  const mv = useMotionValue(0);
+  const width = useTransform(mv, (v) => `${v}%`);
+  useEffect(() => {
+    if (inView) {
+      const ctrl = animate(mv, 100, { duration: 1.4, ease: [0.16, 1, 0.3, 1] });
+      return ctrl.stop;
+    }
+  }, [inView, mv]);
+  return (
+    <div ref={ref} className="mt-5 h-[3px] w-full overflow-hidden bg-white/8">
+      <motion.div style={{ width, background: "var(--bronze)" }} className="h-full" />
+    </div>
+  );
+}
+
+
 function FadeUp({
   delay = 0,
   children,
