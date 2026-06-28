@@ -45,14 +45,18 @@ export function SiteHeader() {
             </a>
           ))}
         </nav>
-        <a
-          href={TG}
-          target="_blank"
-          rel="noreferrer"
-          className="border border-[var(--paper)]/30 px-5 py-2.5 text-xs uppercase tracking-[0.18em] text-[var(--paper)] transition-all duration-300 hover:border-[var(--bronze)] hover:bg-[var(--bronze)] hover:text-[var(--ink)]"
-        >
-          Обсудить
-        </a>
+        <div className="flex items-center gap-5">
+          <LiveStatus />
+          <a
+            href={TG}
+            target="_blank"
+            rel="noreferrer"
+            className="border border-[var(--paper)]/30 px-5 py-2.5 text-xs uppercase tracking-[0.18em] text-[var(--paper)] transition-all duration-300 hover:border-[var(--bronze)] hover:bg-[var(--bronze)] hover:text-[var(--ink)]"
+          >
+            Обсудить
+          </a>
+        </div>
+
       </div>
     </header>
   );
