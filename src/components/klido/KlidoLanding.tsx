@@ -135,7 +135,7 @@ function Hero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3, duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
         >
-          Klido. Строим<br />Каналы<br />
+          Klido. Строим<br />каналы<br />
           <span className="text-[var(--bronze)]">прямых продаж.</span>
 
         </motion.h1>
