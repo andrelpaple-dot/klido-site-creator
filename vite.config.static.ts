@@ -35,7 +35,11 @@ function lovableAssetsStaticPlugin(): Plugin {
       // иначе встроенный JSON-плагин Vite перехватит load и попытается распарсить.
       const resolved = await this.resolve(source, importer, { skipSelf: true });
       if (!resolved) return null;
-      return PREFIX + resolved.id;
+      // Срезаем .json из id, чтобы встроенный vite-json не пытался применить
+      // свой transform — реальный путь читаем из мапы.
+      const virtualId = PREFIX + resolved.id.replace(/\.json$/, "");
+      realPaths.set(virtualId, resolved.id);
+      return virtualId;
     },
     async load(id) {
       if (!id.startsWith(PREFIX)) return null;
