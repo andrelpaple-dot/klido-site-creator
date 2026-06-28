@@ -1,4 +1,4 @@
-import { motion, useInView, useMotionValue, useTransform, animate, useScroll, useSpring, useVelocity, AnimatePresence } from "framer-motion";
+import { motion, useInView, useMotionValue, useTransform, animate, useScroll, useSpring, AnimatePresence } from "framer-motion";
 import { Link } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import { CustomCursor } from "@/components/klido/CustomCursor";
@@ -7,7 +7,6 @@ import { SiteHeader } from "@/components/klido/SiteHeader";
 import { Scene3D } from "@/components/klido/Scene3D";
 import { MagneticButton } from "@/components/klido/MagneticButton";
 import { EasterEgg } from "@/components/klido/EasterEgg";
-import { ImageTrail } from "@/components/klido/ImageTrail";
 
 import { cases } from "@/components/klido/cases-data";
 import fitforRobot from "@/assets/fitfor/robot.jpg";
