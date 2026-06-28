@@ -899,7 +899,7 @@ function FitForItem({
 
           {/* Bullets */}
           <div className="md:col-span-7">
-            <p className="mb-10 max-w-2xl text-[11px] uppercase tracking-[0.28em] text-[var(--muted-ink)]">
+            <p className="fitfor-sub mb-10 max-w-2xl text-[13px] uppercase tracking-[0.28em] text-[var(--muted-ink)] md:text-[14px]">
               {item.sub}
             </p>
             <ul className="divide-y divide-white/10 border-y border-white/10">
