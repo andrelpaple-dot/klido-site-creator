@@ -859,8 +859,12 @@ function FitForItem({
         {/* Centered title */}
         <div className="absolute inset-0 flex items-center justify-center px-6">
           <h3
-            className="fitfor-title display-xl text-center text-[var(--paper)] transition-all duration-500 ease-out hover:text-[var(--bronze)]"
-            style={{ fontSize: "clamp(40px, 7.4vw, 128px)", lineHeight: 0.92 }}
+            className="display-xl text-center text-[var(--paper)]"
+            style={{
+              fontSize: "clamp(34px, 7.4vw, 128px)",
+              lineHeight: 1.06,
+              paddingTop: "0.2em",
+            }}
           >
             {item.t}
           </h3>
@@ -895,7 +899,7 @@ function FitForItem({
 
           {/* Bullets */}
           <div className="md:col-span-7">
-            <p className="mb-10 max-w-2xl text-[11px] uppercase tracking-[0.28em] text-[var(--muted-ink)]">
+            <p className="fitfor-sub mb-10 max-w-2xl text-[13px] uppercase tracking-[0.28em] text-[var(--muted-ink)] md:text-[14px]">
               {item.sub}
             </p>
             <ul className="divide-y divide-white/10 border-y border-white/10">
