@@ -718,34 +718,89 @@ function HowSystem() {
     { t: "Сайт превращает в покупателя", d: "Конверсионная структура, быстрая загрузка, удобный заказ." },
     { t: "База клиентов остаётся у вас", d: "Email, телефон, история заказов — основа для повторных продаж." },
     { t: "Повторные продажи растят выручку", d: "Свой канал даёт прямой контакт с клиентом и продажи без посредников." },
+    { t: "Выручка становится предсказуемой", d: "Стабильный поток заказов, который не зависит от алгоритмов площадок." },
   ];
+  const ref = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end end"] });
+  const x = useTransform(scrollYProgress, [0, 1], ["0%", "-78%"]);
+
   return (
-    <Section id="system" label="(03) Система" className="border-t border-white/5">
-      <FadeUp>
-        <h2 className="display-xl text-[26px] text-[var(--paper)] md:text-[3.6vw]">
-          Как это<br />
-          <span style={{ color: "var(--bronze)" }}>работает.</span>
-        </h2>
-      </FadeUp>
-      <div className="mt-16 grid grid-cols-1 gap-px bg-white/10 md:grid-cols-4">
-        {steps.map((s, i) => (
-          <FadeUp key={i} delay={i * 0.06}>
-            <div className="flex h-full flex-col bg-[var(--ink)] p-8 md:p-10">
-              <div className="font-display text-3xl font-bold md:text-4xl" style={{ color: "var(--bronze)" }}>
-                0{i + 1}
+    <section
+      id="system"
+      className="relative border-t border-white/5"
+    >
+      {/* Mobile: vertical */}
+      <div className="md:hidden">
+        <div className="px-6 py-28">
+          <span className="eyebrow">(03) Система</span>
+          <h2 className="display-xl mt-8 text-[26px] text-[var(--paper)]">
+            Как это<br />
+            <span style={{ color: "var(--bronze)" }}>работает.</span>
+          </h2>
+          <div className="mt-12 grid grid-cols-1 gap-px bg-white/10">
+            {steps.map((s, i) => (
+              <div key={i} className="flex flex-col bg-[var(--ink)] p-8">
+                <div className="font-display text-3xl font-bold" style={{ color: "var(--bronze)" }}>0{i + 1}</div>
+                <h3 className="display-xl mt-6 text-xl text-[var(--paper)]">{s.t}</h3>
+                <p className="mt-4 text-[14px] leading-relaxed text-[var(--muted-ink)]">{s.d}</p>
               </div>
-              <h3 className="display-xl mt-6 text-xl text-[var(--paper)] md:text-2xl">{s.t}</h3>
-              <p className="mt-4 text-[14px] leading-relaxed text-[var(--muted-ink)]">{s.d}</p>
-              {i < steps.length - 1 && (
-                <div className="mt-6 hidden text-2xl text-[var(--bronze)]/60 md:block">→</div>
-              )}
-            </div>
-          </FadeUp>
-        ))}
+            ))}
+          </div>
+        </div>
       </div>
-    </Section>
+
+      {/* Desktop: sticky horizontal scroll */}
+      <div ref={ref} className="relative hidden md:block" style={{ height: `${steps.length * 90}vh` }}>
+        <div className="sticky top-0 flex h-screen flex-col overflow-hidden">
+          <div className="flex items-end justify-between px-16 pt-32">
+            <div>
+              <span className="eyebrow">(03) Система</span>
+              <h2 className="display-xl mt-6 text-[3.6vw] text-[var(--paper)]">
+                Как это <span style={{ color: "var(--bronze)" }}>работает.</span>
+              </h2>
+            </div>
+            <div className="text-[11px] uppercase tracking-[0.22em] text-[var(--muted-ink)]">
+              ← scroll →
+            </div>
+          </div>
+          <div className="relative mt-16 flex-1 overflow-hidden">
+            <motion.div style={{ x }} className="flex h-full gap-8 pl-16 pr-[20vw] will-change-transform">
+              {steps.map((s, i) => (
+                <div
+                  key={i}
+                  className="flex h-full w-[68vw] max-w-[820px] flex-shrink-0 flex-col justify-between border border-white/10 bg-[#080808] p-12"
+                >
+                  <div
+                    className="font-display font-bold leading-none"
+                    style={{ color: "var(--bronze)", fontSize: "clamp(80px, 11vw, 180px)", letterSpacing: "-0.04em" }}
+                  >
+                    0{i + 1}
+                  </div>
+                  <div className="max-w-[520px]">
+                    <h3 className="display-xl text-3xl text-[var(--paper)] md:text-[2.4vw]">{s.t}</h3>
+                    <p className="mt-5 text-[15px] leading-relaxed text-[var(--muted-ink)]">{s.d}</p>
+                  </div>
+                </div>
+              ))}
+            </motion.div>
+          </div>
+          <div className="px-16 pb-10 pt-8">
+            <div className="h-[2px] w-full bg-white/10">
+              <motion.div
+                style={{ scaleX: scrollYProgress, transformOrigin: "0% 50%" }}
+                className="h-full"
+                aria-hidden
+              >
+                <div className="h-full w-full" style={{ background: "var(--bronze)" }} />
+              </motion.div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
   );
 }
+
 
 function CaseRow({
   c,
