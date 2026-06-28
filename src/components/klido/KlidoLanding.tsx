@@ -7,6 +7,10 @@ import { SiteHeader } from "@/components/klido/SiteHeader";
 import { Scene3D } from "@/components/klido/Scene3D";
 
 import { cases } from "@/components/klido/cases-data";
+import fitforRobot from "@/assets/fitfor/robot.jpg";
+import fitforNinja from "@/assets/fitfor/ninja.jpg";
+import fitforAstronaut from "@/assets/fitfor/astronaut.jpg";
+import fitforSamurai from "@/assets/fitfor/samurai.jpg";
 
 const TG = "https://t.me/AndrewGeiger";
 const MAIL = "mailto:hello@klido.ru";
@@ -816,29 +820,73 @@ function Cases() {
 
 function FitFor() {
   const items = [
-    { t: "Растущий бренд без своего сайта", d: "Продаёте через соцсети, маркетплейсы или офлайн. Нужен свой канал, чтобы не зависеть от посредников и комиссий." },
-    { t: "Бренд из Instagram / Telegram", d: "Аудитория растёт, ручная обработка заказов в DM съедает время. Нужен сайт с автоматизацией и интеграцией с CRM." },
-    { t: "Старый интернет-магазин", d: "Сайт работает с 2018 года, конверсия 1–2%. Готовы к редизайну под современные стандарты." },
-    { t: "Новый бренд после ребрендинга", d: "Сменили позиционирование или линейку. Нужен новый сайт быстро." },
+    {
+      img: fitforRobot,
+      tag: "Растущий бренд",
+      t: "Без своего сайта",
+      d: "Продаёте через соцсети, маркетплейсы или офлайн. Нужен свой канал, чтобы не зависеть от комиссий.",
+    },
+    {
+      img: fitforNinja,
+      tag: "Instagram / Telegram",
+      t: "Заказы в DM съедают время",
+      d: "Аудитория растёт, ручная обработка не справляется. Нужен сайт с автоматизацией и интеграцией с CRM.",
+    },
+    {
+      img: fitforAstronaut,
+      tag: "Старый магазин",
+      t: "Конверсия 1–2%",
+      d: "Сайт работает с 2018 года, не приносит роста. Готовы к редизайну под современные стандарты.",
+    },
+    {
+      img: fitforSamurai,
+      tag: "После ребрендинга",
+      t: "Новый бренд — новый сайт",
+      d: "Сменили позиционирование или линейку. Нужен сайт быстро и без потери темпа.",
+    },
   ];
   return (
     <section id="fitfor" className="relative border-t border-white/5 px-6 py-28 md:px-16 md:py-40 lg:py-48">
-      <div className="mx-auto max-w-[1200px]">
-        <div className="mb-12 flex flex-col items-center text-center">
-          <span className="eyebrow mb-6">(04) Кому</span>
-          <FadeUp>
-            <h2 className="display-xl text-[26px] text-[var(--paper)] md:text-[3.6vw]">
-              Кому<br /><span style={{ color: "var(--bronze)" }}>подойдёт.</span>
-            </h2>
+      <div className="mx-auto max-w-[1400px]">
+        <div className="mb-16 flex flex-col items-start md:mb-24 md:flex-row md:items-end md:justify-between">
+          <div>
+            <span className="eyebrow mb-6 block">(04) Если это про вас</span>
+            <FadeUp>
+              <h2 className="display-xl text-[44px] text-[var(--paper)] md:text-[6vw]">
+                Кому<br /><span style={{ color: "var(--bronze)" }}>подойдёт.</span>
+              </h2>
+            </FadeUp>
+          </div>
+          <FadeUp delay={0.1}>
+            <p className="mt-6 max-w-sm text-[15px] leading-relaxed text-[var(--muted-ink)] md:mt-0">
+              Четыре сценария, в которых внешний сайт становится отдельным каналом продаж — не дубликатом маркетплейса.
+            </p>
           </FadeUp>
         </div>
-        <div className="mx-auto grid grid-cols-1 gap-px bg-white/10 md:grid-cols-2">
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {items.map((it, i) => (
-            <FadeUp key={i} delay={(i % 2) * 0.1}>
-              <div className="h-full bg-[var(--ink)] p-8 transition-colors hover:bg-white/[0.03] md:p-10">
-                <div className="eyebrow mb-4">0{i + 1}</div>
-                <h3 className="display-xl text-2xl text-[var(--paper)] md:text-3xl">{it.t}</h3>
-                <p className="mt-5 text-[15px] leading-relaxed text-[var(--muted-ink)]">{it.d}</p>
+            <FadeUp key={i} delay={(i % 4) * 0.08}>
+              <div className="group relative h-[520px] overflow-hidden rounded-sm bg-[#0a0a0a]">
+                <img
+                  src={it.img}
+                  alt={it.t}
+                  loading="lazy"
+                  className="absolute inset-0 h-full w-full object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-105"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-transparent" />
+                <div className="absolute inset-x-0 top-0 flex items-center justify-between p-6">
+                  <span className="font-display text-2xl font-bold" style={{ color: "var(--bronze)" }}>
+                    0{i + 1}
+                  </span>
+                  <span className="text-[10px] uppercase tracking-[0.22em] text-[var(--muted-ink)]">{it.tag}</span>
+                </div>
+                <div className="absolute inset-x-0 bottom-0 p-6 md:p-7">
+                  <h3 className="display-xl text-xl text-[var(--paper)] md:text-2xl">{it.t}</h3>
+                  <p className="mt-4 max-h-0 overflow-hidden text-[13px] leading-relaxed text-[var(--muted-ink)] opacity-0 transition-all duration-500 group-hover:max-h-40 group-hover:opacity-100">
+                    {it.d}
+                  </p>
+                  <div className="mt-5 h-px w-12 bg-[var(--bronze)] transition-all duration-500 group-hover:w-full" />
+                </div>
               </div>
             </FadeUp>
           ))}
