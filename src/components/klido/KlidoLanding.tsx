@@ -859,7 +859,7 @@ function FitForItem({
         {/* Centered title */}
         <div className="absolute inset-0 flex items-center justify-center px-6">
           <h3
-            className="display-xl text-center text-[var(--paper)]"
+            className="fitfor-title display-xl text-center text-[var(--paper)] transition-all duration-500 ease-out hover:text-[var(--bronze)]"
             style={{ fontSize: "clamp(40px, 7.4vw, 128px)", lineHeight: 0.92 }}
           >
             {item.t}
