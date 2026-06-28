@@ -954,18 +954,40 @@ function FitForItem({
   // Image is 130% tall — translate it from -15% to +15% as we scroll past.
   const y = useTransform(scrollYProgress, [0, 1], ["-15%", "15%"]);
 
+  // 3D tilt based on mouse position inside the hero
+  const tiltX = useMotionValue(0);
+  const tiltY = useMotionValue(0);
+  const rotX = useSpring(tiltX, { stiffness: 140, damping: 16, mass: 0.4 });
+  const rotY = useSpring(tiltY, { stiffness: 140, damping: 16, mass: 0.4 });
+  const onTilt = (e: React.MouseEvent) => {
+    const el = ref.current;
+    if (!el) return;
+    const r = el.getBoundingClientRect();
+    const px = (e.clientX - r.left) / r.width - 0.5;
+    const py = (e.clientY - r.top) / r.height - 0.5;
+    tiltY.set(px * 8);
+    tiltX.set(-py * 8);
+  };
+  const onTiltLeave = () => {
+    tiltX.set(0);
+    tiltY.set(0);
+  };
+
   return (
     <div>
       {/* Full-width hero with centered title */}
       <div
         ref={ref}
+        onMouseMove={onTilt}
+        onMouseLeave={onTiltLeave}
         className="relative h-[78vh] min-h-[560px] w-full overflow-hidden md:h-screen md:min-h-[760px]"
+        style={{ perspective: 1200 }}
       >
         <motion.img
           src={item.img}
           alt={item.t}
           loading="lazy"
-          style={{ y }}
+          style={{ y, rotateX: rotX, rotateY: rotY, transformStyle: "preserve-3d" }}
           className="absolute left-0 top-0 h-[130%] w-full object-cover"
         />
         <div className="absolute inset-0 bg-black/40" />
@@ -974,7 +996,7 @@ function FitForItem({
         {/* Centered title */}
         <div className="absolute inset-0 flex items-center justify-center px-6">
           <h3
-            className="display-xl text-center text-[var(--paper)]"
+            className="fitfor-title display-xl text-center text-[var(--paper)]"
             style={{
               fontSize: "clamp(32px, 6.6vw, 120px)",
               lineHeight: 1.2,
@@ -989,6 +1011,7 @@ function FitForItem({
             {item.t}
           </h3>
         </div>
+
 
         {/* Bottom-left index */}
         <div className="absolute bottom-6 left-6 md:bottom-10 md:left-12">
