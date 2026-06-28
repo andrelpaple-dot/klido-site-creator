@@ -863,45 +863,52 @@ function FitFor() {
             </p>
           </FadeUp>
         </div>
-        <div className="flex flex-col gap-6 md:gap-8">
+        <div className="flex flex-col gap-10 md:gap-16">
           {items.map((it, i) => (
             <FadeUp key={i} delay={0.05}>
-              <div
-                className={`group relative grid grid-cols-1 overflow-hidden rounded-sm bg-[#0a0a0a] md:grid-cols-12 ${
-                  i % 2 === 1 ? "md:[&>.fitfor-img]:order-2" : ""
-                }`}
-              >
-                <div className="fitfor-img relative h-[360px] md:col-span-6 md:h-[560px] lg:col-span-7">
+              <article className="group relative overflow-hidden rounded-sm bg-black">
+                <div className="relative aspect-[16/10] w-full md:aspect-[21/9]">
                   <img
                     src={it.img}
                     alt={it.t}
                     loading="lazy"
-                    className="absolute inset-0 h-full w-full object-cover transition-transform duration-[1400ms] ease-out group-hover:scale-105"
+                    className="absolute inset-0 h-full w-full object-cover transition-transform duration-[1600ms] ease-out group-hover:scale-[1.04]"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent md:bg-gradient-to-r md:from-transparent md:via-transparent md:to-black/40" />
-                  <span
-                    className="absolute left-6 top-6 font-display text-3xl font-bold md:left-8 md:top-8 md:text-4xl"
-                    style={{ color: "var(--bronze)" }}
-                  >
-                    0{i + 1}
-                  </span>
+                  {/* Cinematic gradients */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-transparent to-black/30" />
+
+                  {/* Top meta */}
+                  <div className="absolute inset-x-0 top-0 flex items-start justify-between p-6 md:p-10">
+                    <span
+                      className="font-display text-4xl font-bold leading-none md:text-6xl"
+                      style={{ color: "var(--bronze)" }}
+                    >
+                      0{i + 1}
+                    </span>
+                    <span className="text-[10px] uppercase tracking-[0.28em] text-[var(--muted-ink)] md:text-[11px]">
+                      {it.tag}
+                    </span>
+                  </div>
+
+                  {/* Bottom copy */}
+                  <div className="absolute inset-x-0 bottom-0 flex flex-col gap-6 p-6 md:flex-row md:items-end md:justify-between md:p-12 lg:p-16">
+                    <h3 className="display-xl max-w-2xl text-3xl text-[var(--paper)] md:text-[56px] lg:text-[72px]">
+                      {it.t}
+                    </h3>
+                    <p className="max-w-sm text-[14px] leading-relaxed text-[var(--muted-ink)] md:text-[15px]">
+                      {it.d}
+                    </p>
+                  </div>
+
+                  {/* Bronze hairline */}
+                  <div className="absolute bottom-0 left-0 h-px w-24 bg-[var(--bronze)] transition-all duration-700 group-hover:w-full" />
                 </div>
-                <div className="relative flex flex-col justify-center gap-6 p-8 md:col-span-6 md:p-14 lg:col-span-5 lg:p-16">
-                  <span className="text-[10px] uppercase tracking-[0.22em] text-[var(--muted-ink)]">
-                    {it.tag}
-                  </span>
-                  <h3 className="display-xl text-3xl text-[var(--paper)] md:text-[44px] lg:text-[52px]">
-                    {it.t}
-                  </h3>
-                  <p className="max-w-md text-[15px] leading-relaxed text-[var(--muted-ink)] md:text-base">
-                    {it.d}
-                  </p>
-                  <div className="mt-2 h-px w-16 bg-[var(--bronze)] transition-all duration-500 group-hover:w-32" />
-                </div>
-              </div>
+              </article>
             </FadeUp>
           ))}
         </div>
+
 
       </div>
     </section>
