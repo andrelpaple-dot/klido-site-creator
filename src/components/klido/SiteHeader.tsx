@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import faviconAsset from "@/assets/klido-favicon.png.asset.json";
+import { LiveStatus } from "@/components/klido/LiveStatus";
+
 
 const TG = "https://t.me/AndrewGeiger";
 
