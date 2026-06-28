@@ -25,25 +25,21 @@ const ASSET_BASE =
  */
 function lovableAssetsStaticPlugin(): Plugin {
   const PREFIX = "\0lovable-asset:";
+  const realPaths = new Map<string, string>();
   return {
     name: "lovable-assets-static",
     enforce: "pre",
     async resolveId(source, importer) {
       if (!source.endsWith(".asset.json")) return null;
-      // Используем встроенный резолвер, чтобы корректно разрулить алиасы (@/...)
-      // и относительные пути, а затем оборачиваем в виртуальный id с \0-префиксом,
-      // иначе встроенный JSON-плагин Vite перехватит load и попытается распарсить.
       const resolved = await this.resolve(source, importer, { skipSelf: true });
       if (!resolved) return null;
-      // Срезаем .json из id, чтобы встроенный vite-json не пытался применить
-      // свой transform — реальный путь читаем из мапы.
       const virtualId = PREFIX + resolved.id.replace(/\.json$/, "");
       realPaths.set(virtualId, resolved.id);
       return virtualId;
     },
     async load(id) {
       if (!id.startsWith(PREFIX)) return null;
-      const real = id.slice(PREFIX.length);
+      const real = realPaths.get(id) ?? id.slice(PREFIX.length) + ".json";
       const raw = await fs.readFile(real, "utf8");
       const data = JSON.parse(raw) as {
         url: string;
