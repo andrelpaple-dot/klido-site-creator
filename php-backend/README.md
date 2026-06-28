@@ -23,7 +23,7 @@ php-backend/
 1. **Статическая сборка (всё в одной команде)**
    ```bash
    npm install
-   npm run build:static
+   npm run build
    ```
    Скрипт делает всё сам:
    - собирает SPA в `dist/` (без SSR/Cloudflare),
