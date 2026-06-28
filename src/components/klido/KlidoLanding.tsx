@@ -1375,6 +1375,8 @@ export function KlidoLanding() {
       <Scene3D />
       <ScrollProgress />
       <CustomCursor />
+      <EasterEgg />
+
       <div className="relative z-10">
         <SiteHeader />
         <main>
