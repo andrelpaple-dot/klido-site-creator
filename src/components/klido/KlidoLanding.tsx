@@ -861,9 +861,14 @@ function FitForItem({
           <h3
             className="display-xl text-center text-[var(--paper)]"
             style={{
-              fontSize: "clamp(34px, 7.4vw, 128px)",
-              lineHeight: 1.06,
-              paddingTop: "0.2em",
+              fontSize: "clamp(32px, 6.6vw, 120px)",
+              lineHeight: 1.2,
+              paddingTop: "0.35em",
+              paddingBottom: "0.1em",
+              overflow: "visible",
+              maxWidth: "92vw",
+              wordBreak: "break-word",
+              hyphens: "auto",
             }}
           >
             {item.t}
