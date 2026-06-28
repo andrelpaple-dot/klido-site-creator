@@ -107,18 +107,57 @@ function FadeUp({
   );
 }
 
+function SplitWord({ word, delay, accent }: { word: string; delay: number; accent?: boolean }) {
+  const chars = Array.from(word);
+  return (
+    <span className="inline-block whitespace-nowrap" style={{ color: accent ? "var(--bronze)" : undefined }}>
+      {chars.map((ch, i) => (
+        <motion.span
+          key={i}
+          className="inline-block"
+          initial={{ y: "110%", opacity: 0 }}
+          animate={{ y: "0%", opacity: 1 }}
+          transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1], delay: delay + i * 0.025 }}
+        >
+          {ch}
+        </motion.span>
+      ))}
+    </span>
+  );
+}
+
+function SplitLine({ words, baseDelay, accentWords = [] }: { words: string[]; baseDelay: number; accentWords?: string[] }) {
+  let cursor = 0;
+  return (
+    <span className="block overflow-hidden">
+      {words.map((w, wi) => {
+        const d = baseDelay + cursor * 0.02;
+        cursor += w.length + 1;
+        return (
+          <span key={wi}>
+            <SplitWord word={w} delay={d} accent={accentWords.includes(w)} />
+            {wi < words.length - 1 && <span className="inline-block">&nbsp;</span>}
+          </span>
+        );
+      })}
+    </span>
+  );
+}
+
 function Hero() {
   const ref = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
   const y = useTransform(scrollYProgress, [0, 1], [0, 200]);
   const opacity = useTransform(scrollYProgress, [0, 0.6], [1, 0]);
+  const trailImages = cases.slice(0, 5).map((c) => c.image);
 
   return (
     <section
       ref={ref}
       id="top"
-      className="relative flex min-h-[100svh] items-end px-6 pb-20 pt-32 md:px-16 md:pb-28"
+      className="relative flex min-h-[100svh] items-end overflow-hidden px-6 pb-20 pt-32 md:px-16 md:pb-28"
     >
+      <ImageTrail images={trailImages} containerRef={ref as React.RefObject<HTMLElement>} />
       <motion.div style={{ y, opacity }} className="relative z-10 mx-auto w-full max-w-[1400px]">
         <motion.div
           className="eyebrow mb-8"
@@ -129,23 +168,18 @@ function Hero() {
           ⟶ klido · агентство · 2026
         </motion.div>
 
-        <motion.h1
-          className="display-xl text-[44px] text-[var(--paper)] md:text-[11vw] lg:text-[10vw]"
-          initial={{ opacity: 0, y: 60 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1.1, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
-        >
-          Klido. Строим<br />
-          каналы<br />
-          <span style={{ color: "var(--bronze)" }}>прямых продаж</span>
-        </motion.h1>
+        <h1 className="display-xl text-[44px] text-[var(--paper)] md:text-[11vw] lg:text-[10vw]">
+          <SplitLine words={["Klido.", "Строим"]} baseDelay={0.15} />
+          <SplitLine words={["каналы"]} baseDelay={0.35} />
+          <SplitLine words={["прямых", "продаж"]} baseDelay={0.5} accentWords={["прямых", "продаж"]} />
+        </h1>
 
         <div className="mt-12 grid grid-cols-12 gap-8">
           <motion.p
             className="col-span-12 max-w-xl text-base text-[var(--muted-ink)] md:col-span-6 md:text-lg"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.6, duration: 0.8 }}
+            transition={{ delay: 0.9, duration: 0.8 }}
           >
             Интернет-магазины, которые превращают трафик в продажи
             и возвращают бренду контроль над клиентом.
@@ -155,17 +189,17 @@ function Hero() {
             className="col-span-12 flex items-end md:col-span-6 md:justify-end"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.8, duration: 0.8 }}
+            transition={{ delay: 1.1, duration: 0.8 }}
           >
-            <a
+            <MagneticButton
               href={TG}
               target="_blank"
               rel="noreferrer"
-              className="group inline-flex items-center gap-4 border border-[var(--paper)]/30 px-8 py-5 text-sm uppercase tracking-[0.18em] text-[var(--paper)] transition-all duration-300 hover:border-[var(--bronze)] hover:bg-[var(--bronze)] hover:text-[var(--ink)]"
+              className="group border border-[var(--paper)]/30 px-8 py-5 text-sm uppercase tracking-[0.18em] text-[var(--paper)] transition-colors duration-300 hover:border-[var(--bronze)] hover:bg-[var(--bronze)] hover:text-[var(--ink)]"
             >
               Обсудить проект
               <span aria-hidden className="transition-transform group-hover:translate-x-1">→</span>
-            </a>
+            </MagneticButton>
           </motion.div>
         </div>
 
@@ -173,6 +207,7 @@ function Hero() {
     </section>
   );
 }
+
 
 function ManifestoWord({
   progress,
