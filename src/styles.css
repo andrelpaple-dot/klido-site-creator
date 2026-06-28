@@ -196,13 +196,23 @@
     background: radial-gradient(ellipse at center, transparent 0%, rgba(0, 0, 0, 0.48) 62%, rgba(0, 0, 0, 0.94) 100%);
   }
 
-  .fitfor-sub {
+  .fitfor-title {
     transition: color 380ms ease, text-shadow 380ms ease;
   }
-  .fitfor-sub:hover {
+  .fitfor-title:hover {
     color: var(--bronze);
-    text-shadow: 0 0 18px rgba(201, 163, 106, 0.55);
+    text-shadow:
+      0 0 22px rgba(201, 163, 106, 0.55),
+      0 0 60px rgba(201, 163, 106, 0.35);
   }
+
+  .fitfor-sub {
+    transition: color 380ms ease;
+  }
+  .fitfor-sub:hover {
+    color: var(--paper);
+  }
+
 
   @keyframes kinetic-drift-a {
     from { transform: translate3d(-6%, -4%, 0) rotate(-12deg) scale(0.95); }
