@@ -1259,7 +1259,33 @@ function CityClock({ city, tz }: { city: string; tz: string }) {
   );
 }
 
+function VelocityWordmark() {
+  const { scrollY } = useScroll();
+  const velocity = useVelocity(scrollY);
+  const smoothV = useSpring(velocity, { stiffness: 80, damping: 22, mass: 0.5 });
+  const skew = useTransform(smoothV, [-2500, 0, 2500], [-12, 0, 12]);
+  const scaleY = useTransform(smoothV, [-2500, 0, 2500], [0.86, 1, 1.14]);
+  return (
+    <motion.h2
+      aria-hidden
+      className="font-display select-none text-[var(--ink)]"
+      style={{
+        fontSize: "clamp(96px, 26vw, 440px)",
+        fontWeight: 900,
+        lineHeight: 0.82,
+        letterSpacing: "-0.06em",
+        skewX: skew,
+        scaleY,
+        transformOrigin: "0% 100%",
+      }}
+    >
+      KLIDO
+    </motion.h2>
+  );
+}
+
 function Footer() {
+
   return (
     <footer
       className="relative z-10 border-t border-white/10"
