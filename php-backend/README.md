@@ -20,25 +20,32 @@ php-backend/
 
 ## Шаги деплоя
 
-1. **Сборка фронтенда**
+1. **Статическая сборка (всё в одной команде)**
    ```bash
    npm install
-   npm run build
+   npm run build:static
    ```
-   На выходе — папка `dist/` (статика Vite: `index.html` + `assets/`).
+   Скрипт делает всё сам:
+   - собирает SPA в `dist/` (без SSR/Cloudflare),
+   - скачивает все картинки кейсов и логотипы с `klido-site-creator.lovable.app`
+     и зашивает их в `dist/assets/` с хешированными именами,
+   - копирует `api/`, `uploads/`, `.htaccess`, `database.sql` из `php-backend/`
+     в `dist/`.
 
-2. **Сборка пакета для заливки**
-   Скопировать в `dist/` содержимое `php-backend/`:
-   ```bash
-   cp -r php-backend/api          dist/api
-   cp -r php-backend/uploads      dist/uploads
-   cp    php-backend/.htaccess    dist/.htaccess
-   cp    php-backend/database.sql dist/database.sql
+   На выходе — папка `dist/`, готовая для заливки.
+
+2. **Заливка на reg.ru**
+   Содержимое `dist/` целиком — в корень домена (`/www/Klido.ru/` или
+   `public_html/`) через FTP / файловый менеджер ISPmanager. Структура:
    ```
-
-3. **Заливка на reg.ru**
-   Содержимое `dist/` — в корень домена (обычно `public_html/` или `www/`)
-   через FTP/SFTP/файловый менеджер ISPmanager.
+   /www/Klido.ru/
+   ├── api/            (PHP-эндпоинты)
+   ├── assets/         (хешированные JS/CSS/картинки)
+   ├── uploads/
+   ├── .htaccess       (SPA-роутинг + кеш)
+   ├── index.html      (точка входа SPA)
+   └── database.sql
+   ```
 
 4. **База данных** (если используете формы/лиды)
    - В phpMyAdmin создать БД `klido_db` + пользователя.
