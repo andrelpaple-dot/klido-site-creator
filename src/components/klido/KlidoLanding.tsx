@@ -818,101 +818,195 @@ function Cases() {
   );
 }
 
+function FitForItem({
+  item,
+  index,
+}: {
+  item: {
+    img: string;
+    tag: string;
+    t: string;
+    sub: string;
+    bullets: string[];
+  };
+  index: number;
+}) {
+  const ref = useRef<HTMLDivElement | null>(null);
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start end", "end start"],
+  });
+  // Image is 130% tall — translate it from -15% to +15% as we scroll past.
+  const y = useTransform(scrollYProgress, [0, 1], ["-15%", "15%"]);
+
+  return (
+    <div>
+      {/* Full-width hero with centered title */}
+      <div
+        ref={ref}
+        className="relative h-[78vh] min-h-[560px] w-full overflow-hidden md:h-screen md:min-h-[760px]"
+      >
+        <motion.img
+          src={item.img}
+          alt={item.t}
+          loading="lazy"
+          style={{ y }}
+          className="absolute left-0 top-0 h-[130%] w-full object-cover"
+        />
+        <div className="absolute inset-0 bg-black/40" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-transparent to-black/60" />
+
+        {/* Centered title */}
+        <div className="absolute inset-0 flex items-center justify-center px-6">
+          <h3
+            className="display-xl text-center text-[var(--paper)]"
+            style={{ fontSize: "clamp(40px, 7.4vw, 128px)", lineHeight: 0.92 }}
+          >
+            {item.t}
+          </h3>
+        </div>
+
+        {/* Bottom-left index */}
+        <div className="absolute bottom-6 left-6 md:bottom-10 md:left-12">
+          <span
+            className="font-display font-bold leading-none text-[var(--paper)]/70"
+            style={{ letterSpacing: "-0.02em", fontSize: "clamp(28px, 3vw, 44px)" }}
+          >
+            //0{index + 1}
+          </span>
+        </div>
+        <div className="absolute right-6 top-6 text-[11px] uppercase tracking-[0.3em] text-[var(--paper)]/80 md:right-12 md:top-10 md:text-xs">
+          {item.tag}
+        </div>
+      </div>
+
+      {/* Description block under the image */}
+      <div className="relative bg-black px-6 py-20 md:px-16 md:py-32">
+        <div className="mx-auto grid max-w-[1400px] grid-cols-1 gap-12 md:grid-cols-12 md:gap-16">
+          {/* Ghost giant number */}
+          <div className="relative md:col-span-5">
+            <div
+              className="font-display font-bold leading-none text-white/[0.05]"
+              style={{ fontSize: "clamp(180px, 26vw, 420px)", letterSpacing: "-0.05em" }}
+            >
+              0{index + 1}
+            </div>
+          </div>
+
+          {/* Bullets */}
+          <div className="md:col-span-7">
+            <p className="mb-10 max-w-2xl text-[11px] uppercase tracking-[0.28em] text-[var(--muted-ink)]">
+              {item.sub}
+            </p>
+            <ul className="divide-y divide-white/10 border-y border-white/10">
+              {item.bullets.map((b, bi) => (
+                <li
+                  key={bi}
+                  className="flex items-center justify-between gap-6 py-5 transition-colors hover:bg-white/[0.02]"
+                >
+                  <span className="text-[15px] text-[var(--paper)] md:text-base">{b}</span>
+                  <span className="font-mono text-[11px] text-[var(--muted-ink)]">
+                    0{bi + 1}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function FitFor() {
   const items = [
     {
       img: fitforRobot,
-      tag: "Растущий бренд",
-      t: "Без своего сайта",
-      d: "Продаёте через соцсети, маркетплейсы или офлайн. Нужен свой канал, чтобы не зависеть от комиссий.",
+      tag: "// 01",
+      t: "Растущий бренд без своего сайта",
+      sub: "Бренд, который вырос из соцсетей и маркетплейсов и хочет собственный канал продаж",
+      bullets: [
+        "Продаёте через WB / Ozon — но зависите от их комиссий и правил",
+        "Хотите собственный канал, который не отключат за ночь",
+        "Нужен сайт с интеграцией CRM, оплатой и логистикой",
+        "Важно стартовать быстро — пока ниша свободна",
+        "Нужен продуктовый подход, а не просто шаблон",
+      ],
     },
     {
       img: fitforNinja,
-      tag: "Instagram / Telegram",
+      tag: "// 02",
       t: "Заказы в DM съедают время",
-      d: "Аудитория растёт, ручная обработка не справляется. Нужен сайт с автоматизацией и интеграцией с CRM.",
+      sub: "Продаёте через Instagram и Telegram — и больше не успеваете обрабатывать всё руками",
+      bullets: [
+        "Аудитория растёт — заявки тонут в директе",
+        "Нет автоматизации: оплата, склад, доставка вручную",
+        "Хочется сайт, который продаёт сам — без участия в каждом заказе",
+        "Нужна интеграция с CRM и мессенджерами",
+        "Важно сохранить визуальный тон бренда",
+      ],
     },
     {
       img: fitforAstronaut,
-      tag: "Старый магазин",
-      t: "Конверсия 1–2%",
-      d: "Сайт работает с 2018 года, не приносит роста. Готовы к редизайну под современные стандарты.",
+      tag: "// 03",
+      t: "Старый сайт с конверсией 1–2%",
+      sub: "Магазин запускали 5+ лет назад — он работает, но не растёт",
+      bullets: [
+        "Дизайн устарел, мобильная версия ломается",
+        "Корзина и оформление — главная точка отказа",
+        "Аналитика не настроена или показывает «всё плохо»",
+        "Готовы к редизайну под современные стандарты",
+        "Нужен сайт, который наконец-то продаёт",
+      ],
     },
     {
       img: fitforSamurai,
-      tag: "После ребрендинга",
+      tag: "// 04",
       t: "Новый бренд — новый сайт",
-      d: "Сменили позиционирование или линейку. Нужен сайт быстро и без потери темпа.",
+      sub: "После ребрендинга или запуска новой линейки — старый сайт уже не отражает то, кем вы стали",
+      bullets: [
+        "Сменили позиционирование, логотип или линейку",
+        "Старый сайт визуально и технически — из прошлой жизни",
+        "Нужен запуск быстро, без потери темпа кампании",
+        "Важна консистентность бренда — от Figma до чекаута",
+        "Нужен партнёр, а не подрядчик «сделал и ушёл»",
+      ],
     },
   ];
   return (
-    <section id="fitfor" className="relative border-t border-white/5 px-6 py-28 md:px-16 md:py-40 lg:py-48">
-      <div className="mx-auto max-w-[1400px]">
-        <div className="mb-16 flex flex-col items-start md:mb-24 md:flex-row md:items-end md:justify-between">
+    <section
+      id="fitfor"
+      className="relative border-t border-white/5 px-6 pt-28 md:px-16 md:pt-40 lg:pt-48"
+    >
+      <div className="mx-auto mb-20 max-w-[1400px] md:mb-32">
+        <div className="flex flex-col items-start md:flex-row md:items-end md:justify-between">
           <div>
             <span className="eyebrow mb-6 block">(04) Если это про вас</span>
             <FadeUp>
               <h2 className="display-xl text-[44px] text-[var(--paper)] md:text-[6vw]">
-                Кому<br /><span style={{ color: "var(--bronze)" }}>подойдёт.</span>
+                Кому<br />
+                <span style={{ color: "var(--bronze)" }}>подойдёт.</span>
               </h2>
             </FadeUp>
           </div>
           <FadeUp delay={0.1}>
             <p className="mt-6 max-w-sm text-[15px] leading-relaxed text-[var(--muted-ink)] md:mt-0">
-              Четыре сценария, в которых внешний сайт становится отдельным каналом продаж — не дубликатом маркетплейса.
+              Четыре сценария, в которых внешний сайт становится отдельным
+              каналом продаж — не дубликатом маркетплейса.
             </p>
           </FadeUp>
         </div>
-        <div className="flex flex-col gap-16 md:gap-24">
-          {items.map((it, i) => (
-            <FadeUp key={i} delay={0.05}>
-              <article className="group relative overflow-hidden rounded-sm bg-black">
-                <div className="relative h-[80vh] min-h-[560px] w-full md:h-screen md:min-h-[760px]">
-                  <img
-                    src={it.img}
-                    alt={it.t}
-                    loading="lazy"
-                    className="absolute inset-0 h-full w-full object-cover transition-transform duration-[1800ms] ease-out group-hover:scale-[1.04]"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black via-black/45 to-transparent" />
-                  <div className="absolute inset-0 bg-gradient-to-r from-black/75 via-transparent to-black/30" />
+      </div>
 
-                  <div className="absolute inset-x-0 top-0 flex items-start justify-between p-6 md:p-12">
-                    <span
-                      className="font-display font-bold leading-none"
-                      style={{ color: "var(--bronze)", fontSize: "clamp(48px, 7vw, 120px)" }}
-                    >
-                      0{i + 1}
-                    </span>
-                    <span className="mt-3 text-[11px] uppercase tracking-[0.3em] text-[var(--muted-ink)] md:text-xs">
-                      {it.tag}
-                    </span>
-                  </div>
-
-                  <div className="absolute inset-x-0 bottom-0 flex flex-col gap-8 p-6 md:flex-row md:items-end md:justify-between md:gap-16 md:p-14 lg:p-20">
-                    <h3
-                      className="display-xl max-w-[14ch] text-[var(--paper)]"
-                      style={{ fontSize: "clamp(44px, 8.5vw, 140px)", lineHeight: 0.9 }}
-                    >
-                      {it.t}
-                    </h3>
-                    <p className="max-w-md text-[15px] leading-relaxed text-[var(--muted-ink)] md:text-base">
-                      {it.d}
-                    </p>
-                  </div>
-
-                  <div className="absolute bottom-0 left-0 h-px w-32 bg-[var(--bronze)] transition-all duration-700 group-hover:w-full" />
-                </div>
-              </article>
-            </FadeUp>
-          ))}
-        </div>
-
-
-
+      <div className="flex flex-col">
+        {items.map((it, i) => (
+          <FitForItem key={i} item={it} index={i} />
+        ))}
       </div>
     </section>
   );
+}
+
 }
 
 function Principles() {
