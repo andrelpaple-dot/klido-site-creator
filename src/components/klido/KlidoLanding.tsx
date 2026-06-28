@@ -863,34 +863,46 @@ function FitFor() {
             </p>
           </FadeUp>
         </div>
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="flex flex-col gap-6 md:gap-8">
           {items.map((it, i) => (
-            <FadeUp key={i} delay={(i % 4) * 0.08}>
-              <div className="group relative h-[520px] overflow-hidden rounded-sm bg-[#0a0a0a]">
-                <img
-                  src={it.img}
-                  alt={it.t}
-                  loading="lazy"
-                  className="absolute inset-0 h-full w-full object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-105"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-transparent" />
-                <div className="absolute inset-x-0 top-0 flex items-center justify-between p-6">
-                  <span className="font-display text-2xl font-bold" style={{ color: "var(--bronze)" }}>
+            <FadeUp key={i} delay={0.05}>
+              <div
+                className={`group relative grid grid-cols-1 overflow-hidden rounded-sm bg-[#0a0a0a] md:grid-cols-12 ${
+                  i % 2 === 1 ? "md:[&>.fitfor-img]:order-2" : ""
+                }`}
+              >
+                <div className="fitfor-img relative h-[360px] md:col-span-6 md:h-[560px] lg:col-span-7">
+                  <img
+                    src={it.img}
+                    alt={it.t}
+                    loading="lazy"
+                    className="absolute inset-0 h-full w-full object-cover transition-transform duration-[1400ms] ease-out group-hover:scale-105"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent md:bg-gradient-to-r md:from-transparent md:via-transparent md:to-black/40" />
+                  <span
+                    className="absolute left-6 top-6 font-display text-3xl font-bold md:left-8 md:top-8 md:text-4xl"
+                    style={{ color: "var(--bronze)" }}
+                  >
                     0{i + 1}
                   </span>
-                  <span className="text-[10px] uppercase tracking-[0.22em] text-[var(--muted-ink)]">{it.tag}</span>
                 </div>
-                <div className="absolute inset-x-0 bottom-0 p-6 md:p-7">
-                  <h3 className="display-xl text-xl text-[var(--paper)] md:text-2xl">{it.t}</h3>
-                  <p className="mt-4 max-h-0 overflow-hidden text-[13px] leading-relaxed text-[var(--muted-ink)] opacity-0 transition-all duration-500 group-hover:max-h-40 group-hover:opacity-100">
+                <div className="relative flex flex-col justify-center gap-6 p-8 md:col-span-6 md:p-14 lg:col-span-5 lg:p-16">
+                  <span className="text-[10px] uppercase tracking-[0.22em] text-[var(--muted-ink)]">
+                    {it.tag}
+                  </span>
+                  <h3 className="display-xl text-3xl text-[var(--paper)] md:text-[44px] lg:text-[52px]">
+                    {it.t}
+                  </h3>
+                  <p className="max-w-md text-[15px] leading-relaxed text-[var(--muted-ink)] md:text-base">
                     {it.d}
                   </p>
-                  <div className="mt-5 h-px w-12 bg-[var(--bronze)] transition-all duration-500 group-hover:w-full" />
+                  <div className="mt-2 h-px w-16 bg-[var(--bronze)] transition-all duration-500 group-hover:w-32" />
                 </div>
               </div>
             </FadeUp>
           ))}
         </div>
+
       </div>
     </section>
   );
