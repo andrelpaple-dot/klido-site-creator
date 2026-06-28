@@ -106,49 +106,12 @@ function FadeUp({
   );
 }
 
-function SplitWord({ word, delay, accent }: { word: string; delay: number; accent?: boolean }) {
-  const chars = Array.from(word);
-  return (
-    <span className="inline-block whitespace-nowrap" style={{ color: accent ? "var(--bronze)" : undefined }}>
-      {chars.map((ch, i) => (
-        <motion.span
-          key={i}
-          className="inline-block"
-          initial={{ y: "110%", opacity: 0 }}
-          animate={{ y: "0%", opacity: 1 }}
-          transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1], delay: delay + i * 0.025 }}
-        >
-          {ch}
-        </motion.span>
-      ))}
-    </span>
-  );
-}
-
-function SplitLine({ words, baseDelay, accentWords = [] }: { words: string[]; baseDelay: number; accentWords?: string[] }) {
-  let cursor = 0;
-  return (
-    <span className="block overflow-hidden">
-      {words.map((w, wi) => {
-        const d = baseDelay + cursor * 0.02;
-        cursor += w.length + 1;
-        return (
-          <span key={wi}>
-            <SplitWord word={w} delay={d} accent={accentWords.includes(w)} />
-            {wi < words.length - 1 && <span className="inline-block">&nbsp;</span>}
-          </span>
-        );
-      })}
-    </span>
-  );
-}
-
 function Hero() {
   const ref = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
   const y = useTransform(scrollYProgress, [0, 1], [0, 200]);
   const opacity = useTransform(scrollYProgress, [0, 0.6], [1, 0]);
-  const trailImages = cases.slice(0, 5).map((c) => c.image);
+
 
   return (
     <section
