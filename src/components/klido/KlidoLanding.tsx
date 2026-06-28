@@ -1320,19 +1320,9 @@ function Footer() {
         </div>
 
         <div className="mx-auto mt-10 max-w-[1400px] md:mt-14">
-          <h2
-            aria-hidden
-            className="font-display select-none text-[var(--ink)]"
-            style={{
-              fontSize: "clamp(96px, 26vw, 440px)",
-              fontWeight: 900,
-              lineHeight: 0.82,
-              letterSpacing: "-0.06em",
-            }}
-          >
-            KLIDO
-          </h2>
+          <VelocityWordmark />
         </div>
+
       </div>
 
       {/* Bottom band — clocks + copyright */}
