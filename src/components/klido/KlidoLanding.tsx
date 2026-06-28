@@ -863,51 +863,51 @@ function FitFor() {
             </p>
           </FadeUp>
         </div>
-        <div className="flex flex-col gap-10 md:gap-16">
+        <div className="flex flex-col gap-16 md:gap-24">
           {items.map((it, i) => (
             <FadeUp key={i} delay={0.05}>
               <article className="group relative overflow-hidden rounded-sm bg-black">
-                <div className="relative aspect-[16/10] w-full md:aspect-[21/9]">
+                <div className="relative h-[80vh] min-h-[560px] w-full md:h-screen md:min-h-[760px]">
                   <img
                     src={it.img}
                     alt={it.t}
                     loading="lazy"
-                    className="absolute inset-0 h-full w-full object-cover transition-transform duration-[1600ms] ease-out group-hover:scale-[1.04]"
+                    className="absolute inset-0 h-full w-full object-cover transition-transform duration-[1800ms] ease-out group-hover:scale-[1.04]"
                   />
-                  {/* Cinematic gradients */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent" />
-                  <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-transparent to-black/30" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black via-black/45 to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-r from-black/75 via-transparent to-black/30" />
 
-                  {/* Top meta */}
-                  <div className="absolute inset-x-0 top-0 flex items-start justify-between p-6 md:p-10">
+                  <div className="absolute inset-x-0 top-0 flex items-start justify-between p-6 md:p-12">
                     <span
-                      className="font-display text-4xl font-bold leading-none md:text-6xl"
-                      style={{ color: "var(--bronze)" }}
+                      className="font-display font-bold leading-none"
+                      style={{ color: "var(--bronze)", fontSize: "clamp(48px, 7vw, 120px)" }}
                     >
                       0{i + 1}
                     </span>
-                    <span className="text-[10px] uppercase tracking-[0.28em] text-[var(--muted-ink)] md:text-[11px]">
+                    <span className="mt-3 text-[11px] uppercase tracking-[0.3em] text-[var(--muted-ink)] md:text-xs">
                       {it.tag}
                     </span>
                   </div>
 
-                  {/* Bottom copy */}
-                  <div className="absolute inset-x-0 bottom-0 flex flex-col gap-6 p-6 md:flex-row md:items-end md:justify-between md:p-12 lg:p-16">
-                    <h3 className="display-xl max-w-2xl text-3xl text-[var(--paper)] md:text-[56px] lg:text-[72px]">
+                  <div className="absolute inset-x-0 bottom-0 flex flex-col gap-8 p-6 md:flex-row md:items-end md:justify-between md:gap-16 md:p-14 lg:p-20">
+                    <h3
+                      className="display-xl max-w-[14ch] text-[var(--paper)]"
+                      style={{ fontSize: "clamp(44px, 8.5vw, 140px)", lineHeight: 0.9 }}
+                    >
                       {it.t}
                     </h3>
-                    <p className="max-w-sm text-[14px] leading-relaxed text-[var(--muted-ink)] md:text-[15px]">
+                    <p className="max-w-md text-[15px] leading-relaxed text-[var(--muted-ink)] md:text-base">
                       {it.d}
                     </p>
                   </div>
 
-                  {/* Bronze hairline */}
-                  <div className="absolute bottom-0 left-0 h-px w-24 bg-[var(--bronze)] transition-all duration-700 group-hover:w-full" />
+                  <div className="absolute bottom-0 left-0 h-px w-32 bg-[var(--bronze)] transition-all duration-700 group-hover:w-full" />
                 </div>
               </article>
             </FadeUp>
           ))}
         </div>
+
 
 
       </div>
