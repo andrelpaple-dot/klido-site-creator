@@ -207,8 +207,6 @@
       0 0 80px rgba(201, 163, 106, 0.55),
       0 0 140px rgba(201, 163, 106, 0.35);
   }
-    background: radial-gradient(ellipse at center, transparent 0%, rgba(0, 0, 0, 0.48) 62%, rgba(0, 0, 0, 0.94) 100%);
-  }
 
   @keyframes kinetic-drift-a {
     from { transform: translate3d(-6%, -4%, 0) rotate(-12deg) scale(0.95); }
