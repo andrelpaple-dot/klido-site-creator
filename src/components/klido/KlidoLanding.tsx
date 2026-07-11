@@ -14,7 +14,7 @@ import fitforNinja from "@/assets/fitfor/ninja.jpg";
 import fitforAstronaut from "@/assets/fitfor/astronaut.jpg";
 import fitforSamurai from "@/assets/fitfor/samurai.jpg";
 
-const TG = "https://t.me/AndrewGeiger";
+const TG = "https://t.me/Sukhoy_site";
 const MAIL = "mailto:hello@klido.ru";
 
 
@@ -1175,7 +1175,7 @@ function FinalCTA() {
         <FadeUp delay={0.3}>
           <p className="mt-10 text-sm text-[var(--muted-ink)]">
             <a href={TG} target="_blank" rel="noreferrer" className="hover:text-[var(--paper)]">
-              @AndrewGeiger
+              @Sukhoy_site
             </a>{" "}
             <span className="mx-3 opacity-30">/</span>{" "}
             <a href={MAIL} className="hover:text-[var(--paper)]">hello@klido.ru</a>
@@ -1236,7 +1236,7 @@ function Footer() {
               rel="noreferrer"
               className="font-display text-3xl font-semibold text-[var(--ink)] underline-offset-8 transition-all hover:underline md:text-5xl"
             >
-              @AndrewGeiger
+              @Sukhoy_site
             </a>
           </div>
           <div className="col-span-12 flex md:col-span-3 md:justify-end">

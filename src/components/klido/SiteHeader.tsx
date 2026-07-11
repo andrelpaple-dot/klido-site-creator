@@ -3,7 +3,7 @@ import faviconAsset from "@/assets/klido-favicon.png.asset.json";
 import { LiveStatus } from "@/components/klido/LiveStatus";
 
 
-const TG = "https://t.me/AndrewGeiger";
+const TG = "https://t.me/Sukhoy_site";
 
 export function SiteHeader() {
   const [scrolled, setScrolled] = useState(false);
