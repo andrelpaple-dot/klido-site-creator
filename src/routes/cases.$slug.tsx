@@ -5,7 +5,7 @@ import { SiteHeader } from "@/components/klido/SiteHeader";
 import { CustomCursor } from "@/components/klido/CustomCursor";
 import { ScrollProgress } from "@/components/klido/ScrollProgress";
 
-const TG = "https://t.me/Sukhoy_site";
+const TG = "https://t.me/AndrewGeiger";
 
 export const Route = createFileRoute("/cases/$slug")({
   loader: ({ params }) => {
