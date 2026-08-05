@@ -27,7 +27,7 @@ define('ADMIN_PASSWORD', 'CHANGE_ME_STRONG_PASSWORD'); // в проде заме
 // =====================================================================
 // Контакты / домен / пути
 // =====================================================================
-define('CONTACT_EMAIL', 'hello@klido.ru');
+define('CONTACT_EMAIL', 'a1zon'); // Changed from email to telegram handle proxy or placeholder
 define('SITE_DOMAIN',   'https://klido.ru');
 define('UPLOADS_DIR',   __DIR__ . '/../uploads/');
 define('UPLOADS_URL',   '/uploads/');

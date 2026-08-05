@@ -5,7 +5,7 @@ import { SiteHeader } from "@/components/klido/SiteHeader";
 import { CustomCursor } from "@/components/klido/CustomCursor";
 import { ScrollProgress } from "@/components/klido/ScrollProgress";
 
-const TG = "https://t.me/AndrewGeiger";
+const TG = "https://t.me/a1zon";
 
 export const Route = createFileRoute("/cases/$slug")({
   loader: ({ params }) => {
@@ -18,7 +18,7 @@ export const Route = createFileRoute("/cases/$slug")({
       { title: loaderData ? `${loaderData.title} — кейс Klido` : "Кейс — Klido" },
       {
         name: "description",
-        content: loaderData?.description ?? "Кейс Klido — канал прямых продаж для бренда.",
+        content: loaderData?.description ?? "Кейс Klido — канал прямых продаж.",
       },
     ],
   }),
@@ -42,7 +42,7 @@ function CasePage() {
     "crunch-world":
       "Импортёр редких чипсов продавал через WB с комиссией 50%+. Маржа уходила маркетплейсу.",
     "noir-bar":
-      "Бар принимал брони по телефону, сайт работал как визитка. Конверсия в брони — 8%, часть звонков терялась.",
+      "Бар принимал брони по телефону, сайт работал как визитка. Конверсия в брони — 8%, часть обращений терялась.",
     "space-hub":
       "Коворкинг с заполняемостью 40%. Не было онлайн-выбора места и оплаты — все заявки шли через менеджера.",
   };

@@ -80,26 +80,24 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Klido — интернет-магазины для брендов на Wildberries и Ozon" },
+      { title: "Klido — интернет-магазины под ключ" },
       {
         name: "description",
         content:
-          "Klido — агентство интернет-магазинов для брендов, продающих на Wildberries и Ozon. Запускаем внешний канал продаж с измеримой конверсией.",
+          "Делаем интернет-магазины под ключ для брендов: каталог, оплата, доставка.",
       },
       { name: "author", content: "Klido" },
       { property: "og:site_name", content: "Klido" },
-      { property: "og:title", content: "Klido — интернет-магазины для брендов на Wildberries и Ozon" },
+      { property: "og:title", content: "Klido — интернет-магазины под ключ" },
       {
         property: "og:description",
         content:
-          "Запускаем внешний канал продаж, куда вы льёте свой трафик — и удерживаете маржу, которую забирают маркетплейсы.",
+          "Делаем интернет-магазины под ключ для брендов: каталог, оплата, доставка.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:title", content: "Klido — интернет-магазины для брендов на Wildberries и Ozon" },
-      { name: "twitter:description", content: "Klido Site is a web application for managing and displaying content." },
-      { name: "description", content: "Klido Site is a web application for managing and displaying content." },
-      { property: "og:description", content: "Klido Site is a web application for managing and displaying content." },
+      { name: "twitter:title", content: "Klido — интернет-магазины под ключ" },
+      { name: "twitter:description", content: "Делаем интернет-магазины под ключ для брендов: каталог, оплата, доставка." },
       { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/7f32e6f1-dd2a-4038-a8f0-b49aedfba2d2/id-preview-3bcc3893--ae34fdf2-fadd-4323-b20a-ea549e3fc6a2.lovable.app-1782079411428.png" },
       { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/7f32e6f1-dd2a-4038-a8f0-b49aedfba2d2/id-preview-3bcc3893--ae34fdf2-fadd-4323-b20a-ea549e3fc6a2.lovable.app-1782079411428.png" },
     ],

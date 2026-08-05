@@ -31,11 +31,13 @@ try {
         . "Страница: " . htmlspecialchars($source ?: '—');
     tg_notify($tgText);
 
-    // Email (опционально)
+    // Email removal requested, so we keep only Telegram or silent failure for mail() if used for logging only
+    /*
     @mail(CONTACT_EMAIL, 'Klido: новая заявка',
         "Имя: $name\nКонтакт: $contact\nСообщение: $message\nСтраница: $source",
         "From: Klido <noreply@klido.ru>\r\nContent-Type: text/plain; charset=utf-8"
     );
+    */
 
     json_ok(['id' => $id]);
 } catch (Throwable $e) {

@@ -14,8 +14,7 @@ import fitforNinja from "@/assets/fitfor/ninja.jpg";
 import fitforAstronaut from "@/assets/fitfor/astronaut.jpg";
 import fitforSamurai from "@/assets/fitfor/samurai.jpg";
 
-const TG = "https://t.me/AndrewGeiger";
-const MAIL = "mailto:hello@klido.ru";
+const TG = "https://t.me/a1zon";
 
 
 function Section({
@@ -417,13 +416,13 @@ function Manifesto() {
       tile: { kind: "ring", side: "right" },
     },
     {
-      tokens: ["ЗАПУСКАЕМ", "ЗА", "НЕДЕЛИ —"],
-      accents: ["НЕДЕЛИ —"],
+      tokens: ["Срок", "считаем", "под", "проект —"],
+      accents: ["проект —"],
       tile: { kind: "spark", side: "left" },
     },
     {
-      tokens: ["НЕ", "ЗА", "МЕСЯЦЫ."],
-      accents: ["МЕСЯЦЫ."],
+      tokens: ["зависит", "от", "объёма", "каталога."],
+      accents: ["каталога."],
       tile: { kind: "chip", side: "right" },
     },
   ];
@@ -502,7 +501,7 @@ function Team() {
     },
     {
       t: "Senior Fullstack-разработчик",
-      d: "Делает на современном стеке: frontend, backend, интеграции, деплой. От архитектуры до релиза за 2–3 недели без потери качества.",
+      d: "Делает на современном стеке: frontend, backend, интеграции, деплой. От архитектуры до релиза без потери качества.",
     },
     {
       t: "Senior UX/UI-дизайнер",
@@ -561,7 +560,7 @@ import tbankLogo from "@/assets/logos/tbank.png.asset.json";
 type LogoSpec = { name: string; src: string };
 
 const COMPANY_LOGOS: LogoSpec[] = [
-  { name: "Ozon", src: ozonLogo.url },
+  { name: "Маркетплейс", src: ozonLogo.url },
   { name: "VK", src: vkLogo.url },
   { name: "Яндекс", src: yandexLogo.url },
   { name: "Avito", src: avitoLogo.url },
@@ -601,7 +600,7 @@ function TeamExperience() {
       <div className="mt-24 grid grid-cols-3 gap-6 md:gap-12">
         {[
           { n: 30, s: "+", l: "проектов" },
-          { n: 4, s: "+", l: "лет опыта" },
+          { n: 4, s: "+", l: "года опыта" },
           { n: 8, s: "", l: "компаний Big Tech" },
         ].map((m, i) => (
           <FadeUp key={i} delay={i * 0.08}>
@@ -667,7 +666,7 @@ function HowSystem() {
   const steps = [
     { t: "Трафик приходит на сайт", d: "Из рекламы, соцсетей, поиска — отовсюду, куда вы вкладываетесь." },
     { t: "Сайт превращает в покупателя", d: "Конверсионная структура, быстрая загрузка, удобный заказ." },
-    { t: "База клиентов остаётся у вас", d: "Email, телефон, история заказов — основа для повторных продаж." },
+    { t: "База клиентов остаётся у вас", d: "Контакт, история заказов — основа для повторных продаж." },
     { t: "Повторные продажи растят выручку", d: "Свой канал даёт прямой контакт с клиентом и продажи без посредников." },
     { t: "Выручка становится предсказуемой", d: "Стабильный поток заказов, который не зависит от алгоритмов площадок." },
   ];
@@ -1024,7 +1023,7 @@ function FitFor() {
       t: "Растущий бренд без своего сайта",
       sub: "Бренд, который вырос из соцсетей и маркетплейсов и хочет собственный канал продаж",
       bullets: [
-        "Продаёте через WB / Ozon — но зависите от их комиссий и правил",
+        "Продаёте через маркетплейсы — но зависите от их комиссий и правил",
         "Хотите собственный канал, который не отключат за ночь",
         "Нужен сайт с интеграцией CRM, оплатой и логистикой",
         "Важно стартовать быстро — пока ниша свободна",
@@ -1048,7 +1047,7 @@ function FitFor() {
       img: fitforAstronaut,
       tag: "// 03",
       t: "Старый сайт с конверсией 1–2%",
-      sub: "Магазин запускали 5+ лет назад — он работает, но не растёт",
+      sub: "Магазин запускали давно — он работает, но не растёт",
       bullets: [
         "Дизайн устарел, мобильная версия ломается",
         "Корзина и оформление — главная точка отказа",
@@ -1109,7 +1108,7 @@ function FitFor() {
 
 function Principles() {
   const items = [
-    { t: "Скорость без потери качества", d: "AI-инструменты сокращают разработку в 3 раза — без компромиссов по UX." },
+    { t: "Скорость без потери качества", d: "AI-инструменты сокращают разработку — без компромиссов по UX." },
     { t: "Прозрачность", d: "Доступ к Figma, репозиторию и аналитике с первого дня. Вы видите процесс, а не «чёрный ящик»." },
     { t: "Кейсы, которые можно проверить", d: "Не картинки — живые сайты. Открывайте и смотрите." },
     { t: "Честно говорим нет", d: "Если идея не сработает — скажем до старта, а не после." },
@@ -1153,7 +1152,6 @@ function FinalCTA() {
         <FadeUp delay={0.1}>
           <p className="mx-auto mt-10 max-w-xl text-base text-[var(--muted-ink)] md:text-lg">
             30 минут на разговор. Покажем кейсы под вашу нишу — с живыми ссылками.
-            Если поймём, что не подходим — скажем прямо.
           </p>
         </FadeUp>
         <FadeUp delay={0.2}>
@@ -1175,10 +1173,8 @@ function FinalCTA() {
         <FadeUp delay={0.3}>
           <p className="mt-10 text-sm text-[var(--muted-ink)]">
             <a href={TG} target="_blank" rel="noreferrer" className="hover:text-[var(--paper)]">
-              @AndrewGeiger
-            </a>{" "}
-            <span className="mx-3 opacity-30">/</span>{" "}
-            <a href={MAIL} className="hover:text-[var(--paper)]">hello@klido.ru</a>
+              @a1zon
+            </a>
           </p>
         </FadeUp>
       </div>
@@ -1223,7 +1219,7 @@ function Footer() {
         <div className="mx-auto grid max-w-[1400px] grid-cols-12 items-start gap-y-10">
           <div className="col-span-12 md:col-span-3">
             <div className="text-[11px] font-semibold uppercase tracking-[0.22em] text-[var(--ink)]/70">
-              New business inquiries
+              New business
             </div>
           </div>
           <div className="col-span-12 md:col-span-6">
@@ -1236,7 +1232,7 @@ function Footer() {
               rel="noreferrer"
               className="font-display text-3xl font-semibold text-[var(--ink)] underline-offset-8 transition-all hover:underline md:text-5xl"
             >
-              @AndrewGeiger
+              @a1zon
             </a>
           </div>
           <div className="col-span-12 flex md:col-span-3 md:justify-end">
@@ -1266,7 +1262,7 @@ function Footer() {
           <div className="col-span-12 md:col-span-7">
             <p className="max-w-[520px] text-lg leading-relaxed text-[var(--ink)] md:text-xl">
               Klido — продакшн-студия внешних каналов роста. Мыслим как маркетологи,
-              строим как инженеры. Запускаем performance-системы за 2–4 недели —
+              строим как инженеры. Запускаем performance-системы —
               от бизнес-задачи до работающего канала с метриками.
             </p>
           </div>
@@ -1295,7 +1291,7 @@ function Footer() {
             <CityClock city="Токио" tz="Asia/Tokyo" />
           </div>
           <div className="text-[11px] font-semibold uppercase tracking-[0.22em] text-[var(--ink)]/70">
-            © 2026 Klido · hello@klido.ru
+            © 2026 Klido · @a1zon
           </div>
         </div>
       </div>
