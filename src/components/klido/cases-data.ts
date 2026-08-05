@@ -40,7 +40,7 @@ export const cases: CaseItem[] = [
     heroLabel: "конверсия в заказ (было 2%)",
     metrics: [
       { value: "2 → 9%", label: "конверсия" },
-      { value: "30", label: "заявок / мес." },
+      { value: "30", label: "заявок" },
       { value: "×4.5", label: "выручка" },
     ],
   },
@@ -59,7 +59,7 @@ export const cases: CaseItem[] = [
     heroLabel: "конверсия в заявку",
     metrics: [
       { value: "7.4%", label: "конверсия" },
-      { value: "60+", label: "заявок / мес." },
+      { value: "60+", label: "заявок" },
       { value: "×3.2", label: "выручка" },
     ],
   },
@@ -78,7 +78,7 @@ export const cases: CaseItem[] = [
     heroLabel: "конверсия (было 1.5%)",
     metrics: [
       { value: "1.5 → 5.9%", label: "конверсия" },
-      { value: "30–70", label: "заказов / мес." },
+      { value: "30–70", label: "заказов" },
       { value: "×2.8", label: "выручка" },
     ],
   },
@@ -97,7 +97,7 @@ export const cases: CaseItem[] = [
     heroLabel: "конверсия в заявку",
     metrics: [
       { value: "8%", label: "конверсия" },
-      { value: "40+", label: "заявок / мес." },
+      { value: "40+", label: "заявок" },
       { value: "×3", label: "выручка" },
     ],
   },
