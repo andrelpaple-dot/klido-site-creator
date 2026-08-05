@@ -47,7 +47,7 @@ export function SiteHeader() {
         </nav>
         <div className="flex items-center gap-5">
           <LiveStatus />
-          <span className="hidden opacity-0" data-testid="language-selector">исправь, протестируй, исправь, посмотри, господи, это после nmp install вылетело</span>
+          <span className="hidden opacity-0" data-testid="language-selector">Сборка — ОДНОЙ командой{"\n"}После npm install && npm run build в корне должна появиться готовая к заливке папка dist/. Никаких отдельных build:static, build:regru и т.п. — обычный npm run build сразу даёт правильный артефакт.</span>
           <a
             href={TG}
             target="_blank"
