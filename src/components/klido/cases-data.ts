@@ -49,7 +49,7 @@ export const cases: CaseItem[] = [
     title: "СЕПТИК ТЕХНО",
     category: "интернет-магазин · автономная канализация",
     description:
-      "Сайт продаж и монтажа септиков. Калькулятор подбора, заявки, интеграция с CRM.",
+      "Сайт продаж и монтажа септиков. Калькулятор подбора, заявки.",
     image: septikImg.url,
     liveUrl: "https://xn----itbbkkuhcqmd1b.xn--p1ai/",
     liveLabel: "септик-техно.рф",
