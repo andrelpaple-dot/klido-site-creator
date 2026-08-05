@@ -30,7 +30,7 @@ export const cases: CaseItem[] = [
     title: "СТИЛЬ ГРУМЕРА",
     category: "интернет-магазин · одежда для грумеров",
     description:
-      "Интернет-магазин бренда профессиональной одежды для грумеров. Каталог, B2B-кабинет, интеграция с CRM.",
+      "Интернет-магазин бренда профессиональной одежды для грумеров. Каталог, B2B-кабинет.",
     image: groomingImg.url,
     liveUrl: "https://xn----8sbiimsj5acclr7i.xn--p1ai/catalog/zhenskaya-kollekciya/bryuki-bridzhi-shorty",
     liveLabel: "стиль-грумера.рф",
