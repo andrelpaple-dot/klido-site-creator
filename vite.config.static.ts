@@ -47,7 +47,11 @@ function lovableAssetsStaticPlugin(): Plugin {
         content_type?: string;
       };
       const remote = ASSET_BASE.replace(/\/$/, "") + data.url;
-      const res = await fetch(remote);
+      const res = await fetch(remote, {
+        signal: AbortSignal.timeout(30000), // 30s timeout per asset
+      }).catch(err => {
+        throw new Error(`[lovable-assets-static] Fetch failed for ${data.original_filename} (${remote}): ${err.message}`);
+      });
       if (!res.ok) {
         throw new Error(
           `[lovable-assets-static] ${data.original_filename}: ${res.status} ${res.statusText} at ${remote}`,

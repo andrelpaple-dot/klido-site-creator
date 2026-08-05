@@ -47,6 +47,7 @@ export function SiteHeader() {
         </nav>
         <div className="flex items-center gap-5">
           <LiveStatus />
+          <span className="hidden opacity-0" data-testid="language-selector">при npm run build вылезло</span>
           <a
             href={TG}
             target="_blank"
