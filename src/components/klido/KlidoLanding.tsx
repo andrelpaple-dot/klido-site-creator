@@ -560,7 +560,7 @@ import tbankLogo from "@/assets/logos/tbank.png.asset.json";
 type LogoSpec = { name: string; src: string };
 
 const COMPANY_LOGOS: LogoSpec[] = [
-  { name: "Ozon", src: ozonLogo.url },
+  { name: "Маркетплейс", src: ozonLogo.url },
   { name: "VK", src: vkLogo.url },
   { name: "Яндекс", src: yandexLogo.url },
   { name: "Avito", src: avitoLogo.url },
@@ -1023,7 +1023,7 @@ function FitFor() {
       t: "Растущий бренд без своего сайта",
       sub: "Бренд, который вырос из соцсетей и маркетплейсов и хочет собственный канал продаж",
       bullets: [
-        "Продаёте через WB / Ozon — но зависите от их комиссий и правил",
+        "Продаёте через маркетплейсы — но зависите от их комиссий и правил",
         "Хотите собственный канал, который не отключат за ночь",
         "Нужен сайт с интеграцией CRM, оплатой и логистикой",
         "Важно стартовать быстро — пока ниша свободна",
